@@ -15,16 +15,19 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.youtube.YouTube;
 import com.google.api.services.youtube.model.ChannelListResponse;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Properties;
 
 public class ApiExample {
 	// You need to set this value for your code to compile.
 	// For example: ... DEVELOPER_KEY = "YOUR ACTUAL KEY";
-	private static final String DEVELOPER_KEY = "AIzaSyBreiraSgMSXyel4Pk0wXZu-v8HejFIoIk";
+	private static final Properties props = new Properties();
+//	private static final String DEVELOPER_KEY = ;
 
 	private static final String APPLICATION_NAME = "API code samples";
 	private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
@@ -52,9 +55,10 @@ public class ApiExample {
 			throws GeneralSecurityException, IOException, GoogleJsonResponseException {
 		YouTube youtubeService = getService();
 		// Define and execute the API request
+		props.load(ApiExample.class.getClassLoader().getResourceAsStream("api.properties"));
 		YouTube.Channels.List request = youtubeService.channels()
 		                                              .list(Collections.singletonList("snippet,contentDetails"));
-		ChannelListResponse response = request.setKey(DEVELOPER_KEY)
+		ChannelListResponse response = request.setKey(props.getProperty("youtube"))
 		                                      .setId(Collections.singletonList("UC1DCedRgGHBdm81E1llLhOQ"))
 		                                      .execute();
 		System.out.println(response);
