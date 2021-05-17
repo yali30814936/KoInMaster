@@ -44,7 +44,7 @@ public class ApiExample {
 				.setApplicationName(APPLICATION_NAME)
 				.build();
 	}
-	
+
 	/**
 	 * Call function to create API service object. Define and
 	 * execute API request. Print API response.
