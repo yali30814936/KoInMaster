@@ -1,34 +1,52 @@
 package KoInMaster.TestModules.YouTube.getUploadInformations;
 
-//import com.fasterxml.jackson.core.JsonFactory;
-import com.google.api.client.http.HttpRequest;
-import com.google.api.client.http.HttpRequestInitializer;
-import com.google.api.client.http.HttpTransport;
+import KoInMaster.TestModules.Posts.Post;
+import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.youtube.YouTube;
+import com.google.api.services.youtube.model.SearchListResponse;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
+import java.security.GeneralSecurityException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Properties;
 
 public class getUploadList {
-	private final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
-	private final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
-	private YouTube youTube;
+	private Properties props;
+	private final JsonFactory JSON_FACTORY;
+	private final NetHttpTransport httpTransport;
+	private final YouTube youTube;
+	private final YouTube.Search.List request;
+	private SearchListResponse response;
 
-	public getUploadList() {
-		youTube = new YouTube.Builder(HTTP_TRANSPORT, JSON_FACTORY, new HttpRequestInitializer() {
-			@Override
-			public void initialize(HttpRequest httpRequest) throws IOException {}
-		}).setApplicationName("getUploadList").build();
+	public getUploadList() throws IOException, GeneralSecurityException {
+		// to load api key from properties file
+		props = new Properties();
+		// this throw IOException
+		props.load(getUploadList.class.getClassLoader().getResourceAsStream("api.properties"));
+		JSON_FACTORY = JacksonFactory.getDefaultInstance();
+		// this throw GeneralSecurityException
+		httpTransport = GoogleNetHttpTransport.newTrustedTransport();
+		youTube = new YouTube.Builder(httpTransport, JSON_FACTORY, null).build();
+		request = youTube.search().list(Collections.singletonList("snippet"));
 	}
 
-	public static void main(String[] args) throws IOException {
-//		String url = "https://youtube.googleapis.com/youtube/v3/channels?part=snippet%2CcontentDetails&id=UC1DCedRgGHBdm81E1llLhOQ&key=AIzaSyBreiraSgMSXyel4Pk0wXZu-v8HejFIoIk";
+	public List<Post> searchChannel(String channelId) throws IOException {
+		List<Post> list = new ArrayList<Post>();
 
+		response = request.setKey(props.getProperty("youtube"))
+		                  .setChannelId(channelId)
+		                  .setOrder("date")
+		                  .setEventType("live")
+		                  .setMaxResults(2L)
+		                  .setType(Collections.singletonList("video"))
+		                  .execute();
+
+
+		return list;
 	}
 }
