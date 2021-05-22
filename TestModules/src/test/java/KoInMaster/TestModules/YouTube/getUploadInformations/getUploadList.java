@@ -33,7 +33,8 @@ public class getUploadList {
 		JSON_FACTORY = JacksonFactory.getDefaultInstance();
 		// this throw GeneralSecurityException
 		httpTransport = GoogleNetHttpTransport.newTrustedTransport();
-		youTube = new YouTube.Builder(httpTransport, JSON_FACTORY, null).build();
+		youTube = new YouTube.Builder(httpTransport, JSON_FACTORY, null)
+				.setApplicationName("KoInMaster").build();
 		request = youTube.search().list(Collections.singletonList("snippet"));
 	}
 
@@ -60,7 +61,7 @@ public class getUploadList {
 		                  .execute();
 		for (SearchResult s:response.getItems()) {
 			// skip the result that is already started
-			if (s.getId().getVideoId().equals(list.get(0).getUrl().replaceAll("https://www.youtube.com/watch?v=", "")))
+			if (s.getId().getVideoId().equals(list.get(0).getUrl().replaceAll("https://www\\.youtube\\.com/watch\\?v=", "")))
 				continue;
 			list.add(new YoutubePost(s));
 		}
@@ -77,9 +78,9 @@ public class getUploadList {
 			boolean flag = false;
 			for (Post p:list)
 				// modify the video's type that is actually completed
-				if (s.getId().getVideoId().equals(p.getUrl().replaceAll("https://www.youtube.com/watch?v=", ""))) {
+				if (s.getId().getVideoId().equals(p.getUrl().replaceAll("https://www\\.youtube\\.com/watch\\?v=", ""))) {
 					flag = true;
-					p.setType("youtube-video");
+					p.setType("youtube-" + s.getSnippet().getLiveBroadcastContent());
 					break;
 				}
 			if (!flag)  list.add(new YoutubePost(s));

@@ -15,11 +15,7 @@ public class YoutubePost extends Post{
 		SearchResultSnippet snippet = video.getSnippet();
 		// use text as video title.
 		text = snippet.getTitle();
-		type = "youtube-";
-		if (snippet.getLiveBroadcastContent() == "none")
-			type += "video";
-		else
-			type += snippet.getLiveBroadcastContent();
+		type = "youtube-" + snippet.getLiveBroadcastContent();
 		url = urlHead + video.getId().getVideoId();
 		publishedTime = new Date(snippet.getPublishedAt().getValue());
 		media = new ArrayList<>();
@@ -35,7 +31,6 @@ public class YoutubePost extends Post{
 				", url='" + url + '\'' +
 				", publishedTime=" + publishedTime +
 				", media=" + media +
-				", urlHead='" + urlHead + '\'' +
 				", description='" + description + '\'' +
 				'}';
 	}
