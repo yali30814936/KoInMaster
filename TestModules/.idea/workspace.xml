@@ -5,20 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="45b34554-85f1-4015-b72e-72dfea3ae231" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.classpath" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.project" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.settings/org.eclipse.jdt.apt.core.prefs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.settings/org.eclipse.jdt.core.prefs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.settings/org.eclipse.m2e.core.prefs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/KoInMaster/TestModules/Posts/Post.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/KoInMaster/TestModules/Posts/YoutubePost.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/KoInMaster/TestModules/YouTube/getUploadInformations/ApiExample1.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/KoInMaster/TestModules/YouTube/getUploadInformations/ApiExample.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/KoInMaster/TestModules/YouTube/getUploadInformations/ApiExample.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/KoInMaster/TestModules/Posts/Post.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/KoInMaster/TestModules/Posts/Post.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/KoInMaster/TestModules/Posts/YoutubePost.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/KoInMaster/TestModules/Posts/YoutubePost.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/KoInMaster/TestModules/YouTube/getUploadInformations/ApiExample.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/KoInMaster/TestModules/YouTube/getUploadInformations/ApiExample1.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/KoInMaster/TestModules/YouTube/getUploadInformations/getUploadList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/KoInMaster/TestModules/YouTube/getUploadInformations/getUploadList.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/KoInMaster/TestModules/YouTube/getUploadInformations/ApiExample.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/KoInMaster/TestModules/YouTube/getUploadInformations/ApiExample.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/KoInMaster/TestModules/YouTube/getUploadInformations/getUploadList$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/KoInMaster/TestModules/Posts/Post.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/KoInMaster/TestModules/Posts/Post.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/KoInMaster/TestModules/YouTube/getUploadInformations/ApiExample.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/KoInMaster/TestModules/YouTube/getUploadInformations/ApiExample1.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/test-classes/KoInMaster/TestModules/YouTube/getUploadInformations/getUploadList.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/KoInMaster/TestModules/YouTube/getUploadInformations/getUploadList.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -125,7 +120,7 @@
       <workItem from="1621238673758" duration="1014000" />
       <workItem from="1621239706227" duration="1474000" />
       <workItem from="1621582455972" duration="15000" />
-      <workItem from="1621655715940" duration="16230000" />
+      <workItem from="1621655715940" duration="20090000" />
     </task>
     <servers />
   </component>

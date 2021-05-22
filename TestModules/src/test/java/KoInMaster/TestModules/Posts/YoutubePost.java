@@ -26,4 +26,17 @@ public class YoutubePost extends Post{
 		media.add(snippet.getThumbnails().getMedium().getUrl());
 		description = snippet.getDescription();
 	}
+
+	@Override
+	public String toString() {
+		return "YoutubePost{" +
+				"text='" + text + '\'' +
+				", type='" + type + '\'' +
+				", url='" + url + '\'' +
+				", publishedTime=" + publishedTime +
+				", media=" + media +
+				", urlHead='" + urlHead + '\'' +
+				", description='" + description + '\'' +
+				'}';
+	}
 }
