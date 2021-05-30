@@ -5,17 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="45b34554-85f1-4015-b72e-72dfea3ae231" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_twitter4j_twitter4j_core_4_0_7.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestModules.iml" beforeDir="false" afterPath="$PROJECT_DIR$/TestModules.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/KoInMaster/TestModules/Posts/Twitterpost.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/KoInMaster/TestModules/Posts/TwitterPost.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/KoInMaster/TestModules/Twitter/Twittergettweet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/KoInMaster/TestModules/Twitter/TwitterGetTweet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/resources/twitter4j.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/twitter4j.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/KoInMaster/TestModules/Posts/Post.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/KoInMaster/TestModules/Posts/YoutubePost.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/KoInMaster/TestModules/YouTube/getUploadInformations/getUploadList.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/KoInMaster/TestModules/YouTube/getUploadInformations/getUploadListTest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/KoInMaster/TestModules/Twitter/TwitterGetTweet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/KoInMaster/TestModules/Twitter/TwitterGetTweet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/KoInMaster/TestModules/Twitter/TwitterGetTweet.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/KoInMaster/TestModules/Twitter/TwitterGetTweet.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -124,13 +116,15 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
       <option name="arquillianRunConfiguration">
         <value>
           <option name="containerStateName" value="" />
         </value>
       </option>
-      <option name="TEST_OBJECT" value="class" />
+      <option name="TEST_OBJECT" value="CLASS" />
+      <properties />
+      <listeners />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -163,6 +157,7 @@
       <workItem from="1621655715940" duration="21596000" />
       <workItem from="1622392495637" duration="36000" />
       <workItem from="1622392941053" duration="779000" />
+      <workItem from="1622394024746" duration="1420000" />
     </task>
     <servers />
   </component>

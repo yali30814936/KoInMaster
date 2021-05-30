@@ -1,7 +1,6 @@
 package KoInMaster.TestModules.Twitter;
-
-import KoInMaster.TestModules.Posts.Post;
 import KoInMaster.TestModules.Posts.TwitterPost;
+import KoInMaster.TestModules.Posts.Post;
 import twitter4j.*;
 
 import java.util.ArrayList;
@@ -17,6 +16,7 @@ public class TwitterGetTweet {
             for(Status status:statuses){
                 list.add(new TwitterPost(status));
             }
+
             System.out.println(list);
 
         } catch (TwitterException te) {
