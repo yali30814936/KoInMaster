@@ -1,11 +1,9 @@
-package Post;
-import jdk.jshell.Snippet;
+package KoInMaster.TestModules.Posts;
+
 import twitter4j.MediaEntity;
 import twitter4j.Status;
-
-import java.util.List;
-public class Twitterpost extends Post{
-    public Twitterpost(Status status){
+public class TwitterPost extends Post{
+    public TwitterPost(Status status){
         text="@"+status.getUser().getScreenName()+"\n"+status.getText();
         if(status.isRetweet()){
             type="RT";
@@ -19,8 +17,15 @@ public class Twitterpost extends Post{
             media.add(me.getMediaURL());
         }
     }
+
     @Override
-    public String toString(){
-        return text;
+    public String toString() {
+        return "TwitterPost{" +
+                "text='" + text + '\'' +
+                ", type='" + type + '\'' +
+                ", url='" + url + '\'' +
+                ", publishedTime=" + publishedTime +
+                ", media=" + media +
+                '}';
     }
 }

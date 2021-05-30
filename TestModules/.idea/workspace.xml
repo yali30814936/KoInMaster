@@ -4,11 +4,26 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="45b34554-85f1-4015-b72e-72dfea3ae231" name="Default Changelist" comment="" />
+    <list default="true" id="45b34554-85f1-4015-b72e-72dfea3ae231" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_twitter4j_twitter4j_core_4_0_7.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TestModules.iml" beforeDir="false" afterPath="$PROJECT_DIR$/TestModules.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/KoInMaster/TestModules/Posts/Twitterpost.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/KoInMaster/TestModules/Posts/TwitterPost.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/KoInMaster/TestModules/Twitter/Twittergettweet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/KoInMaster/TestModules/Twitter/TwitterGetTweet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/resources/twitter4j.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/twitter4j.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/KoInMaster/TestModules/Posts/Post.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/KoInMaster/TestModules/Posts/YoutubePost.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/KoInMaster/TestModules/YouTube/getUploadInformations/getUploadList.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/KoInMaster/TestModules/YouTube/getUploadInformations/getUploadListTest.class" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeInsightWorkspaceSettings">
+    <option name="optimizeImportsOnTheFly" value="true" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -49,7 +64,7 @@
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
-  <component name="RunManager" selected="Application.getUploadListTest">
+  <component name="RunManager" selected="Application.TwitterGetTweet">
     <configuration name="ApiExample" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="KoInMaster.TestModules.YouTube.getUploadInformations.ApiExample" />
       <module name="TestModules" />
@@ -76,6 +91,26 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="TwitterGetTweet" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="KoInMaster.TestModules.Twitter.TwitterGetTweet" />
+      <module name="TestModules" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="KoInMaster.TestModules.Twitter.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Twittergettweet" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Twittergettweet" />
+      <module name="TestModules" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="getUploadListTest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="KoInMaster.TestModules.YouTube.getUploadInformations.getUploadListTest" />
       <module name="TestModules" />
@@ -89,8 +124,21 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.TwitterGetTweet" />
+        <item itemvalue="Application.Twittergettweet" />
         <item itemvalue="Application.getUploadListTest" />
         <item itemvalue="Application.ApiExample" />
         <item itemvalue="Application.ApiExample1" />
@@ -114,6 +162,7 @@
       <workItem from="1621582455972" duration="15000" />
       <workItem from="1621655715940" duration="21596000" />
       <workItem from="1622392495637" duration="36000" />
+      <workItem from="1622392941053" duration="779000" />
     </task>
     <servers />
   </component>
