@@ -43,7 +43,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../ModuleTest" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -113,6 +113,7 @@
       <workItem from="1621239706227" duration="1474000" />
       <workItem from="1621582455972" duration="15000" />
       <workItem from="1621655715940" duration="21596000" />
+      <workItem from="1622392495637" duration="36000" />
     </task>
     <servers />
   </component>
