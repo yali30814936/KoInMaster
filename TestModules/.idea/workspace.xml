@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="45b34554-85f1-4015-b72e-72dfea3ae231" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/KoInMaster/TestModules/FB/DataGet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/KoInMaster/TestModules/FB/DataGet.java" afterDir="false" />
-    </list>
+    <list default="true" id="45b34554-85f1-4015-b72e-72dfea3ae231" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -110,13 +107,15 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
       <option name="arquillianRunConfiguration">
         <value>
           <option name="containerStateName" value="" />
         </value>
       </option>
-      <option name="TEST_OBJECT" value="class" />
+      <option name="TEST_OBJECT" value="CLASS" />
+      <properties />
+      <listeners />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -151,8 +150,7 @@
       <workItem from="1622368086692" duration="1935000" />
       <workItem from="1622370081535" duration="1556000" />
       <workItem from="1622429502681" duration="3805000" />
-      <workItem from="1622447858246" duration="1993000" />
-      <workItem from="1622450926824" duration="325000" />
+      <workItem from="1622447858246" duration="1958000" />
     </task>
     <servers />
   </component>

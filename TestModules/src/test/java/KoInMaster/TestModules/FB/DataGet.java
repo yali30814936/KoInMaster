@@ -10,6 +10,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ public class DataGet {
     private List<FbPost> totalPost;
     public  void setElement() throws InterruptedException, ParseException {
         totalPost=new ArrayList<>();
-        System.setProperty("webdriver.chrome.driver","C:\\Users\\User\\Documents\\GitHub\\KoInMaster\\TestModules\\chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", Paths.get("").toAbsolutePath().toString() + "\\chromedriver.exe");
         WebDriver browser =new ChromeDriver();
         browser.get("https://zh-tw.facebook.com/ey.gov.tw/");
         for(int i=0;i<5;i++) {
