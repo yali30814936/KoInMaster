@@ -27,11 +27,11 @@ public class DataGet {
         System.setProperty("webdriver.chrome.driver","C:\\Users\\User\\Documents\\GitHub\\KoInMaster\\TestModules\\chromedriver.exe");
         WebDriver browser =new ChromeDriver();
         browser.get("https://zh-tw.facebook.com/ey.gov.tw/");
-        //for(int i=0;i<5;i++) {
-        //         Thread.sleep(5000);
-        //         ((JavascriptExecutor) browser).executeScript("window.scrollTo(0,document.body.scrollHeight)");
-        //    }
-        //browser.findElement(By.id("expanding_cta_close_button")).click();
+        for(int i=0;i<5;i++) {
+                 Thread.sleep(5000);
+                ((JavascriptExecutor) browser).executeScript("window.scrollTo(0,document.body.scrollHeight)");
+            }
+        browser.findElement(By.id("expanding_cta_close_button")).click();
         Thread.sleep(15000);
         doc = Jsoup.parse(browser.getPageSource());
         postitems=doc.getElementsByClass("_1dwg _1w_m _q7o");

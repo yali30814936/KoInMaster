@@ -5,12 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="45b34554-85f1-4015-b72e-72dfea3ae231" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/test/java/KoInMaster/TestModules/Posts/FbPost.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/KoInMaster/TestModules/FB/DataGet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/KoInMaster/TestModules/FB/DataGet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/KoInMaster/TestModules/FB/test.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/KoInMaster/TestModules/FB/test.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/KoInMaster/TestModules/FB/DataGet.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/KoInMaster/TestModules/FB/DataGet.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/KoInMaster/TestModules/FB/test.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/KoInMaster/TestModules/FB/test.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -157,7 +152,7 @@
       <workItem from="1622368086692" duration="1935000" />
       <workItem from="1622370081535" duration="1556000" />
       <workItem from="1622429502681" duration="3805000" />
-      <workItem from="1622447858246" duration="1702000" />
+      <workItem from="1622447858246" duration="1958000" />
     </task>
     <servers />
   </component>
