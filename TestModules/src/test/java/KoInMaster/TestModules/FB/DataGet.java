@@ -32,7 +32,7 @@ public class DataGet {
                 ((JavascriptExecutor) browser).executeScript("window.scrollTo(0,document.body.scrollHeight)");
             }
         browser.findElement(By.id("expanding_cta_close_button")).click();
-        Thread.sleep(15000);
+        Thread.sleep(5000);
         doc = Jsoup.parse(browser.getPageSource());
         postitems=doc.getElementsByClass("_1dwg _1w_m _q7o");
 
@@ -40,15 +40,15 @@ public class DataGet {
         for(Element postitem :postitems){
             List<String> mediaTemp=new ArrayList<>();
             Elements content=postitem.getElementsByClass("_5pbx userContent _3576");
-            Elements postimages=postitem.getElementsByClass("_5dec _xcx");
+           // Elements postimages=postitem.getElementsByClass("_5dec _xcx");
             Elements images=postitem.getElementsByClass("scaledImageFitWidth img");
             Elements images2=postitem.getElementsByClass("scaledImageFitHeight img");
             Elements posthref=postitem.getElementsByClass("_5pcq");
-            Elements time=postitem.getElementsByClass("_5ptz timestamp livetimestamp");
-            for(Element postimage:postimages){
+            Elements time=postitem.getElementsByClass("_5ptz");
+           // for(Element postimage:postimages){
                 //System.out.printf("%s%n","https://www.facebook.com/"+postimage.attr("href"));
-                mediaTemp.add("https://www.facebook.com/"+postimage.attr("href").replaceAll("\\?.*",""));
-            }
+           //     mediaTemp.add("https://www.facebook.com/"+postimage.attr("href").replaceAll("\\?.*",""));
+           // }
             for(Element image :images){
                 //System.out.printf("%s%n",image.attr("src"));
                 mediaTemp.add(image.attr("src"));
