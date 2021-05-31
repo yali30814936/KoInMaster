@@ -6,12 +6,12 @@ import twitter4j.*;
 import java.util.ArrayList;
 import java.util.List;
 public class TwitterGetTweet {
-    public static void main(String[] args) {
+    public TwitterGetTweet(String searchid) {
         try {
 
             Twitter twitter = new TwitterFactory().getInstance();
             User user = twitter.verifyCredentials();
-            List<Status> statuses = twitter.getUserTimeline("usadapekora");
+            List<Status> statuses = twitter.getUserTimeline(searchid);
             List<Post> list = new ArrayList<Post>();
             for(Status status:statuses){
                 list.add(new TwitterPost(status));
