@@ -49,7 +49,7 @@ public class getUploadList {
 		                  .setMaxResults(2L)
 		                  .setType(Collections.singletonList("video"))
 		                  .execute();
-		list.add(new YoutubePost(response.getItems().get(0)));
+		if (response.getItems().size() != 0)    list.add(new YoutubePost(response.getItems().get(0)));
 
 		// upcoming
 		response = request.setKey(props.getProperty("youtube"))
@@ -61,7 +61,7 @@ public class getUploadList {
 		                  .execute();
 		for (SearchResult s:response.getItems()) {
 			// skip the result that is already started
-			if (s.getId().getVideoId().equals(list.get(0).getUrl().replaceAll("https://www\\.youtube\\.com/watch\\?v=", "")))
+			if (list.size() > 0 && s.getId().getVideoId().equals(list.get(0).getUrl().replaceAll("https://www\\.youtube\\.com/watch\\?v=", "")))
 				continue;
 			list.add(new YoutubePost(s));
 		}
