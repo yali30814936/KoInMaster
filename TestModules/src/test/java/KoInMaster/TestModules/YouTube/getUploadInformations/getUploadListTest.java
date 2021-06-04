@@ -9,6 +9,7 @@ public class getUploadListTest {
 	public static void main(String[] args) throws GeneralSecurityException, IOException {
 		solution = new getUploadList();
 
-		System.out.println(solution.searchChannel("UCDqI2jOz0weumE8s7paEk6g"));
+		System.out.println(solution.searchChannel("UCIG9rDtgR45VCZmYnd-4DUw"));
+		System.out.println(solution.searchChannel("UCIG9rDtgR45VCZmYnd-4DUw"));
 	}
 }

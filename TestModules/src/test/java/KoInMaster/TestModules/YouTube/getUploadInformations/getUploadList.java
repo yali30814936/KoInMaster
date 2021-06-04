@@ -18,48 +18,47 @@ import java.util.List;
 import java.util.Properties;
 
 public class getUploadList {
-	private Properties props;
-	private final JsonFactory JSON_FACTORY;
-	private final NetHttpTransport httpTransport;
-	private final YouTube youTube;
+	private final String apiKey;
 	private final YouTube.Search.List request;
-	private SearchListResponse response;
 
 	public getUploadList() throws IOException, GeneralSecurityException {
 		// to load api key from properties file
-		props = new Properties();
+		Properties props = new Properties();
+
 		// this throw IOException
 		props.load(getUploadList.class.getClassLoader().getResourceAsStream("api.properties"));
-		JSON_FACTORY = JacksonFactory.getDefaultInstance();
+		apiKey = props.getProperty("youtube");
+
+		JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
 		// this throw GeneralSecurityException
-		httpTransport = GoogleNetHttpTransport.newTrustedTransport();
-		youTube = new YouTube.Builder(httpTransport, JSON_FACTORY, null)
+		NetHttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
+		YouTube youTube = new YouTube.Builder(httpTransport, JSON_FACTORY, null)
 				.setApplicationName("KoInMaster").build();
 		request = youTube.search().list(Collections.singletonList("snippet"));
 	}
 
 	public List<Post> searchChannel(String channelId) throws IOException {
-		List<Post> list = new ArrayList<Post>();
+		List<Post> list = new ArrayList<>();
 
 		// live
-		response = request.setKey(props.getProperty("youtube"))
-		                  .setChannelId(channelId)
-		                  .setOrder("date")
-		                  .setEventType("live")
-		                  .setMaxResults(2L)
-		                  .setType(Collections.singletonList("video"))
-		                  .execute();
+		SearchListResponse response = request.setKey(apiKey)
+		                                     .setChannelId(channelId)
+		                                     .setOrder("date")
+		                                     .setEventType("live")
+		                                     .setMaxResults(2L)
+		                                     .setType(Collections.singletonList("video"))
+		                                     .execute();
 		if (response.getItems().size() != 0)    list.add(new YoutubePost(response.getItems().get(0)));
 
 		// upcoming
-		response = request.setKey(props.getProperty("youtube"))
+		response = request.setKey(apiKey)
 		                  .setChannelId(channelId)
 		                  .setOrder("date")
 		                  .setEventType("upcoming")
 		                  .setMaxResults(10L)
 		                  .setType(Collections.singletonList("video"))
 		                  .execute();
-		for (SearchResult s:response.getItems()) {
+		for (SearchResult s: response.getItems()) {
 			// skip the result that is already started
 			if (list.size() > 0 && s.getId().getVideoId().equals(list.get(0).getUrl().replaceAll("https://www\\.youtube\\.com/watch\\?v=", "")))
 				continue;
@@ -67,14 +66,14 @@ public class getUploadList {
 		}
 
 		// completed(normal videos)
-		response = request.setKey(props.getProperty("youtube"))
+		response = request.setKey(apiKey)
 		                  .setChannelId(channelId)
 		                  .setOrder("date")
 		                  .setEventType("none")
 		                  .setMaxResults(10L)
 		                  .setType(Collections.singletonList("video"))
 		                  .execute();
-		for (SearchResult s:response.getItems()) {
+		for (SearchResult s: response.getItems()) {
 			boolean flag = false;
 			for (Post p:list)
 				// modify the video's type that is actually completed

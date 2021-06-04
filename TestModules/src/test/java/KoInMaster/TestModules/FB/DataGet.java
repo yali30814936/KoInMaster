@@ -23,7 +23,7 @@ public class DataGet {
     private List<FbPost> totalPost;
     public  void setElement() throws InterruptedException, ParseException {
         totalPost=new ArrayList<>();
-        System.setProperty("webdriver.chrome.driver", Paths.get("").toAbsolutePath().toString() + "\\chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", Paths.get("chromedriver.exe").toAbsolutePath().toString());
         WebDriver browser =new ChromeDriver();
         browser.get("https://zh-tw.facebook.com/ey.gov.tw/");
         for(int i=0;i<5;i++) {
