@@ -16,24 +16,24 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
+import java.util.concurrent.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class YoutubeCrawlers implements Crawler, Runnable{
+public class YoutubeCrawler implements Callable<List<Post>> {
 	private final String platform;
 	private final String url;
 	private final String apiKey;
 	private final String channelId;
 	private final YouTube.Search.List request;
-	private final List<Post> postList;
 
-	public YoutubeCrawlers(String URL, List<Post> list) throws IOException, GeneralSecurityException {
+	public YoutubeCrawler(String URL) throws IOException, GeneralSecurityException {
 		platform = "youtube";
 
 		// extract channel id from URL
 		url = URL.replaceAll("\\?.*", "");
 
-		Matcher matcher = Pattern.compile("(www.youtube.com/(channel|c)/)?(?<ID>[^?]*)\\??")
+		Matcher matcher = Pattern.compile("((https?://)?www.youtube.com/(channel|c)/)?(?<ID>[^?]*)\\??")
 		                         .matcher(URL);
 		if (matcher.find())
 			channelId = matcher.group("ID");
@@ -44,7 +44,7 @@ public class YoutubeCrawlers implements Crawler, Runnable{
 		Properties props = new Properties();
 
 		// this throw IOException
-		props.load(YoutubeCrawlers.class.getClassLoader().getResourceAsStream("api.properties"));
+		props.load(YoutubeCrawler.class.getClassLoader().getResourceAsStream("api.properties"));
 		apiKey = props.getProperty("youtube");
 
 		JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
@@ -53,64 +53,22 @@ public class YoutubeCrawlers implements Crawler, Runnable{
 		YouTube youTube = new YouTube.Builder(httpTransport, JSON_FACTORY, null)
 				.setApplicationName("KoInMaster").build();
 		request = youTube.search().list(Collections.singletonList("snippet"));
-
-		postList = list;
 	}
 
-	public List<Post> searchChannel(String channelId) throws IOException {
+	public List<Post> searchChannel(String channelId) throws InterruptedException, IOException {
 		List<Post> list = new ArrayList<>();
-
-		// live
 		SearchListResponse response = request.setKey(apiKey)
 		                                     .setChannelId(channelId)
-		                                     .setOrder("date")
-		                                     .setEventType("live")
-		                                     .setMaxResults(2L)
+				                             .setOrder("date")
+				                             .setEventType("live")
+				                             .setEventType("upcoming")
+				                             .setEventType("none")
+				                             .setMaxResults(10L)
 		                                     .setType(Collections.singletonList("video"))
 		                                     .execute();
-		if (response.getItems().size() != 0)    list.add(new YoutubePost(response.getItems().get(0)));
-
-		// upcoming
-		response = request.setKey(apiKey)
-		                  .setChannelId(channelId)
-		                  .setOrder("date")
-		                  .setEventType("upcoming")
-		                  .setMaxResults(10L)
-		                  .setType(Collections.singletonList("video"))
-		                  .execute();
-		for (SearchResult s: response.getItems()) {
-			// skip the result that is already started
-			if (list.size() > 0 && s.getId().getVideoId().equals(list.get(0).getUrl().replaceAll("https://www\\.youtube\\.com/watch\\?v=", "")))
-				continue;
+		for (SearchResult s:response.getItems())
 			list.add(new YoutubePost(s));
-		}
-
-		// completed(normal videos)
-		response = request.setKey(apiKey)
-		                  .setChannelId(channelId)
-		                  .setOrder("date")
-		                  .setEventType("none")
-		                  .setMaxResults(10L)
-		                  .setType(Collections.singletonList("video"))
-		                  .execute();
-		for (SearchResult s: response.getItems()) {
-			boolean flag = false;
-			for (Post p:list)
-				// modify the video's type that is actually completed
-				if (s.getId().getVideoId().equals(p.getUrl().replaceAll("https://www\\.youtube\\.com/watch\\?v=", ""))) {
-					flag = true;
-					p.setType("youtube-" + s.getSnippet().getLiveBroadcastContent());
-					break;
-				}
-			if (!flag)  list.add(new YoutubePost(s));
-		}
-
 		return list;
-	}
-
-	@Override
-	public List<Post> getPostList() throws IOException {
-		return searchChannel(channelId);
 	}
 
 	public String getPlatform() {
@@ -122,7 +80,7 @@ public class YoutubeCrawlers implements Crawler, Runnable{
 	}
 
 	@Override
-	public void run() {
-		
+	public List<Post> call() throws Exception {
+		return searchChannel(channelId);
 	}
 }

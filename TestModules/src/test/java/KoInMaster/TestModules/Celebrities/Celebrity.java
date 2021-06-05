@@ -1,14 +1,14 @@
 package KoInMaster.TestModules.Celebrities;
 
-import KoInMaster.TestModules.Celebrities.Crawlers.Crawler;
 import KoInMaster.TestModules.Posts.Post;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 public class Celebrity {
 	private String name;
-	private Crawler[] crawlers;
+	private List<Callable<Post>> crawlers;
 
 	// return a list of posts sorted by publish time
 	public List<Post> getPostList() {

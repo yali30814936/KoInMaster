@@ -1,17 +1,16 @@
 package KoInMaster.TestModules.Celebrities.Crawlers;
 
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import KoInMaster.TestModules.Posts.Post;
+
+import java.util.List;
+import java.util.concurrent.Callable;
 
 public class kindatest {
-	public static void main(String[] args) {
-		Matcher matcher = Pattern.compile("(www.youtube.com/(channel|c)/)?(?<ID>[^?]*)\\??")
-		                         .matcher("UCIG9rDtgR45VCZmYnd-4DUw");
-		if (matcher.find())
-			System.out.println(URLDecoder.decode(matcher.group("ID"), StandardCharsets.UTF_8));
-		else
-			System.out.println("Nope");
+	public static void main(String[] args) throws Exception {
+		Callable<List<Post>> foo = new YoutubeCrawler("UCvInZx9h3jC2JzsIzoOebWg");
+		System.out.println("ready to crawl");
+		List<Post> list = foo.call();
+		for (Post p:list)
+			System.out.println(p);
 	}
 }
