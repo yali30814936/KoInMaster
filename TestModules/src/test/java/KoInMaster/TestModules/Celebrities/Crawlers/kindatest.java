@@ -7,7 +7,7 @@ import java.util.concurrent.Callable;
 
 public class kindatest {
 	public static void main(String[] args) throws Exception {
-		Callable<List<Post>> foo = new YoutubeCrawler("UCvInZx9h3jC2JzsIzoOebWg");
+		Crawler foo = new YoutubeCrawler("DOLLARplays","DOLLARplays");
 		System.out.println("ready to crawl");
 		List<Post> list = foo.call();
 		for (Post p:list)

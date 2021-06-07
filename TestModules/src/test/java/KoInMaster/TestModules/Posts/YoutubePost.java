@@ -9,9 +9,11 @@ import java.util.Date;
 public class YoutubePost extends Post{
 	// url header for video hyperlink
 	private final String urlHead = "https://www.youtube.com/watch?v=";
+
 	private final String description;
 
-	public YoutubePost(SearchResult video) {
+	public YoutubePost(String name, SearchResult video) {
+		super.name = name;
 		SearchResultSnippet snippet = video.getSnippet();
 		// use text as video title.
 		text = snippet.getTitle();
@@ -23,10 +25,15 @@ public class YoutubePost extends Post{
 		description = snippet.getDescription();
 	}
 
+	public String getDescription() {
+		return description;
+	}
+
 	@Override
 	public String toString() {
 		return "YoutubePost{" +
-				"text='" + text + '\'' +
+				"name=" + name + '\'' +
+				", text='" + text + '\'' +
 				", type='" + type + '\'' +
 				", url='" + url + '\'' +
 				", publishedTime=" + publishedTime +

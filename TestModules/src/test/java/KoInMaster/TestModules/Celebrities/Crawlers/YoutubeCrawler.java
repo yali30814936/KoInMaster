@@ -1,6 +1,6 @@
 package KoInMaster.TestModules.Celebrities.Crawlers;
 
-import KoInMaster.TestModules.Posts.Post;
+import KoInMaster.TestModules.Posts.PostList;
 import KoInMaster.TestModules.Posts.YoutubePost;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
@@ -12,22 +12,20 @@ import com.google.api.services.youtube.model.SearchResult;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Properties;
-import java.util.concurrent.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class YoutubeCrawler implements Callable<List<Post>> {
+public class YoutubeCrawler extends Crawler{
 	private final String platform;
 	private final String url;
 	private final String apiKey;
 	private final String channelId;
 	private final YouTube.Search.List request;
 
-	public YoutubeCrawler(String URL) throws IOException, GeneralSecurityException {
+	public YoutubeCrawler(String name, String URL) throws IOException, GeneralSecurityException {
+		super(name);
 		platform = "youtube";
 
 		// extract channel id from URL
@@ -55,8 +53,8 @@ public class YoutubeCrawler implements Callable<List<Post>> {
 		request = youTube.search().list(Collections.singletonList("snippet"));
 	}
 
-	public List<Post> searchChannel(String channelId) throws InterruptedException, IOException {
-		List<Post> list = new ArrayList<>();
+	public PostList searchChannel(String channelId) throws InterruptedException, IOException {
+		PostList list = new PostList();
 		SearchListResponse response = request.setKey(apiKey)
 		                                     .setChannelId(channelId)
 				                             .setOrder("date")
@@ -67,7 +65,7 @@ public class YoutubeCrawler implements Callable<List<Post>> {
 		                                     .setType(Collections.singletonList("video"))
 		                                     .execute();
 		for (SearchResult s:response.getItems())
-			list.add(new YoutubePost(s));
+			list.add(new YoutubePost(super.name, s));
 		return list;
 	}
 
@@ -80,7 +78,7 @@ public class YoutubeCrawler implements Callable<List<Post>> {
 	}
 
 	@Override
-	public List<Post> call() throws Exception {
+	public PostList call() throws Exception {
 		return searchChannel(channelId);
 	}
 }

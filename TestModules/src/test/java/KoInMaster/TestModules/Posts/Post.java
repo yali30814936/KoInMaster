@@ -3,12 +3,15 @@ package KoInMaster.TestModules.Posts;
 import java.util.Date;
 import java.util.List;
 public abstract class Post {
+	protected String name;
 	protected String text;
 	// type format: "platform-type". ex:youtube-live
 	protected String type;
 	protected String url;
 	protected Date publishedTime;
 	protected List<String> media;
+
+	public String getName() {return name;}
 
 	public String getText() {
 		return text;

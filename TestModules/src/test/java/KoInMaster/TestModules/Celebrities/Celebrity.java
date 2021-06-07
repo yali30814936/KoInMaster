@@ -1,21 +1,20 @@
 package KoInMaster.TestModules.Celebrities;
 
-import KoInMaster.TestModules.Posts.Post;
+import KoInMaster.TestModules.Celebrities.Crawlers.Crawler;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 public class Celebrity {
 	private String name;
-	private List<Callable<Post>> crawlers;
+	private List<Crawler> crawlers;
 
-	// return a list of posts sorted by publish time
-	public List<Post> getPostList() {
-		List<Post> postList = new ArrayList<>();
-
-		return postList;
+	public Celebrity(String name) {
+		this.name = name;
+		crawlers = new ArrayList<>();
 	}
+
+	public List<Crawler> getCrawlers() {return crawlers;}
 
 	public void setName(String name) {this.name = name;}
 
