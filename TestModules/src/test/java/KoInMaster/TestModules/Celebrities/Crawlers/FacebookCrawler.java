@@ -1,6 +1,8 @@
-package KoInMaster.TestModules.FB;
+package KoInMaster.TestModules.Celebrities.Crawlers;
 
 import KoInMaster.TestModules.Posts.FbPost;
+import KoInMaster.TestModules.Posts.Post;
+import KoInMaster.TestModules.Posts.PostList;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -12,73 +14,59 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
 import java.nio.file.Paths;
-import java.text.ParseException;
-import java.util.Date;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.text.SimpleDateFormat;
-import java.io.IOException;
 
-
-public class DataGet {
+public class FacebookCrawler extends Crawler{
+    private  final String url;
     private Document doc;
     private Elements postitems;
-    private List<FbPost> totalPost;
-    public  void setElement() throws InterruptedException, ParseException {
+    public FacebookCrawler(String name,String URL) throws InterruptedException{
+        super(name);
+        this.url=URL;
         ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.addArguments("-headless");
-        totalPost=new ArrayList<>();
-<<<<<<< Updated upstream
-        System.setProperty("webdriver.chrome.driver", Paths.get("").toAbsolutePath().toString() + "\\chromedriver.exe");
-        WebDriver browser =new ChromeDriver();
-=======
         System.setProperty("webdriver.chrome.driver", Paths.get("chromedriver.exe").toAbsolutePath().toString());
         WebDriver browser =new ChromeDriver(chromeOptions);
->>>>>>> Stashed changes
-        browser.get("https://zh-tw.facebook.com/ey.gov.tw/");
+        browser.get(url);
         for(int i=0;i<2;i++) {
-                 Thread.sleep(1000);
-                ((JavascriptExecutor) browser).executeScript("window.scrollTo(0,document.body.scrollHeight)");
-            }
+            Thread.sleep(1000);
+            ((JavascriptExecutor) browser).executeScript("window.scrollTo(0,document.body.scrollHeight)");
+        }
         browser.findElement(By.id("expanding_cta_close_button")).click();
         Thread.sleep(1000);
         doc = Jsoup.parse(browser.getPageSource());
         postitems=doc.getElementsByClass("_1dwg _1w_m _q7o");
-
-
+        browser.close();
+    }
+    public  PostList getlist(){
+        PostList list = new PostList();
         for(Element postitem :postitems){
             List<String> mediaTemp=new ArrayList<>();
             Elements content=postitem.getElementsByClass("_5pbx userContent _3576");
-           // Elements postimages=postitem.getElementsByClass("_5dec _xcx");
             Elements images=postitem.getElementsByClass("scaledImageFitWidth img");
             Elements images2=postitem.getElementsByClass("scaledImageFitHeight img");
             Elements posthref=postitem.getElementsByClass("_5pcq");
             Elements time=postitem.getElementsByClass("_5ptz");
-           // for(Element postimage:postimages){
-                //System.out.printf("%s%n","https://www.facebook.com/"+postimage.attr("href"));
-           //     mediaTemp.add("https://www.facebook.com/"+postimage.attr("href").replaceAll("\\?.*",""));
-           // }
             for(Element image :images){
-                //System.out.printf("%s%n",image.attr("src"));
                 mediaTemp.add(image.attr("src"));
             }
             for(Element image2 :images2){
-               // System.out.printf("%s%n",image2.attr("src"));
                 mediaTemp.add(image2.attr("src"));
             }
-            //System.out.printf("%s%n",content.text());
-            //System.out.printf("%s%n",time.attr("data-utime"));
             Date date=new Date(Integer.valueOf(time.attr("data-utime")));
             String URL="https://www.facebook.com/"+posthref.attr("href");
             URL=URL.replaceAll("\\?.*","");
-            FbPost temp=new FbPost(URL,mediaTemp,date,content.text());
-            totalPost.add(temp);
+            Post temp=new FbPost(URL,mediaTemp,date,content.text());
+            list.add(temp);
 
         }
-
-        browser.close();
+        return list;
     }
-    public List<FbPost> getFbPost(){
-        return totalPost;
+
+    @Override
+    public PostList call(){
+       return getlist();
     }
 }
