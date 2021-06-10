@@ -37,6 +37,6 @@ public class TwitterPost extends Post{
                 ", url='" + url + '\'' +
                 ", publishedTime=" + publishedTime +
                 ", media=" + media +
-                '}'+"\n";
+                '}';
     }
 }
