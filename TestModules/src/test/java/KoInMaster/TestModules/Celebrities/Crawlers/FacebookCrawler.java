@@ -22,25 +22,26 @@ public class FacebookCrawler extends Crawler {
     private  final String url;
     private Document doc;
     private Elements postItems;
-    public FacebookCrawler(String name,String URL) throws InterruptedException{
+    public FacebookCrawler(String name,String URL) {
         super(name);
         this.url=URL;
+
+    }
+    public  PostList getList()throws InterruptedException{
         ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.addArguments("-headless");
         System.setProperty("webdriver.chrome.driver", Paths.get("chromedriver.exe").toAbsolutePath().toString());
         WebDriver browser =new ChromeDriver(chromeOptions);
         browser.get(url);
-        for(int i=0;i<2;i++) {
+        for(int i=0;i<3;i++) {
             Thread.sleep(1000);
             ((JavascriptExecutor) browser).executeScript("window.scrollTo(0,document.body.scrollHeight)");
         }
         browser.findElement(By.id("expanding_cta_close_button")).click();
-        Thread.sleep(1000);
+        //Thread.sleep(500);
         doc = Jsoup.parse(browser.getPageSource());
         postItems =doc.getElementsByClass("_1dwg _1w_m _q7o");
         browser.close();
-    }
-    public  PostList getList(){
         PostList list = new PostList();
         for(Element postItem : postItems){
             List<String> mediaTemp=new ArrayList<>();
@@ -58,7 +59,7 @@ public class FacebookCrawler extends Crawler {
             Date date=new Date(Integer.valueOf(time.attr("data-utime")));
             String URL="https://www.facebook.com/"+postHref.attr("href");
             URL=URL.replaceAll("\\?.*","");
-            Post temp=new FbPost(URL,mediaTemp,date,content.text());
+            Post temp=new FbPost(name,URL,mediaTemp,date,content.text());
             list.add(temp);
 
         }
@@ -66,5 +67,5 @@ public class FacebookCrawler extends Crawler {
     }
 
     @Override
-    public PostList call(){ return getList(); }
+    public PostList call()throws InterruptedException{ return getList(); }
 }

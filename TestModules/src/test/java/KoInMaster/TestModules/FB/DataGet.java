@@ -61,8 +61,8 @@ public class DataGet {
             Date date=new Date(Integer.valueOf(time.attr("data-utime")));
             String URL="https://www.facebook.com/"+posthref.attr("href");
             URL=URL.replaceAll("\\?.*","");
-            FbPost temp=new FbPost(URL,mediaTemp,date,content.text());
-            totalPost.add(temp);
+           // FbPost temp=new FbPost(name,URL,mediaTemp,date,content.text());
+           // totalPost.add(temp);
 
         }
 
