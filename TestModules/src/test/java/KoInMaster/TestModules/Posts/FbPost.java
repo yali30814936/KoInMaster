@@ -18,6 +18,7 @@ public class FbPost extends Post{
     @Override
     public String toString() {
         return "FacebookPost{" +
+                "name=" + name + '\'' +
                 "text='" + text +
                 ", url='" + url + '\'' +
                 ", media=" + media +

@@ -31,6 +31,7 @@ public class TwitterPost extends Post{
     @Override
     public String toString() {
         return "TwitterPost{" +
+                "name=" + name + '\'' +
                 "user='" + user+'\''+
                 "text='" + text + '\'' +
                 ", type='" + type + '\'' +
