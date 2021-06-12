@@ -28,19 +28,27 @@ public class FacebookCrawler extends Crawler {
 
     }
     public  PostList getList()throws InterruptedException{
+        long t1 = System.currentTimeMillis();
+//        System.out.println("ready to launch");
         ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.addArguments("-headless");
         System.setProperty("webdriver.chrome.driver", Paths.get("chromedriver.exe").toAbsolutePath().toString());
         WebDriver browser =new ChromeDriver(chromeOptions);
+
+        long t2 = System.currentTimeMillis();
+//        System.out.println("ready to get: " + (t2 - t1));
         browser.get(url);
         for(int i=0;i<3;i++) {
-            Thread.sleep(1000);
+            Thread.sleep(1500);
             ((JavascriptExecutor) browser).executeScript("window.scrollTo(0,document.body.scrollHeight)");
         }
         browser.findElement(By.id("expanding_cta_close_button")).click();
         //Thread.sleep(500);
         doc = Jsoup.parse(browser.getPageSource());
         postItems =doc.getElementsByClass("_1dwg _1w_m _q7o");
+
+        long t3 = System.currentTimeMillis();
+//        System.out.println("ready to parse: " + (t3 - t2));
         browser.close();
         PostList list = new PostList();
         for(Element postItem : postItems){
@@ -63,6 +71,8 @@ public class FacebookCrawler extends Crawler {
             list.add(temp);
 
         }
+
+//        System.out.println("Complete: " + (System.currentTimeMillis() - t3));
         return list;
     }
 

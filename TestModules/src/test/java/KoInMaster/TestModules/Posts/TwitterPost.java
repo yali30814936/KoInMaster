@@ -4,7 +4,8 @@ import twitter4j.Status;
 import java.util.ArrayList;
 public class TwitterPost extends Post{
     private String user;
-    public TwitterPost(Status status){
+    public TwitterPost(String name, Status status){
+        super.name = name;
         user=status.getUser().getScreenName();
         text=status.getText();
         String str=text;

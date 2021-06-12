@@ -1,7 +1,7 @@
 package KoInMaster.TestModules.Celebrities;
 
 import KoInMaster.TestModules.Celebrities.Crawlers.Crawler;
-import KoInMaster.TestModules.Celebrities.Crawlers.YoutubeCrawler;
+import KoInMaster.TestModules.Celebrities.Crawlers.FacebookCrawler;
 import KoInMaster.TestModules.Posts.Post;
 import KoInMaster.TestModules.Posts.PostList;
 import KoInMaster.TestModules.Posts.PostSort;
@@ -25,15 +25,24 @@ public class CelebrityTest {
 
 		time2 = System.currentTimeMillis();
 		System.out.println("creating celebrities: " + (time2 - time1));
-		Celebrity tmp = new Celebrity("Hololiveに肝を捧げよう");
+
+		Celebrity tmp = new Celebrity("桐生ココ");
 		List<Post> posts = new ArrayList<>();
-		tmp.getCrawlers().add(new YoutubeCrawler(tmp.getName(), "UCLB9LPemPH4fb8Nci1cDzBg"));
+//		tmp.getCrawlers().add(new YoutubeCrawler(tmp.getName(), "UCS9uQI-jC3DE0L4IpXyvr6w"));
+//		tmp.getCrawlers().add(new TwitterCrawler(tmp.getName(), "kiryucoco"));
+		tmp.getCrawlers().add(new FacebookCrawler("百日後會爆肝的工程鹿-仮-", "https://www.facebook.com/KirinDD"));
 		celebrities.add(tmp);
-		tmp = new Celebrity("hololive 露西婭監視中");
-		tmp.getCrawlers().add(new YoutubeCrawler(tmp.getName(), "UCXR8XqwKWHSFQ26ec9-4NUA"));
+
+		tmp = new Celebrity("角巻わため");
+//		tmp.getCrawlers().add(new YoutubeCrawler(tmp.getName(), "UCqm3BQLlJfvkTsX_hvm0UmA"));
+//		tmp.getCrawlers().add(new TwitterCrawler(tmp.getName(), "tsunomakiwatame"));
+		tmp.getCrawlers().add(new FacebookCrawler("日日好車", "https://www.facebook.com/goodfapeveryday"));
 		celebrities.add(tmp);
-		tmp = new Celebrity("山寨猫 Copy Cat");
-		tmp.getCrawlers().add(new YoutubeCrawler(tmp.getName(), "UCCd5UjY31hqHjo2pE_Q3Y2g"));
+
+		tmp = new Celebrity("白上フブキ");
+//		tmp.getCrawlers().add(new YoutubeCrawler(tmp.getName(), "UCdn5BQ06XqgXoAxIhbqw5Rg"));
+//		tmp.getCrawlers().add(new TwitterCrawler(tmp.getName(), "shirakamifubuki"));
+		tmp.getCrawlers().add(new FacebookCrawler("Vtuber project", "https://www.facebook.com/Vtbproject"));
 		celebrities.add(tmp);
 		ExecutorService getPost = Executors.newCachedThreadPool();
 		List<FutureTask<PostList>> tasks = new ArrayList<>();
