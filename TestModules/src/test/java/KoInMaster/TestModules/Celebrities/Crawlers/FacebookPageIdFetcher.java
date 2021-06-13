@@ -33,8 +33,4 @@ public class FacebookPageIdFetcher {
 		else
 			return "";
 	}
-
-	public static void main(String[] args) throws URISyntaxException, IOException {
-		System.out.println(getPageId("https://www.facebook.com/Vtbproject/"));
-	}
 }
