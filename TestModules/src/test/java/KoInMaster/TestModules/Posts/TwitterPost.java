@@ -6,6 +6,7 @@ public class TwitterPost extends Post{
     private String user;
     public TwitterPost(String name, Status status){
         super.name = name;
+        platform = PLATFORM.TWITTER;
         user=status.getUser().getScreenName();
         text=status.getText();
         String str=text;
@@ -13,12 +14,12 @@ public class TwitterPost extends Post{
         str=text;
         text=str.replaceAll(" https://.*","");
         if(status.isRetweet()){
-            type="Twitter-RT";
+            type=TYPE.RT;
         }
         else{
-            type="Twitter-T";
+            type=TYPE.NONE;
         }
-        if(type.equals("Twitter-RT")){
+        if(type == TYPE.RT){
             user=status.getRetweetedStatus().getUser().getScreenName();
         }
         text=text.replaceAll("@.*: ","");

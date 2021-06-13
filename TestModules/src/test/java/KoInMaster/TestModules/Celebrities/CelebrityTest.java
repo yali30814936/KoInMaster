@@ -1,7 +1,8 @@
 package KoInMaster.TestModules.Celebrities;
 
 import KoInMaster.TestModules.Celebrities.Crawlers.Crawler;
-import KoInMaster.TestModules.Celebrities.Crawlers.FacebookCrawler;
+import KoInMaster.TestModules.Celebrities.Crawlers.YoutubeCrawler;
+import KoInMaster.TestModules.Posts.PLATFORM;
 import KoInMaster.TestModules.Posts.Post;
 import KoInMaster.TestModules.Posts.PostList;
 import KoInMaster.TestModules.Posts.PostSort;
@@ -28,26 +29,26 @@ public class CelebrityTest {
 
 		Celebrity tmp = new Celebrity("桐生ココ");
 		List<Post> posts = new ArrayList<>();
-//		tmp.getCrawlers().add(new YoutubeCrawler(tmp.getName(), "UCS9uQI-jC3DE0L4IpXyvr6w"));
+		tmp.getCrawlers().put(PLATFORM.YOUTUBE, new YoutubeCrawler(tmp.getName(), "UCS9uQI-jC3DE0L4IpXyvr6w"));
 //		tmp.getCrawlers().add(new TwitterCrawler(tmp.getName(), "kiryucoco"));
-		tmp.getCrawlers().add(new FacebookCrawler("百日後會爆肝的工程鹿-仮-", "https://www.facebook.com/KirinDD"));
+//		tmp.getCrawlers().add(new FacebookCrawler("百日後會爆肝的工程鹿-仮-", "https://www.facebook.com/KirinDD"));
 		celebrities.add(tmp);
 
 		tmp = new Celebrity("角巻わため");
-//		tmp.getCrawlers().add(new YoutubeCrawler(tmp.getName(), "UCqm3BQLlJfvkTsX_hvm0UmA"));
+		tmp.getCrawlers().put(PLATFORM.YOUTUBE, new YoutubeCrawler(tmp.getName(), "UCqm3BQLlJfvkTsX_hvm0UmA"));
 //		tmp.getCrawlers().add(new TwitterCrawler(tmp.getName(), "tsunomakiwatame"));
-		tmp.getCrawlers().add(new FacebookCrawler("日日好車", "https://www.facebook.com/goodfapeveryday"));
+//		tmp.getCrawlers().add(new FacebookCrawler("日日好車", "https://www.facebook.com/goodfapeveryday"));
 		celebrities.add(tmp);
 
 		tmp = new Celebrity("白上フブキ");
-//		tmp.getCrawlers().add(new YoutubeCrawler(tmp.getName(), "UCdn5BQ06XqgXoAxIhbqw5Rg"));
+		tmp.getCrawlers().put(PLATFORM.YOUTUBE, new YoutubeCrawler(tmp.getName(), "UCdn5BQ06XqgXoAxIhbqw5Rg"));
 //		tmp.getCrawlers().add(new TwitterCrawler(tmp.getName(), "shirakamifubuki"));
-		tmp.getCrawlers().add(new FacebookCrawler("Vtuber project", "https://www.facebook.com/Vtbproject"));
+//		tmp.getCrawlers().add(new FacebookCrawler("Vtuber project", "https://www.facebook.com/Vtbproject"));
 		celebrities.add(tmp);
 		ExecutorService getPost = Executors.newCachedThreadPool();
 		List<FutureTask<PostList>> tasks = new ArrayList<>();
 		for (Celebrity c:celebrities)
-			for (Crawler crawl:c.getCrawlers())
+			for (Crawler crawl:c.getCrawlers().values())
 				tasks.add(new FutureTask<>(crawl));
 
 		time3 = System.currentTimeMillis();

@@ -14,10 +14,16 @@ public class YoutubePost extends Post{
 
 	public YoutubePost(String name, SearchResult video) {
 		super.name = name;
+		super.platform = PLATFORM.YOUTUBE;
 		SearchResultSnippet snippet = video.getSnippet();
 		// use text as video title.
 		text = snippet.getTitle();
-		type = "youtube-" + snippet.getLiveBroadcastContent();
+		if (snippet.getLiveBroadcastContent().equals("live"))
+			type = TYPE.LIVE;
+		else if (snippet.getLiveBroadcastContent().equals("upcoming"))
+			type = TYPE.UPCOMING;
+		else
+			type = TYPE.NONE;
 		url = urlHead + video.getId().getVideoId();
 		publishedTime = new Date(snippet.getPublishedAt().getValue());
 		media = new ArrayList<>();

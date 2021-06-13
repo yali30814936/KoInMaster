@@ -5,8 +5,8 @@ import java.util.List;
 public abstract class Post {
 	protected String name;
 	protected String text;
-	// type format: "platform-type". ex:youtube-live
-	protected String type;
+	protected PLATFORM platform;
+	protected TYPE type;
 	protected String url;
 	protected Date publishedTime;
 	protected List<String> media;
@@ -17,11 +17,11 @@ public abstract class Post {
 		return text;
 	}
 
-	public void setType(String type) {
+	public void setType(TYPE type) {
 		this.type = type;
 	}
 
-	public String getType() {
+	public TYPE getType() {
 		return type;
 	}
 

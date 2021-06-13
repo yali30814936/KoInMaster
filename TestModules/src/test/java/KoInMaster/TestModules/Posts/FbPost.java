@@ -15,6 +15,8 @@ public class FbPost extends Post{
         media=MEDIA;
         publishedTime=TIME;
         text=TEXT;
+        platform = PLATFORM.FACEBOOK;
+        type = TYPE.NONE;
     }
 
     @Override
