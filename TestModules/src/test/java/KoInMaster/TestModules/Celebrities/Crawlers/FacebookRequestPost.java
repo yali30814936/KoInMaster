@@ -26,7 +26,7 @@ public class FacebookRequestPost {
 					.addParameter("page_id", pageId)
 					.addParameter("cursor", "{\"card_id\":\"videos\",\"has_next_page\":true}")
 					.addParameter("unit_count", "10")
-					.build();
+				.build();
 		request = new HttpGet(uri);
 	}
 
