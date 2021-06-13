@@ -56,7 +56,7 @@ public class FacebookCrawler extends Crawler {
             for(Element image2 :images2){
                 mediaTemp.add(image2.attr("src"));
             }
-            Date date=new Date(Integer.valueOf(time.attr("data-utime")));
+            Date date=new Date(Long.valueOf(time.attr("data-utime"))*1000);
             String URL="https://www.facebook.com/"+postHref.attr("href");
             URL=URL.replaceAll("\\?.*","");
             Post temp=new FbPost(name,URL,mediaTemp,date,content.text());
