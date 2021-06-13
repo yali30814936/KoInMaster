@@ -9,9 +9,7 @@ public class FacebookCrawler extends Crawler {
     private final FacebookRequestPosts requestPosts;
     public FacebookCrawler(String name,String URL) throws URISyntaxException, IOException {
       super(name);
-      long tmp = System.currentTimeMillis();
       requestPosts=new FacebookRequestPosts(FacebookPageIdFetcher.getPageId(URL));
-      System.out.println(System.currentTimeMillis() - tmp);
     }
 
     public  PostList getList() throws IOException, InterruptedException {
