@@ -50,5 +50,6 @@ public class FacebookCrawlerV3 {
 
 	public static void main(String[] args) throws IOException, URISyntaxException {
 		FacebookCrawlerV3 v3 = new FacebookCrawlerV3("1421110321440678");
+		System.out.println(v3.getResponse());
 	}
 }
