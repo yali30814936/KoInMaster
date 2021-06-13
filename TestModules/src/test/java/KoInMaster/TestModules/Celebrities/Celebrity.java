@@ -1,20 +1,17 @@
 package KoInMaster.TestModules.Celebrities;
 
-import KoInMaster.TestModules.Celebrities.Crawlers.Crawler;
-
-import java.util.ArrayList;
-import java.util.List;
+import KoInMaster.TestModules.Celebrities.Crawlers.Crawlers;
 
 public class Celebrity {
 	private String name;
-	private List<Crawler> crawlers;
+	private Crawlers crawlers;
 
 	public Celebrity(String name) {
 		this.name = name;
-		crawlers = new ArrayList<>();
+		crawlers = new Crawlers();
 	}
 
-	public List<Crawler> getCrawlers() {return crawlers;}
+	public Crawlers getCrawlers() {return crawlers;}
 
 	public void setName(String name) {this.name = name;}
 

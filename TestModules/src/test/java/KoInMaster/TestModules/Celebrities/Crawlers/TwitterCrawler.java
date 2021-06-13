@@ -26,7 +26,7 @@ public class TwitterCrawler extends Crawler{
         try {
             List<Status> statuses = twitter.getUserTimeline(searchname);
             for (Status status : statuses) {
-                list.add(new TwitterPost(status));
+                list.add(new TwitterPost(name, status));
             }
             return list;
         } catch (TwitterException te) {
