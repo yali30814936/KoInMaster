@@ -1,6 +1,5 @@
 package KoInMaster.TestModules.Celebrities.Crawlers;
 
-import org.apache.commons.text.StringEscapeUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -26,7 +25,7 @@ public class FacebookPageIdFetcher {
 		EntityUtils.consume(entity);
 
 		Matcher matcher = Pattern.compile("page_id=(?<id>\\d*)")
-		                         .matcher(StringEscapeUtils.unescapeJava(body));
+		                         .matcher(body);
 
 		response.close();
 		if (matcher.find())
