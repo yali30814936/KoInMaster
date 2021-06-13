@@ -28,7 +28,6 @@ public class FacebookRequestPost {
 					.addParameter("unit_count", "10")
 					.build();
 		request = new HttpGet(uri);
-
 	}
 
 	public String getResponse() throws IOException {
