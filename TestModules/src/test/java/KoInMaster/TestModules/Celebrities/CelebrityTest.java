@@ -2,7 +2,6 @@ package KoInMaster.TestModules.Celebrities;
 
 import KoInMaster.TestModules.Celebrities.Crawlers.Crawler;
 import KoInMaster.TestModules.Celebrities.Crawlers.FacebookCrawler;
-import KoInMaster.TestModules.Posts.PLATFORM;
 import KoInMaster.TestModules.Posts.Post;
 import KoInMaster.TestModules.Posts.PostList;
 import KoInMaster.TestModules.Posts.PostSort;
@@ -30,7 +29,7 @@ public class CelebrityTest {
 
 		Celebrity tmp = new Celebrity("桐生ココ");
 		List<Post> posts = new ArrayList<>();
-		tmp.getCrawlers().put(PLATFORM.FACEBOOK, new FacebookCrawler("工程鹿", "https://www.facebook.com/KirinDD"));
+		tmp.getCrawlers().put("FB", new FacebookCrawler("工程鹿", "https://www.facebook.com/KirinDD"));
 //		tmp.getCrawlers().put(PLATFORM.YOUTUBE, new YoutubeCrawler(tmp.getName(), "UCS9uQI-jC3DE0L4IpXyvr6w"));
 //		tmp.getCrawlers().add(new TwitterCrawler(tmp.getName(), "kiryucoco"));
 //		tmp.getCrawlers().add(new FacebookCrawler("百日後會爆肝的工程鹿-仮-", "https://www.facebook.com/KirinDD"));
