@@ -11,11 +11,10 @@ public class Blocktest {
         JFrame frame = new JFrame();
         Tweets = new TwitterCrawler("usadapekora","usadapekora");
         PostList list = Tweets.call();
-        JPanel panel = new JPanel();
-        panel.add(new Block(list.get(0)));
-        FilterGUI filter = new FilterGUI();
-        frame.add(filter);
-        frame.setSize(800, 600);
+        Block bpanel = new Block(list.get(12));
+        JScrollPane scrollPane = new JScrollPane(bpanel);
+        frame.add(scrollPane);
+        frame.setSize(1000, 1000);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
     }

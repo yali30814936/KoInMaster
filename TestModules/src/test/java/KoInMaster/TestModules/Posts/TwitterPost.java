@@ -13,6 +13,8 @@ public class TwitterPost extends Post{
         text=str.replaceAll("RT ","");
         str=text;
         text=str.replaceAll(" https://.*","");
+        text=str.replaceAll("\n","<br>");
+        text="<html>"+text+"</html>";
         if(status.isRetweet()){
             type=TYPE.RT;
         }
