@@ -35,6 +35,7 @@ public class FacebookJsoup {
             Elements images2=postItem.getElementsByClass("scaledImageFitHeight img");
             Elements postHref=postItem.getElementsByClass("_5pcq");
             Elements time=postItem.getElementsByClass("_5ptz");
+            Elements subPostItems=postItem.getElementsByClass("mtm _5pcm");
             for(Element image :images){
                 mediaTemp.add(image.attr("src"));
             }
@@ -42,19 +43,55 @@ public class FacebookJsoup {
                 mediaTemp.add(image2.attr("src"));
             }
             finalText=content.html();
+            finalText=finalText.replaceAll("<a .*?>","");
+            finalText=finalText.replaceAll("</a>","");
+            finalText=finalText.replaceAll("<span .*?>","");
             finalText=finalText.replaceAll("<br>","\n");
-            finalText=finalText.replaceAll("</span.*>","");
             finalText=finalText.replaceAll("<p>","");
             finalText=finalText.replaceAll("</p>","\n");
-            finalText=finalText.replaceAll("</div.*>","");
-            finalText=finalText.replaceAll("<div.*>","");
-            finalText=finalText.replaceAll("<span.*>","");
+            finalText=finalText.replaceAll("</div>","");
+            finalText=finalText.replaceAll("<div.*?>","");
+            finalText=finalText.replaceAll("</span>","");
+            finalText=finalText.replaceAll("查看更多","");
+            finalText=finalText.replaceAll("⋯⋯","");
             Date date=new Date(Long.valueOf(time.attr("data-utime"))*1000);
             String URL="https://www.facebook.com/"+postHref.attr("href");
             URL=URL.replaceAll("\\?.*","");
-            Post temp=new FbPost(name,URL,mediaTemp,date,finalText);
+            FbPost temp=new FbPost(name,URL,mediaTemp,date,finalText,!subPostItems.isEmpty());
+            if(!subPostItems.isEmpty()){
+                Post tempSubpost= getsubpost(subPostItems);
+                temp.setSubPost(tempSubpost);
+            }
             list.add(temp);
         }
         return list;
+    }
+    public Post getsubpost(Elements subPostItems){
+        Post temp=new FbPost("1","1",new ArrayList<>(),new Date(),"1",false);
+            for(Element subPostItem:subPostItems){
+                Elements content= subPostItem.getElementsByClass("mtm _5pco");
+                Elements time=subPostItem.getElementsByClass("_5ptz");
+                Elements subName =subPostItem.getElementsByClass("fwb");
+                Elements postHref=subPostItem.getElementsByClass("_5pcq");
+                Date date=new Date(Long.valueOf(time.attr("data-utime"))*1000);
+                String finalText;
+                List<String> mediaTemp=new ArrayList<>();
+                String URL="https://www.facebook.com/"+postHref.attr("href");
+                finalText=content.html();
+                finalText=finalText.replaceAll("<a .*?>","");
+                finalText=finalText.replaceAll("</a>","");
+                finalText=finalText.replaceAll("<span .*?>","");
+                finalText=finalText.replaceAll("<br>","\n");
+                finalText=finalText.replaceAll("<p>","");
+                finalText=finalText.replaceAll("</p>","\n");
+                finalText=finalText.replaceAll("</div>","");
+                finalText=finalText.replaceAll("<div.*?>","");
+                finalText=finalText.replaceAll("</span>","");
+                finalText=finalText.replaceAll("查看更多","");
+                finalText=finalText.replaceAll("⋯⋯","");
+                temp=new FbPost(subName.text(),URL,mediaTemp,date,finalText,false);
+
+            }
+        return  temp;
     }
 }

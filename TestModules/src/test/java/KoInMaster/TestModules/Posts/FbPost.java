@@ -8,8 +8,9 @@ public class FbPost extends Post{
     //private Date publishedTime;
     private String text;
     private String name;
-
-    public FbPost(String Name,String URL,List<String> MEDIA,Date TIME,String TEXT){
+    private Post subPost;
+    private Boolean hasSubPost;
+    public FbPost(String Name,String URL,List<String> MEDIA,Date TIME,String TEXT,boolean hasSubPost){
         name=Name;
         url=URL;
         media=MEDIA;
@@ -17,16 +18,35 @@ public class FbPost extends Post{
         text=TEXT;
         platform = PLATFORM.FACEBOOK;
         type = TYPE.NONE;
+        this.hasSubPost=hasSubPost;
     }
-
+    public void  setSubPost(Post subPost){
+        this.subPost=subPost;
+    }
+    public Boolean getHasSubPost(){
+        return hasSubPost;
+    }
     @Override
     public String toString() {
-        return "FacebookPost{" +
-                "name=" + name + '\'' +
-                "text='" + text +
-                ", url='" + url + '\'' +
-                ", media=" + media +
-                ", publishedTime=" + publishedTime
-                ;
+        if(getHasSubPost()){
+            return "FacebookPost{" +
+                    "name=" + name + '\'' +
+                    "text='" + text +
+                    ", url='" + url + '\'' +
+                    ", media=" + media +
+                    ", publishedTime=" + publishedTime +
+                    "subPost" +  subPost.toString();
+        }
+        else{
+            return "FacebookPost{" +
+                    "name=" + name + '\'' +
+                    "text='" + text +
+                    ", url='" + url + '\'' +
+                    ", media=" + media +
+                    ", publishedTime=" + publishedTime
+                    ;
+        }
+
     }
+
 }
