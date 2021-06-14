@@ -1,5 +1,6 @@
 package KoInMaster.TestModules.Celebrities.Crawlers;
 
+import KoInMaster.TestModules.Posts.PLATFORM;
 import KoInMaster.TestModules.Posts.PostList;
 import KoInMaster.TestModules.Posts.YoutubePost;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
@@ -18,25 +19,20 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class YoutubeCrawler extends Crawler{
-	private final String platform;
-	private final String url;
 	private final String apiKey;
-	private final String channelId;
 	private final YouTube.Search.List request;
 
 	public YoutubeCrawler(String name, String URL) throws IOException, GeneralSecurityException {
-		super(name);
-		platform = "youtube";
+		super(name, PLATFORM.YOUTUBE);
 
 		// extract channel id from URL
-		url = URL.replaceAll("\\?.*", "");
-
 		Matcher matcher = Pattern.compile("((https?://)?www.youtube.com/(channel|c)/)?(?<ID>[^?]*)\\??")
 		                         .matcher(URL);
 		if (matcher.find())
-			channelId = matcher.group("ID");
+			param = matcher.group("ID");
 		else
-			channelId = "error"; //待處理，還沒想好
+			// TODO
+			param = "error"; //待處理，還沒想好
 
 		// to load api key from properties file
 		Properties props = new Properties();
@@ -61,7 +57,6 @@ public class YoutubeCrawler extends Crawler{
 				                             .setEventType("live")
 				                             .setEventType("upcoming")
 				                             .setEventType("none")
-				                             .setMaxResults(10L)
 		                                     .setType(Collections.singletonList("video"))
 		                                     .execute();
 		for (SearchResult s:response.getItems())
@@ -69,16 +64,17 @@ public class YoutubeCrawler extends Crawler{
 		return list;
 	}
 
-	public String getPlatform() {
-		return platform;
-	}
-
-	public String getUrl() {
-		return url;
+	@Override
+	public PostList call() throws Exception {
+		return searchChannel(param);
 	}
 
 	@Override
-	public PostList call() throws Exception {
-		return searchChannel(channelId);
+	public String toString() {
+		return "YoutubeCrawler{" +
+				"name='" + name + '\'' +
+				", platform=" + platform +
+				", channelId='" + param + '\'' +
+				'}';
 	}
 }
