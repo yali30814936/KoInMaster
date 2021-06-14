@@ -5,6 +5,8 @@ import java.util.List;
 public abstract class Post {
 	protected String name;
 	protected String text;
+
+
 	protected PLATFORM platform;
 	protected TYPE type;
 	protected String url;
@@ -17,9 +19,9 @@ public abstract class Post {
 		return text;
 	}
 
-	public void setType(TYPE type) {
-		this.type = type;
-	}
+	public void setType(TYPE type) { this.type = type; }
+
+	public PLATFORM getPlatform() { return platform; }
 
 	public TYPE getType() {
 		return type;

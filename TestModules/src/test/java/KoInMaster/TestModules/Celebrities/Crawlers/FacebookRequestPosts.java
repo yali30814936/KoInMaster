@@ -46,9 +46,4 @@ public class FacebookRequestPosts {
 		else
 			return "";
 	}
-
-	public static void main(String[] args) throws IOException, URISyntaxException {
-		FacebookRequestPosts v3 = new FacebookRequestPosts("1421110321440678");
-		System.out.println(v3.getResponse());
-	}
 }
