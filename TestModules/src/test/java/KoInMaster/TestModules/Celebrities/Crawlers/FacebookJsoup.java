@@ -28,6 +28,7 @@ public class FacebookJsoup {
 
         PostList list = new PostList();
         for(Element postItem : postItems){
+            String finalText;
             List<String> mediaTemp=new ArrayList<>();
             Elements content=postItem.getElementsByClass("_5pbx userContent _3576");
             Elements images=postItem.getElementsByClass("scaledImageFitWidth img");
@@ -40,12 +41,19 @@ public class FacebookJsoup {
             for(Element image2 :images2){
                 mediaTemp.add(image2.attr("src"));
             }
+            finalText=content.html();
+            finalText=finalText.replaceAll("<br>","\n");
+            finalText=finalText.replaceAll("</span.*>","");
+            finalText=finalText.replaceAll("<p>","");
+            finalText=finalText.replaceAll("</p>","\n");
+            finalText=finalText.replaceAll("</div.*>","");
+            finalText=finalText.replaceAll("<div.*>","");
+            finalText=finalText.replaceAll("<span.*>","");
             Date date=new Date(Long.valueOf(time.attr("data-utime"))*1000);
             String URL="https://www.facebook.com/"+postHref.attr("href");
             URL=URL.replaceAll("\\?.*","");
-            Post temp=new FbPost(name,URL,mediaTemp,date,content.text());
+            Post temp=new FbPost(name,URL,mediaTemp,date,finalText);
             list.add(temp);
-
         }
         return list;
     }
