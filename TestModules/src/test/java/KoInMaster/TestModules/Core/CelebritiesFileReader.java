@@ -31,7 +31,7 @@ public class CelebritiesFileReader {
 		while (input.hasNextLine()) {
 			// 模組儲存格式：
 			// 模組名稱 爬蟲器名稱:平台:id,... 過濾器路徑, 管理面板路徑...
-			Matcher matcher = Pattern.compile("\"(?<nm>.*)\" \\{(?<cs>.*)\\} \\[(?<fp>.*)\\] '(?<mp>.*)'").matcher(input.nextLine());
+			Matcher matcher = Pattern.compile("\"(?<nm>.*)\" \\{(?<cs>.*)\\} '(?<pth>.*)'").matcher(input.nextLine());
 
 			if (!matcher.find()) continue;
 
@@ -49,13 +49,8 @@ public class CelebritiesFileReader {
 				                                    bufferArray2[2]));
 			}
 
-			// filter paths
-			bufferArray = matcher.group("fp").split(",");
-			for (String path:bufferArray)
-				tmp.getFilterPaths().add(path);
-
-			// manage path
-			tmp.setManagePath(matcher.group("mp"));
+			// path
+			tmp.setPath(matcher.group("pth"));
 
 			list.add(tmp);
 		}

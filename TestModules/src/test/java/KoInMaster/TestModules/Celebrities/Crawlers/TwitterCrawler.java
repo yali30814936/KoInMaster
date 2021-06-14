@@ -11,15 +11,15 @@ public class TwitterCrawler extends Crawler{
     private Twitter twitter;
     public TwitterCrawler(String name,String searchId) {
         super(name, PLATFORM.TWITTER);
-        param = searchId;
-        try {
-            twitter = new TwitterFactory().getInstance();
-            User user = twitter.verifyCredentials();
-        } catch (TwitterException te) {
-            te.printStackTrace();
-            System.out.println("Failed to get Tweets: " + te.getMessage());
-            System.exit(-1);
-        }
+//        param = searchId;
+//        try {
+//            twitter = new TwitterFactory().getInstance();
+//            User user = twitter.verifyCredentials();
+//        } catch (TwitterException te) {
+//            te.printStackTrace();
+//            System.out.println("Failed to get Tweets: " + te.getMessage());
+//            System.exit(-1);
+//        }
     }
     public PostList searchTweets(String searchName) {
         PostList list = new PostList();
