@@ -13,7 +13,7 @@ public class Blocktest {
         PostList list = Tweets.call();
         JPanel panel = new JPanel();
         panel.add(new Block(list.get(0)));
-        Filter filter = new Filter(panel);
+        Filter filter = new Filter();
         frame.add(filter);
         frame.setSize(800, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
