@@ -57,7 +57,6 @@ public class YoutubeCrawler extends Crawler{
 				                             .setEventType("live")
 				                             .setEventType("upcoming")
 				                             .setEventType("none")
-				                             .setMaxResults(10L)
 		                                     .setType(Collections.singletonList("video"))
 		                                     .execute();
 		for (SearchResult s:response.getItems())
