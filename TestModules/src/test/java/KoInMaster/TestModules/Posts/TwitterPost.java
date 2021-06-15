@@ -48,6 +48,9 @@ public class TwitterPost extends Post{
             media.add(me.getMediaURL());
         }
     }
+    public String getUser(){
+        return user;
+    }
     @Override
     public String toString() {
         return "TwitterPost{" +
