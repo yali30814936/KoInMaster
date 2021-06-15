@@ -7,20 +7,19 @@ import java.util.ArrayList;
 
 public class TwitterPost extends Post{
     private final String user;
+    private final Status status;
     public TwitterPost(String name, Status status){
         super.name = name;
         platform = PLATFORM.TWITTER;
         media=new ArrayList<>();
         text = status.getText();
-
-        // remove "RT @user" or "@user"
-        text = text.replaceAll("^RT ","");
-        text = text.replaceAll("^@.*? ","");
+        this.status = status;
 
         // retweet
         if(status.isRetweet()){
             type = TYPE.RT;
             user = status.getRetweetedStatus().getUser().getScreenName();
+            text = status.getRetweetedStatus().getText();
         }
         // reply
         else if (status.getInReplyToUserId() != -1) {
@@ -41,6 +40,10 @@ public class TwitterPost extends Post{
             user = status.getUser().getName();
         }
 
+        // remove "RT @user" or "@user"
+        text = text.replaceAll("^RT ","");
+        text = text.replaceAll("^@.*? ","");
+
         // html transform
         text = text.replaceAll("\n","<br>");
         text = "<html>"+text+"</html>";
@@ -54,6 +57,11 @@ public class TwitterPost extends Post{
     public String getUser(){
         return user;
     }
+
+    public Status getStatus() {
+        return status;
+    }
+
     @Override
     public String toString() {
         return "TwitterPost{" +
