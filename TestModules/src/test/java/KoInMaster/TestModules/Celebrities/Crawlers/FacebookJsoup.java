@@ -43,17 +43,20 @@ public class FacebookJsoup {
                 mediaTemp.add(image2.attr("src"));
             }
             finalText=content.html();
+            finalText="<html>"+finalText+"</html>";
+            finalText=finalText.replaceAll("⋯⋯","");
+            finalText=finalText.replaceAll("查看更多","");
             finalText=finalText.replaceAll("<a .*?>","");
             finalText=finalText.replaceAll("</a>","");
-            finalText=finalText.replaceAll("<span .*?>","");
-            finalText=finalText.replaceAll("<br>","\n");
-            finalText=finalText.replaceAll("<p>","");
-            finalText=finalText.replaceAll("</p>","\n");
-            finalText=finalText.replaceAll("</div>","");
-            finalText=finalText.replaceAll("<div.*?>","");
-            finalText=finalText.replaceAll("</span>","");
-            finalText=finalText.replaceAll("查看更多","");
-            finalText=finalText.replaceAll("⋯⋯","");
+            //finalText=finalText.replaceAll("<span .*?>","");
+           // finalText=finalText.replaceAll("<br>","\n");
+           // finalText=finalText.replaceAll("<p>","");
+           // finalText=finalText.replaceAll("</p>","\n");
+           // finalText=finalText.replaceAll("</div>","");
+           // finalText=finalText.replaceAll("<div.*?>","");
+           // finalText=finalText.replaceAll("</span>","");
+           // finalText=finalText.replaceAll("查看更多","");
+           // finalText=finalText.replaceAll("⋯⋯","");
             Date date=new Date(Long.valueOf(time.attr("data-utime"))*1000);
             String URL="https://www.facebook.com/"+postHref.attr("href");
             URL=URL.replaceAll("\\?.*","");
@@ -78,17 +81,17 @@ public class FacebookJsoup {
                 List<String> mediaTemp=new ArrayList<>();
                 String URL="https://www.facebook.com/"+postHref.attr("href");
                 finalText=content.html();
+                finalText=finalText.replaceAll("⋯⋯","");
+                finalText=finalText.replaceAll("查看更多","");
                 finalText=finalText.replaceAll("<a .*?>","");
                 finalText=finalText.replaceAll("</a>","");
-                finalText=finalText.replaceAll("<span .*?>","");
-                finalText=finalText.replaceAll("<br>","\n");
-                finalText=finalText.replaceAll("<p>","");
-                finalText=finalText.replaceAll("</p>","\n");
-                finalText=finalText.replaceAll("</div>","");
-                finalText=finalText.replaceAll("<div.*?>","");
-                finalText=finalText.replaceAll("</span>","");
-                finalText=finalText.replaceAll("查看更多","");
-                finalText=finalText.replaceAll("⋯⋯","");
+               // finalText=finalText.replaceAll("<span .*?>","");
+                //finalText=finalText.replaceAll("<br>","\n");
+               // finalText=finalText.replaceAll("<p>","");
+               // finalText=finalText.replaceAll("</p>","\n");
+               // finalText=finalText.replaceAll("</div>","");
+               // finalText=finalText.replaceAll("<div.*?>","");
+               // finalText=finalText.replaceAll("</span>","");
                 temp=new FbPost(subName.text(),URL,mediaTemp,date,finalText,false);
 
             }

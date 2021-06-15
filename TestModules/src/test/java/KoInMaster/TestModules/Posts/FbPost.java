@@ -3,11 +3,6 @@ package KoInMaster.TestModules.Posts;
 import java.util.List;
 import java.util.Date;
 public class FbPost extends Post{
-    private  String url;
-    private  List<String> media;
-    //private Date publishedTime;
-    private String text;
-    private String name;
     private Post subPost;
     private Boolean hasSubPost;
     public FbPost(String Name,String URL,List<String> MEDIA,Date TIME,String TEXT,boolean hasSubPost){
