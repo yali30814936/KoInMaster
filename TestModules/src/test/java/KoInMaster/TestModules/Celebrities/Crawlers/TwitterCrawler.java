@@ -8,18 +8,11 @@ import twitter4j.*;
 import java.util.List;
 
 public class TwitterCrawler extends Crawler{
-    private Twitter twitter;
+    private final Twitter twitter;
     public TwitterCrawler(String name,String searchId) {
         super(name, PLATFORM.TWITTER);
-//        param = searchId;
-//        try {
-//            twitter = new TwitterFactory().getInstance();
-//            User user = twitter.verifyCredentials();
-//        } catch (TwitterException te) {
-//            te.printStackTrace();
-//            System.out.println("Failed to get Tweets: " + te.getMessage());
-//            System.exit(-1);
-//        }
+        param = searchId;
+        twitter = new TwitterFactory().getInstance();
     }
     public PostList searchTweets(String searchName) {
         PostList list = new PostList();
@@ -37,7 +30,7 @@ public class TwitterCrawler extends Crawler{
     }
 
     @Override
-    public PostList call()throws Exception{
+    public PostList call() {
         return searchTweets(param);
     }
 

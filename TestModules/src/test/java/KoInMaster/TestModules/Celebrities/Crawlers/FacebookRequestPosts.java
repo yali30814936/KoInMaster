@@ -36,7 +36,7 @@ public class FacebookRequestPosts {
 		String body = EntityUtils.toString(entity, "Unicode");
 		EntityUtils.consume(entity);
 
-		Matcher matcher = Pattern.compile("\"__html\":\"(?<html>.*)\"}]],\"jsmods\":\\{\"")
+		Matcher matcher = Pattern.compile("\"__html\":\"(?<html>.*?)\"}")
 		                         .matcher(StringEscapeUtils.unescapeJava(body));
 
 		response.close();

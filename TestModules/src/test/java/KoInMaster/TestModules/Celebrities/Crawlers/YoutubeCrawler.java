@@ -49,7 +49,7 @@ public class YoutubeCrawler extends Crawler{
 		request = youTube.search().list(Collections.singletonList("snippet"));
 	}
 
-	public PostList searchChannel(String channelId) throws InterruptedException, IOException {
+	public PostList searchChannel(String channelId) throws IOException {
 		PostList list = new PostList();
 		SearchListResponse response = request.setKey(apiKey)
 		                                     .setChannelId(channelId)
