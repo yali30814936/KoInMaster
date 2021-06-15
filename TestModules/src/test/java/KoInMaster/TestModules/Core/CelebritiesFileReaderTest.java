@@ -20,8 +20,6 @@ public class CelebritiesFileReaderTest {
 		t2 = System.currentTimeMillis();
 		System.out.println("Read: " + (t2 - t1));
 
-//		System.out.println(celebrities);
-
 		PostList postList = CelebrityTest.getPosts(celebrities);
 
 		System.out.println("Finish crawling: " + (System.currentTimeMillis() - t2));

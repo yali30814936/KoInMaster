@@ -1,10 +1,10 @@
 package KoInMaster.TestModules.GUI;
 
 public class FilterNode {
-	String name;
+	private String name;
 
 
-	boolean enabled = false;
+	private boolean enabled = false;
 
 	// constructor
 	FilterNode(String nodeName) {
@@ -15,13 +15,15 @@ public class FilterNode {
 
 	public void setEnabled(boolean enabled) { this.enabled = enabled;}
 
+	public String getName(){ return name; }
+
 	// display label
 	@Override
 	public String toString() {
 		if (enabled)
-			return name;
+			return "<html><b>" + name + "</b></html>";
 		else
-			return "<font color='gray'>" + name + "</font>";
+			return "<html><font color='Gray'>" + name + "</font></html>";
 
 	}
 }

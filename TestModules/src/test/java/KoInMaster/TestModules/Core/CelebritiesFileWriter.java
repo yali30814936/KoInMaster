@@ -29,11 +29,10 @@ public class CelebritiesFileWriter {
 				                           entry.getValue().getPlatform(),
 				                           entry.getValue().getParam()
 				                           ));
-			output.format("\"%s\" {%s} [%s] '%s'%n",
+			output.format("\"%s\" {%s} '%s'%n",
 			              c.getName(),
 			              String.join(",", crawlers),
-			              String.join(",", c.getFilterPaths()),
-			              c.getManagePath());
+			              c.getPath());
 
 		}
 
