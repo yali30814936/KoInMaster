@@ -25,7 +25,10 @@ public class TwitterPost extends Post{
         // reply
         else if (status.getInReplyToUserId() != -1) {
             type = TYPE.REPLY;
-            user = status.getUserMentionEntities()[0].getName();
+            if (status.getUserMentionEntities().length > 0)
+                user = status.getUserMentionEntities()[0].getName();
+            else
+                user = "自己";
         }
         // quoted
         else if (status.getQuotedStatusId() != -1) {

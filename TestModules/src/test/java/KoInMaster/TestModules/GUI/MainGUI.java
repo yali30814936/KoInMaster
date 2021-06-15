@@ -1,42 +1,73 @@
 package KoInMaster.TestModules.GUI;
 
+import KoInMaster.TestModules.Celebrities.Celebrity;
+import KoInMaster.TestModules.Celebrities.Crawlers.Crawler;
+import KoInMaster.TestModules.Core.CrawlPosts;
+import KoInMaster.TestModules.Posts.PostList;
+
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Locale;
+import java.util.List;
+import java.util.concurrent.FutureTask;
 
 public class MainGUI extends JFrame {
-    private final JPanel leftPanel;
-    private final JPanel settingPanel;
-    private final JPanel rightPanel;
-    private final JButton systemSetting;
-    private final JButton reload;
-    private final JButton modSetting;
-    private final FilterPanel filterPanel;
+	private final FilterGUI filterGUI;
+	private List<Celebrity> celebrities;
+	private final JButton refreshButton;
 
-    public MainGUI(){
-        super("標題");
-        setLayout(new GridLayout(1,2));
-        leftPanel=new JPanel(new GridLayout(2, 1));
-        rightPanel=new JPanel();
-        filterPanel=new FilterPanel();
-        settingPanel=new JPanel(new GridLayout(2, 2,200,300));
-        systemSetting=new JButton("系統設定");
-        modSetting=new JButton("模組設定");
-        reload=new JButton("重新整理");
-        settingPanel.add(systemSetting);
-        settingPanel.add(reload);
-        settingPanel.add(modSetting);
-        leftPanel.add(settingPanel);
-        leftPanel.add(filterPanel);
-        add(leftPanel);
-        add(rightPanel);
-    }
+	public MainGUI() {
+		super("KoInMaster");
 
+		filterGUI = new FilterGUI();
+		add(filterGUI, BorderLayout.WEST);
 
+		// debug
+		refreshButton = new JButton("Get Posts");
+		refreshButton.addActionListener(new RefreshPostList());
+		add(refreshButton, BorderLayout.CENTER);
+		refreshButton.setEnabled(false);
+	}
+
+	/**
+	 * Call FilterGUI to reload the structure
+	 * @param list celebrity list
+	 */
+	public void loadFilter(List<Celebrity> list) {
+		filterGUI.loadTree(list);
+	}
+
+	public void setCelebrities(List<Celebrity> celebrities) {
+		this.celebrities = celebrities;
+		loadFilter(celebrities);
+	}
+
+	public void setRefreshEnabled(boolean enabled) { refreshButton.setEnabled(enabled);}
+
+	/**
+	 * Handle refresh event.
+	 * Call asynchronous class to crawl.
+	 */
+	private class RefreshPostList implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			List<String> celebritiesName = filterGUI.getList();
+			List<FutureTask<PostList>> tasks = new ArrayList<>();
+
+			refreshButton.setEnabled(false);
+
+			for (Celebrity cel:celebrities)
+				for (String key:celebritiesName)
+					if (cel.getName().equals(key)) {
+						for (Crawler cr:cel.getCrawlers().values())
+							tasks.add(new FutureTask<>(cr));
+						break;
+					}
+
+			CrawlPosts crawlPosts = new CrawlPosts(tasks, refreshButton);
+			crawlPosts.execute();
+		}
+	}
 }

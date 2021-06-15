@@ -1,24 +1,22 @@
 package KoInMaster.TestModules.GUI;
 
 import KoInMaster.TestModules.Celebrities.Celebrity;
-import KoInMaster.TestModules.Core.CelebritiesFileReader;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
-import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
+/**
+ * GUI of the filter, using JTree structure
+ */
 public class FilterGUI extends JScrollPane {
-	private JTree jTree;
-	private DefaultMutableTreeNode top;
+	private final JTree jTree;
+	private final DefaultMutableTreeNode top;
 
 	// constructor
 	public FilterGUI() {
@@ -32,8 +30,8 @@ public class FilterGUI extends JScrollPane {
 		setViewportView(jTree);
 	}
 
+	// reload the tree by giving the celebrity list
 	public void loadTree(List<Celebrity> celebrities) {
-		String path;
 		String[] buffer;
 		DefaultMutableTreeNode prev, leaf;
 
@@ -56,6 +54,12 @@ public class FilterGUI extends JScrollPane {
 		jTree.expandRow(0);
 	}
 
+	/**
+	 * Find children nodes in first layer with specific name.
+	 * @param node parent DefaultMutableTreeNode object to search
+	 * @param key name of the target child.
+	 * @return target DefaultMutableTreeNode child, null if not found.
+	 */
 	private DefaultMutableTreeNode find(DefaultMutableTreeNode node, String key) {
 		Enumeration<TreeNode> enumeration = node.children();
 		DefaultMutableTreeNode tmp;
@@ -83,11 +87,7 @@ public class FilterGUI extends JScrollPane {
 			if (node == null)
 				return;
 
-			// debug
-//			System.out.println("Selected " + node.getUserObject().toString());
-
-			FilterNode selected = (FilterNode) node.getUserObject();
-			boolean state = selected.isEnabled();
+			setNodeEnabled(node, !((FilterNode) node.getUserObject()).isEnabled());
 
 			parent = (DefaultMutableTreeNode) node.getParent();
 			while (parent != top) {
@@ -102,25 +102,26 @@ public class FilterGUI extends JScrollPane {
 				parent = (DefaultMutableTreeNode) parent.getParent();
 			}
 
-			toggleNode(node, !state);
-
 			repaint();
 		}
 	}
 
-	private void toggleNode(DefaultMutableTreeNode node, boolean enabled) {
+	// set all children's enabled
+	private void setNodeEnabled(DefaultMutableTreeNode node, boolean enabled) {
 		Enumeration<TreeNode> enumeration = node.children();
 		while (enumeration.hasMoreElements())
-			toggleNode((DefaultMutableTreeNode) enumeration.nextElement(), enabled);
+			setNodeEnabled((DefaultMutableTreeNode) enumeration.nextElement(), enabled);
 		((FilterNode) node.getUserObject()).setEnabled(enabled);
 	}
 
+	// return a list of selected celebrities
 	public List<String> getList() {
 		List<String> list = new ArrayList<>();
 		checkLeaves(top, list);
 		return list;
 	}
 
+	// check every leaves recursively
 	private void checkLeaves(DefaultMutableTreeNode node, List<String> list) {
 		if (node.getChildCount() == 0 && ((FilterNode) node.getUserObject()).isEnabled())
 			list.add(((FilterNode) node.getUserObject()).getName());
@@ -129,18 +130,5 @@ public class FilterGUI extends JScrollPane {
 			while (enumeration.hasMoreElements())
 				checkLeaves((DefaultMutableTreeNode) enumeration.nextElement(), list);
 		}
-	}
-
-	// test use main
-	public static void main(String[] args) throws GeneralSecurityException, IOException, URISyntaxException {
-		JLabel label = new JLabel("<html><font color=Gray>Test</font></html>");
-		FilterGUI filter = new FilterGUI();
-		filter.loadTree(CelebritiesFileReader.readModules());
-		JFrame frame = new JFrame("Filter Test");
-		frame.add(filter, BorderLayout.WEST);
-		frame.add(label, BorderLayout.CENTER);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(800,800);
-		frame.setVisible(true);
 	}
 }

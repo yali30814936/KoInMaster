@@ -22,7 +22,7 @@ public class YoutubeCrawler extends Crawler{
 	private final String apiKey;
 	private final YouTube.Search.List request;
 
-	public YoutubeCrawler(String name, String URL) throws IOException, GeneralSecurityException {
+	public YoutubeCrawler(String name, String URL) throws GeneralSecurityException, IOException {
 		super(name, PLATFORM.YOUTUBE);
 
 		// extract channel id from URL
@@ -30,15 +30,18 @@ public class YoutubeCrawler extends Crawler{
 		                         .matcher(URL);
 		if (matcher.find())
 			param = matcher.group("ID");
-		else
-			// TODO
+		else {
 			param = "error"; //待處理，還沒想好
+			throw new IOException("分析 '" + name + "' 的YT頻道 url='" + URL +"' 失敗");
+		}
 
 		// to load api key from properties file
 		Properties props = new Properties();
-
-		// this throw IOException
-		props.load(YoutubeCrawler.class.getClassLoader().getResourceAsStream("api.properties"));
+		try {
+			props.load(YoutubeCrawler.class.getClassLoader().getResourceAsStream("api.properties"));
+		} catch (IOException e) {
+			throw new IOException("YouTube api-key 載入失敗");
+		}
 		apiKey = props.getProperty("youtube");
 
 		JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
@@ -49,23 +52,28 @@ public class YoutubeCrawler extends Crawler{
 		request = youTube.search().list(Collections.singletonList("snippet"));
 	}
 
-	public PostList searchChannel(String channelId) throws IOException {
+	public PostList searchChannel(String channelId){
 		PostList list = new PostList();
-		SearchListResponse response = request.setKey(apiKey)
-		                                     .setChannelId(channelId)
-				                             .setOrder("date")
-				                             .setEventType("live")
-				                             .setEventType("upcoming")
-				                             .setEventType("none")
-		                                     .setType(Collections.singletonList("video"))
-		                                     .execute();
-		for (SearchResult s:response.getItems())
-			list.add(new YoutubePost(super.name, s));
+		try {
+			SearchListResponse response = request.setKey(apiKey)
+			                                     .setChannelId(channelId)
+			                                     .setOrder("date")
+			                                     .setEventType("live")
+			                                     .setEventType("upcoming")
+			                                     .setEventType("none")
+			                                     .setMaxResults(20L)
+			                                     .setType(Collections.singletonList("video"))
+			                                     .execute();
+			for (SearchResult s:response.getItems())
+				list.add(new YoutubePost(name, s));
+		} catch (IOException e) {
+			System.err.println("搜尋 '" + name + "' 的YT頻道 id='" + channelId +"' 時發生錯誤");
+		}
 		return list;
 	}
 
 	@Override
-	public PostList call() throws Exception {
+	public PostList call() {
 		return searchChannel(param);
 	}
 
