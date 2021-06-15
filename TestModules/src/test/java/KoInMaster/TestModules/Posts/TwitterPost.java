@@ -43,7 +43,7 @@ public class TwitterPost extends Post{
         // remove "RT @user" or "@user"
         text = text.replaceAll("^RT ","");
         text = text.replaceAll("^@.*? ","");
-
+        text = text.replaceAll("https://.*?$","");
         // html transform
         text = text.replaceAll("\n","<br>");
         text = "<html>"+text+"</html>";

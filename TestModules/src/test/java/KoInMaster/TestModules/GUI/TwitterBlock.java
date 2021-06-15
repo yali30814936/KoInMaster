@@ -49,10 +49,15 @@ public class TwitterBlock extends JPanel{
         gridBagConstraints.gridwidth=3;
         gridBagConstraints.gridheight=2;
         if(post.getType()==TYPE.QUOTED){
-            String tmp = post.getText()+"\n\n"+"<hr>"+((TwitterPost)post).getStatus().getQuotedStatus().getText();
+            String qu =((TwitterPost)post).getStatus().getQuotedStatus().getText();
+            qu = qu.replaceAll("https://.*?$","");
+            String tmp = ((TwitterPost)post).getStatus().getText();
+            tmp = tmp.replaceAll("https://.*?$","");
+            tmp = tmp+"\n\n<hr>"+qu;
             tmp = tmp.replaceAll("^RT ","");
             tmp = tmp.replaceAll("^@.*? ","");
             tmp = tmp.replaceAll("\n","<br>");
+
             tmp = "<html>"+tmp+"</html>";
             Text = new JLabel(tmp);
         }

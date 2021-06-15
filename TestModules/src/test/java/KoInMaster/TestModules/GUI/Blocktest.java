@@ -11,7 +11,7 @@ public class Blocktest {
         JFrame frame = new JFrame();
         Tweets = new TwitterCrawler("shirakamifubuki","shirakamifubuki");
         PostList list = Tweets.call();
-        TwitterBlock bpanel = new TwitterBlock(list.get(13));
+        TwitterBlock bpanel = new TwitterBlock(list.get(10));
         JScrollPane scrollPane = new JScrollPane(bpanel);
         frame.add(scrollPane);
         frame.setSize(1000, 1000);
