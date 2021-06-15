@@ -1,6 +1,7 @@
 package KoInMaster.TestModules.GUI;
 
 import KoInMaster.TestModules.Posts.Post;
+import KoInMaster.TestModules.Posts.TYPE;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -21,8 +22,7 @@ public class Block extends JPanel {
 		gridBagConstraints.weightx=1;
 		gridBagConstraints.weighty=1;
 		gridBagConstraints.fill=GridBagConstraints.HORIZONTAL;
-		Title=new JLabel( String.format("%s在%s平台發布了%s類型的貼文",post.getName(),post.getPlatform().toString(),post.getType()));
-		gridBagConstraints.gridx=0;
+		Title=new JLabel( String.format("%s在%s平台發布了貼文",post.getName(),post.getPlatform().toString(),post.getType()));
 		gridBagConstraints.gridy=0;
 		gridBagConstraints.gridwidth=3;
 		add(Title,gridBagConstraints);
@@ -42,15 +42,14 @@ public class Block extends JPanel {
 		gridBagConstraints.gridy=4;
 		gridBagConstraints.gridwidth=2;
 		gridBagConstraints.gridheight=1;
-
-		MediaPanel = new JPanel(new GridLayout(1,3));
-		for(String url:post.getMedia()){
+		if(post.getMedia().size()!=0) {
+			MediaPanel = new JPanel(new GridLayout());
+			String url = post.getMedia().get(0);
 			URL ur = new URL(url);
 			Image image = ImageIO.read(ur);
-			//image=image.getScaledInstance(400 ,600,Image.SCALE_REPLICATE);
 			Mediatmp = new JLabel(new ImageIcon(image));
 			MediaPanel.add(Mediatmp);
+			add(MediaPanel, gridBagConstraints);
 		}
-		add(MediaPanel,gridBagConstraints);
 	}
 }
