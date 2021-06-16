@@ -1,5 +1,6 @@
 package KoInMaster.TestModules.GUI;
 
+import KoInMaster.TestModules.Celebrities.Celebrities;
 import KoInMaster.TestModules.Celebrities.Celebrity;
 
 import javax.swing.*;
@@ -23,20 +24,26 @@ public class FilterGUI extends JScrollPane {
 		setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 
-		top = new DefaultMutableTreeNode("選擇要顯示的模組");
+		top = new DefaultMutableTreeNode(new FilterNode("選擇要顯示的模組"));
 		jTree = new JTree(top);
 		jTree.addMouseListener(new nodeSelected());
 		jTree.setToggleClickCount(0);
 		setViewportView(jTree);
 	}
 
-	// reload the tree by giving the celebrity list
-	public void loadTree(List<Celebrity> celebrities) {
+	/**
+	 * Reload the tree by giving the celebrity list
+	 * @param celebrities Celebrities data.
+	 */
+	public void loadTree(Celebrities celebrities) {
 		String[] buffer;
 		DefaultMutableTreeNode prev, leaf;
 
+		// initialize
+		top.removeAllChildren();
+
 		for (Celebrity cel:celebrities) {
-			leaf = new DefaultMutableTreeNode(new FilterNode(cel.getName()));
+			leaf = new DefaultMutableTreeNode(new FilterNode(cel));
 			buffer = cel.getPath().split("/");
 			prev = top;
 			for (String bf:buffer) {
@@ -76,8 +83,8 @@ public class FilterGUI extends JScrollPane {
 	private class nodeSelected extends MouseAdapter {
 		@Override
 		public void mouseClicked(MouseEvent ev) {
-			if (ev.getClickCount() < 2) return;
-			if (jTree.getLastSelectedPathComponent() == top) return;
+			if (ev.getClickCount() != 2) return;
+			if (jTree.getLastSelectedPathComponent() == null) return;
 
 			DefaultMutableTreeNode node = (DefaultMutableTreeNode) jTree.getLastSelectedPathComponent();
 			DefaultMutableTreeNode parent;
@@ -90,7 +97,7 @@ public class FilterGUI extends JScrollPane {
 			setNodeEnabled(node, !((FilterNode) node.getUserObject()).isEnabled());
 
 			parent = (DefaultMutableTreeNode) node.getParent();
-			while (parent != top) {
+			while (parent != null) {
 				flag = false;
 				enumeration = parent.children();
 				while (enumeration.hasMoreElements())

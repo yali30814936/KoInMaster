@@ -1,5 +1,6 @@
 package KoInMaster.TestModules.Core;
 
+import KoInMaster.TestModules.Celebrities.Celebrities;
 import KoInMaster.TestModules.Celebrities.Celebrity;
 import KoInMaster.TestModules.Celebrities.Crawlers.Crawler;
 import KoInMaster.TestModules.Posts.PLATFORM;
@@ -9,8 +10,6 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
 import java.security.GeneralSecurityException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,8 +18,8 @@ public class CelebritiesFileReader {
 	private static Scanner input;
 	private static final String fileName = "modules.txt";
 
-	public static List<Celebrity> readModules() throws GeneralSecurityException, IOException, URISyntaxException {
-		List<Celebrity> list = new ArrayList<>();
+	public static Celebrities readModules() throws GeneralSecurityException, IOException, URISyntaxException {
+		Celebrities list = new Celebrities();
 		Celebrity tmp;
 		String name;
 		String[] bufferArray, bufferArray2;

@@ -1,18 +1,16 @@
 package KoInMaster.TestModules.Core;
 
-import KoInMaster.TestModules.Celebrities.Celebrity;
+import KoInMaster.TestModules.Celebrities.Celebrities;
 import KoInMaster.TestModules.GUI.MainGUI;
 
 import javax.swing.*;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.security.GeneralSecurityException;
-import java.util.List;
 
 public class Main {
 	private static MainGUI app;
-	private static CelebritiesFileWriter celebritiesFileWriter;
-	private static List<Celebrity> celebrities;
+	private static Celebrities celebrities;
 
 	public static void main(String[] args) {
 		// show main window
@@ -23,7 +21,7 @@ public class Main {
 
 		// load celebrities
 		try {
-			celebrities = CelebritiesFileReader.readModules();
+			celebrities = CelebritiesReadWrite.read();
 		} catch (GeneralSecurityException | URISyntaxException | IOException e) {
 			JOptionPane.showMessageDialog(app, e.getMessage(), "讀取模組時發生錯誤！", JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();

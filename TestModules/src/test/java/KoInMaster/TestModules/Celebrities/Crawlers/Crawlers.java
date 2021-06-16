@@ -1,6 +1,6 @@
 package KoInMaster.TestModules.Celebrities.Crawlers;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
-public class Crawlers extends HashMap<String, Crawler> {
+public class Crawlers extends LinkedHashMap<String, Crawler> {
 }
