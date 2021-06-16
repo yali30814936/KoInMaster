@@ -1,5 +1,6 @@
 package KoInMaster.TestModules.GUI;
 
+import KoInMaster.TestModules.Celebrities.Celebrities;
 import KoInMaster.TestModules.Celebrities.Celebrity;
 
 import javax.swing.*;
@@ -30,13 +31,19 @@ public class FilterGUI extends JScrollPane {
 		setViewportView(jTree);
 	}
 
-	// reload the tree by giving the celebrity list
-	public void loadTree(List<Celebrity> celebrities) {
+	/**
+	 * Reload the tree by giving the celebrity list
+	 * @param celebrities Celebrities data.
+	 */
+	public void loadTree(Celebrities celebrities) {
 		String[] buffer;
 		DefaultMutableTreeNode prev, leaf;
 
+		// initialize
+		top.removeAllChildren();
+
 		for (Celebrity cel:celebrities) {
-			leaf = new DefaultMutableTreeNode(new FilterNode(cel.getName()));
+			leaf = new DefaultMutableTreeNode(new FilterNode(cel));
 			buffer = cel.getPath().split("/");
 			prev = top;
 			for (String bf:buffer) {

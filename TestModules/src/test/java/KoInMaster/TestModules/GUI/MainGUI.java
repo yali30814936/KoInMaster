@@ -1,5 +1,6 @@
 package KoInMaster.TestModules.GUI;
 
+import KoInMaster.TestModules.Celebrities.Celebrities;
 import KoInMaster.TestModules.Celebrities.Celebrity;
 import KoInMaster.TestModules.Celebrities.Crawlers.Crawler;
 import KoInMaster.TestModules.Core.CrawlPosts;
@@ -15,7 +16,7 @@ import java.util.concurrent.FutureTask;
 
 public class MainGUI extends JFrame {
 	private final FilterGUI filterGUI;
-	private List<Celebrity> celebrities;
+	private Celebrities celebrities;
 	private final JButton refreshButton;
 
 	public MainGUI() {
@@ -35,11 +36,11 @@ public class MainGUI extends JFrame {
 	 * Call FilterGUI to reload the structure
 	 * @param list celebrity list
 	 */
-	public void loadFilter(List<Celebrity> list) {
+	public void loadFilter(Celebrities list) {
 		filterGUI.loadTree(list);
 	}
 
-	public void setCelebrities(List<Celebrity> celebrities) {
+	public void setCelebrities(Celebrities celebrities) {
 		this.celebrities = celebrities;
 		loadFilter(celebrities);
 	}
