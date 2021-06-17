@@ -1,9 +1,9 @@
-package GUI;
+package GUI.Filter;
 
 import Celebrities.Celebrity;
 
 public class FilterNode {
-	private String name;
+	private final String name;
 	private Celebrity celebrity;
 	private boolean enabled = false;
 
@@ -35,13 +35,13 @@ public class FilterNode {
 
 	public String getName(){ return name; }
 
+	public boolean isCelebrity() {
+		return celebrity != null;
+	}
+
 	// display label
 	@Override
 	public String toString() {
-		if (enabled)
-			return "<html><b>" + name + "</b></html>";
-		else
-			return "<html><font color='Gray'>" + name + "</font></html>";
-
+		return name;
 	}
 }

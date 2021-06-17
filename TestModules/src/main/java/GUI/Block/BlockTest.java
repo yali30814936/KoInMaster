@@ -1,4 +1,4 @@
-package GUI;
+package GUI.Block;
 
 import Celebrities.Crawlers.TwitterCrawler;
 import Posts.PostList;
