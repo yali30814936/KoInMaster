@@ -16,7 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class TwitterBlock extends JPanel{
-    private JLabel Title;
+    private HyperLink Title;
     private JLabel Date;
     private JLabel Text;
     private JLabel Mediatmp;
@@ -31,16 +31,16 @@ public class TwitterBlock extends JPanel{
         gridBagConstraints.weighty=1;
         gridBagConstraints.fill=GridBagConstraints.HORIZONTAL;
         if(post.getType()==TYPE.NONE) {
-            Title = new JLabel(String.format("%s在%s平台發布了貼文", post.getName(), post.getPlatform().toString(), post.getType()));
+            Title = new HyperLink(String.format("%s在%s平台發布了貼文", post.getName(), post.getPlatform().toString(), post.getType()),((TwitterPost)post).getUrl());
         }
         else if(post.getType()==TYPE.RT){
-            Title = new JLabel(String.format("%s在%s平台轉推了%s的貼文", post.getName(), post.getPlatform().toString(), ((TwitterPost)post).getUser()));
+            Title = new HyperLink(String.format("%s在%s平台轉推了%s的貼文", post.getName(), post.getPlatform().toString(), ((TwitterPost)post).getUser()),((TwitterPost)post).getUrl());
         }
         else  if(post.getType()==TYPE.REPLY){
-            Title = new JLabel(String.format("%s在%s平台回復了%s的貼文", post.getName(), post.getPlatform().toString(), ((TwitterPost)post).getUser()));
+            Title = new HyperLink(String.format("%s在%s平台回復了%s的貼文", post.getName(), post.getPlatform().toString(), ((TwitterPost)post).getUser()),((TwitterPost)post).getUrl());
         }
         else if(post.getType()==TYPE.QUOTED){
-            Title = new JLabel(String.format("%s在%s平台引用了%s的貼文", post.getName(), post.getPlatform().toString(), ((TwitterPost)post).getUser()));
+            Title = new HyperLink(String.format("%s在%s平台引用了%s的貼文", post.getName(), post.getPlatform().toString(), ((TwitterPost)post).getUser()),((TwitterPost)post).getUrl());
         }
         gridBagConstraints.gridx=0;
         gridBagConstraints.gridy=0;
@@ -162,7 +162,6 @@ public class TwitterBlock extends JPanel{
             JScrollPane scrollPane = new JScrollPane(morePanel);
             moreFrame.add(scrollPane);
             moreFrame.setSize(1000, 1000);
-            moreFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         }
     }
 }
