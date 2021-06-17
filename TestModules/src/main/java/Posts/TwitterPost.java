@@ -1,13 +1,18 @@
 package Posts;
 
+import twitter4j.JSONObject;
 import twitter4j.MediaEntity;
 import twitter4j.Status;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class TwitterPost extends Post{
-    private final String user;
-    private final Status status;
+    private  String user;
+    private  Status status;
+
+    public TwitterPost(){};
     public TwitterPost(String name, Status status){
         super.name = name;
         platform = PLATFORM.TWITTER;
@@ -54,6 +59,28 @@ public class TwitterPost extends Post{
             media.add(me.getMediaURL());
         }
     }
+
+    public TwitterPost(JSONObject object) throws ParseException {
+
+        name = object.getString("name");
+
+        text=object.getString("text");
+
+        platform=PLATFORM.fromString(object.getString("platform"));
+
+        type=TYPE.fromString(object.getString("type"));
+
+        url=object.getString("url");
+
+        publishedTime=new SimpleDateFormat("dow mon dd hh:mm:ss zzz yyyy").parse(object.getString("publishedTime"));
+
+        ArrayList<String> tempMedias=new ArrayList<>();
+        for (String key:object.getJSONObject("media").keySet()) {
+            tempMedias.add(object.getJSONObject("media").getJSONObject(key).getString("oneMedia"));
+        }
+        media=tempMedias;
+    }
+
     public String getUser(){
         return user;
     }

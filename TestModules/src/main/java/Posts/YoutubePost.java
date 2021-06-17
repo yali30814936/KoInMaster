@@ -1,8 +1,12 @@
 package Posts;
 
+import com.google.api.services.youtube.YouTube;
 import com.google.api.services.youtube.model.SearchResult;
 import com.google.api.services.youtube.model.SearchResultSnippet;
+import twitter4j.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -10,7 +14,9 @@ public class YoutubePost extends Post{
 	// url header for video hyperlink
 	private final String urlHead = "https://www.youtube.com/watch?v=";
 
-	private final String description;
+	private String description;
+
+	public YoutubePost(){};
 
 	public YoutubePost(String name, SearchResult video) {
 		super.name = name;
@@ -29,6 +35,27 @@ public class YoutubePost extends Post{
 		media = new ArrayList<>();
 		media.add(snippet.getThumbnails().getMedium().getUrl());
 		description = snippet.getDescription();
+	}
+
+	public YoutubePost(JSONObject object) throws ParseException {
+
+		name = object.getString("name");
+
+		text=object.getString("text");
+
+		platform=PLATFORM.fromString(object.getString("platform"));
+
+		type=TYPE.fromString(object.getString("type"));
+
+		url=object.getString("url");
+
+		publishedTime=new SimpleDateFormat("dow mon dd hh:mm:ss zzz yyyy").parse(object.getString("publishedTime"));
+
+		ArrayList<String> tempMedias=new ArrayList<>();
+		for (String key:object.getJSONObject("media").keySet()) {
+			tempMedias.add(object.getJSONObject("media").getJSONObject(key).getString("oneMedia"));
+		}
+		media=tempMedias;
 	}
 
 	public String getDescription() {
