@@ -15,7 +15,7 @@ public class Main {
 	public static void main(String[] args) {
 		// show main window
 		app = new MainGUI();
-		app.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		app.setSize(1080,720);
 		app.setVisible(true);
 

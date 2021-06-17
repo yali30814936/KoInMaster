@@ -14,35 +14,81 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.FutureTask;
 
+import static javax.swing.SpringLayout.*;
+
 public class MainGUI extends JFrame {
+	private final JButton toggleSettingButton;
 	private final FilterGUI filterGUI;
 	private Celebrities celebrities;
 	private final JButton refreshButton;
+	private final SettingGUI settingGUI;
 
 	public MainGUI() {
 		super("KoInMaster");
+		SpringLayout springLayout = new SpringLayout();
+		Container contentPane = getContentPane();
+		contentPane.setLayout(springLayout);
 
+		// filter
+		JPanel filterPanel = new JPanel();
+		filterPanel.setLayout(new BoxLayout(filterPanel, BoxLayout.PAGE_AXIS));
+		// setting button
+		toggleSettingButton = new JButton("模組設定");
+		toggleSettingButton.addActionListener(new toggleSetting());
+		// filterGUI
 		filterGUI = new FilterGUI();
-		add(filterGUI, BorderLayout.WEST);
+		Box hBox1 = Box.createHorizontalBox();
+		Box hBox2 = Box.createHorizontalBox();
+		// fit in
+		hBox1.add(toggleSettingButton);
+		hBox2.add(filterGUI);
+		Box vBox = Box.createVerticalBox();
+		// combine
+		vBox.add(hBox1);
+		vBox.add(Box.createVerticalStrut(10));
+		vBox.add(hBox2);
+		filterPanel.add(vBox);
+//		hBox2.setBorder(BorderFactory.createCompoundBorder(
+//				BorderFactory.createLineBorder(Color.red),
+//				hBox2.getBorder()));
+//		filterPanel.setBorder(BorderFactory.createCompoundBorder(
+//				BorderFactory.createLineBorder(Color.BLUE),
+//				filterPanel.getBorder()));
 
-		// debug
+		// setting filter panel layout.
+		contentPane.add(filterPanel);
+		springLayout.putConstraint(NORTH, filterPanel, 10, NORTH, contentPane);
+		springLayout.putConstraint(SOUTH, filterPanel, -10, SOUTH, contentPane);
+		springLayout.putConstraint(WEST, filterPanel, 10, WEST, contentPane);
+		springLayout.putConstraint(EAST, filterPanel, -300, HORIZONTAL_CENTER, contentPane);
+
+		// setting GUI
+		settingGUI = new SettingGUI();
+//		settingGUI.setVisible(false);
+		contentPane.add(settingGUI);
+		springLayout.putConstraint(NORTH, settingGUI, 10, NORTH, contentPane);
+		springLayout.putConstraint(SOUTH, settingGUI, -10, SOUTH, contentPane);
+		springLayout.putConstraint(EAST, settingGUI, -10, EAST, contentPane);
+		springLayout.putConstraint(WEST, settingGUI, 10, EAST, filterPanel);
+
+		// debug button
 		refreshButton = new JButton("Get Posts");
 		refreshButton.addActionListener(new RefreshPostList());
-		add(refreshButton, BorderLayout.CENTER);
+		contentPane.add(refreshButton);
 		refreshButton.setEnabled(false);
 	}
 
 	/**
 	 * Call FilterGUI to reload the structure
-	 * @param list celebrity list
 	 */
-	public void loadFilter(Celebrities list) {
-		filterGUI.loadTree(list);
+	public void loadFilter() {
+		filterGUI.loadTree();
 	}
 
 	public void setCelebrities(Celebrities celebrities) {
 		this.celebrities = celebrities;
-		loadFilter(celebrities);
+		filterGUI.setCelebrities(celebrities);
+		loadFilter();
 	}
 
 	public void setRefreshEnabled(boolean enabled) { refreshButton.setEnabled(enabled);}
@@ -67,4 +113,20 @@ public class MainGUI extends JFrame {
 			crawlPosts.execute();
 		}
 	}
+
+	private class toggleSetting implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (settingGUI.isVisible()) {
+				settingGUI.setVisible(false);
+				toggleSettingButton.setText("模組設定");
+			} else {
+				settingGUI.setVisible(true);
+				toggleSettingButton.setText("關閉面板");
+
+			}
+		}
+	}
+
 }

@@ -33,11 +33,17 @@ public class FilterGUI extends JScrollPane {
 	}
 
 	/**
-	 * Reload the tree by giving the celebrity list (Celebrities)
-	 * @param celebrities Celebrities data.
+	 * Set the celebrities data which will be showed by this filter.
+	 * @param celebrities The Celebrities data.
 	 */
-	public void loadTree(Celebrities celebrities) {
+	public void setCelebrities(Celebrities celebrities) {
 		this.celebrities = celebrities;
+	}
+
+	/**
+	 * Reload the tree by giving the celebrity list (Celebrities)
+	 */
+	public void loadTree() {
 		String[] buffer;
 		DefaultMutableTreeNode prev, leaf;
 

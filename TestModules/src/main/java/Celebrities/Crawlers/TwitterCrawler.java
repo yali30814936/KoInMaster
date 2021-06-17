@@ -9,6 +9,7 @@ import java.util.List;
 
 public class TwitterCrawler extends Crawler{
     private final Twitter twitter;
+
     public TwitterCrawler(String name,String searchId) {
         super(name, PLATFORM.TWITTER);
         param = searchId;
