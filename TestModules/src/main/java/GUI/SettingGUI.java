@@ -1,5 +1,7 @@
 package GUI;
 
+import GUI.Filter.FilterNode;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -8,6 +10,8 @@ import java.awt.event.ActionListener;
 public class SettingGUI extends JScrollPane {
 	private final JPanel innerPanel;
 	private final Box vBox;
+	private final JLabel nameLabel;
+	private final JButton nameButton;
 	private final int padding = 20;
 
 	public SettingGUI() {
@@ -25,10 +29,11 @@ public class SettingGUI extends JScrollPane {
 
 		// title
 		Box nameBox = Box.createHorizontalBox();
-		JLabel nameLabel = new JLabel("選取一個節點來編輯");
-		JButton nameButton = new JButton("修改名稱");
+		nameLabel = new JLabel("選取一個節點來編輯");
+		nameButton = new JButton("修改名稱");
 		nameButton.addActionListener(new ModifyName());
 		nameBox.add(Box.createHorizontalStrut(padding));
+		nameButton.setVisible(false);
 		nameBox.add(nameLabel);
 		nameBox.add(Box.createHorizontalGlue());
 		nameBox.add(nameButton);
@@ -46,5 +51,10 @@ public class SettingGUI extends JScrollPane {
 		public void actionPerformed(ActionEvent e) {
 
 		}
+	}
+
+	public void filterSelectedPerform(FilterNode node) {
+		nameLabel.setText(node.getName());
+		nameButton.setVisible(true);
 	}
 }

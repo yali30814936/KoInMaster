@@ -1,10 +1,12 @@
-package GUI;
+package GUI.Filter;
 
 import Celebrities.Celebrities;
 import Celebrities.Celebrity;
 import Core.CelebritiesReadWrite;
+import GUI.SettingGUI;
 
 import javax.swing.*;
+import javax.swing.event.TreeSelectionEvent;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 import java.awt.event.MouseAdapter;
@@ -18,6 +20,7 @@ import java.util.Enumeration;
 public class FilterGUI extends JScrollPane {
 	private final JTree jTree;
 	private final DefaultMutableTreeNode top;
+	private SettingGUI settingGUI;
 	private Celebrities celebrities;
 
 	// constructor
@@ -27,6 +30,8 @@ public class FilterGUI extends JScrollPane {
 
 		top = new DefaultMutableTreeNode(new FilterNode("選擇要顯示的模組"));
 		jTree = new JTree(top);
+		jTree.setCellRenderer(new FilterCellRenderer());
+		jTree.addTreeSelectionListener(this::valueChanged);
 		jTree.addMouseListener(new nodeSelected());
 		jTree.setToggleClickCount(0);
 		setViewportView(jTree);
@@ -84,7 +89,7 @@ public class FilterGUI extends JScrollPane {
 			tmp = (DefaultMutableTreeNode) enumeration.nextElement();
 
 			// found
-			if (tmp.getUserObject().toString().equals("<html><b>" + key + "</b></html>") || tmp.getUserObject().toString().equals("<html><font color='Gray'>" + key + "</font></html>"))
+			if (tmp.getUserObject().toString().equals(key))
 				return tmp;
 		}
 		return null;
@@ -162,5 +167,24 @@ public class FilterGUI extends JScrollPane {
 		}
 		((FilterNode) node.getUserObject()).setEnabled(flag);
 		return flag;
+	}
+
+
+	/**
+	 * Connect the Setting GUI panel and the Filter GUI panel.
+	 * @param settingGUI The settingGUI that will be connected to.
+	 */
+	public void addSelectEventListener(SettingGUI settingGUI) {
+		this.settingGUI = settingGUI;
+	}
+
+	/**
+	 * Fire Setting GUI to react filter node selected event.
+	 * Submit the FilterNode in the JTree filter which is currently selected.
+	 * Ignored root(hint/select all) node and    none select bug.
+	 */
+	public void valueChanged(TreeSelectionEvent ev) {
+		if (jTree.getLastSelectedPathComponent() != null && jTree.getLastSelectedPathComponent() != top)
+			settingGUI.filterSelectedPerform((FilterNode) ((DefaultMutableTreeNode) jTree.getLastSelectedPathComponent()).getUserObject());
 	}
 }

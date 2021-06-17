@@ -4,6 +4,7 @@ import Celebrities.Celebrities;
 import Celebrities.Celebrity;
 import Celebrities.Crawlers.Crawler;
 import Core.CrawlPosts;
+import GUI.Filter.FilterGUI;
 import Posts.PostList;
 
 import javax.swing.*;
@@ -65,6 +66,7 @@ public class MainGUI extends JFrame {
 		// setting GUI
 		settingGUI = new SettingGUI();
 //		settingGUI.setVisible(false);
+		filterGUI.addSelectEventListener(settingGUI);
 		contentPane.add(settingGUI);
 		springLayout.putConstraint(NORTH, settingGUI, 10, NORTH, contentPane);
 		springLayout.putConstraint(SOUTH, settingGUI, -10, SOUTH, contentPane);
