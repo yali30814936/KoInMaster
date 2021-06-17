@@ -3,7 +3,7 @@ package GUI.Filter;
 import Celebrities.Celebrities;
 import Celebrities.Celebrity;
 import Core.CelebritiesReadWrite;
-import GUI.SettingGUI;
+import GUI.Setting.SettingGUI;
 
 import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
@@ -13,6 +13,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.Enumeration;
+import java.util.List;
 
 /**
  * GUI of the filter, using JTree structure
@@ -21,6 +22,7 @@ public class FilterGUI extends JScrollPane {
 	private final JTree jTree;
 	private final DefaultMutableTreeNode top;
 	private SettingGUI settingGUI;
+	private List<String> directories;
 	private Celebrities celebrities;
 
 	// constructor
@@ -45,28 +47,44 @@ public class FilterGUI extends JScrollPane {
 		this.celebrities = celebrities;
 	}
 
+	public void setDirectories(List<String> directories) {
+		this.directories = directories;
+	}
+
 	/**
 	 * Reload the tree by giving the celebrity list (Celebrities)
 	 */
 	public void loadTree() {
 		String[] buffer;
-		DefaultMutableTreeNode prev, leaf;
+		DefaultMutableTreeNode prev, curr, leaf;
 
 		// initialize
 		top.removeAllChildren();
 
-		for (Celebrity cel:celebrities) {
-			leaf = new DefaultMutableTreeNode(new FilterNode(cel));
-			buffer = cel.getPath().split("/");
+		// load directories
+		for (String dir:directories) {
 			prev = top;
+			buffer = dir.split("/");
 			for (String bf:buffer) {
-				DefaultMutableTreeNode curr = find(prev, bf);
+				curr = find(prev, bf);
 
 				// not found
 				if (curr == null){
 					curr = new DefaultMutableTreeNode(new FilterNode(bf));
 					prev.add(curr);
 				}
+				prev = curr;
+			}
+		}
+
+		// load celebrities
+		for (Celebrity cel:celebrities) {
+			leaf = new DefaultMutableTreeNode(new FilterNode(cel));
+			buffer = cel.getPath().split("/");
+			prev = top;
+			for (String bf:buffer) {
+				curr = find(prev, bf);
+
 				prev = curr;
 			}
 			prev.add(leaf);
@@ -185,6 +203,10 @@ public class FilterGUI extends JScrollPane {
 	 */
 	public void valueChanged(TreeSelectionEvent ev) {
 		if (jTree.getLastSelectedPathComponent() != null && jTree.getLastSelectedPathComponent() != top)
-			settingGUI.filterSelectedPerform((FilterNode) ((DefaultMutableTreeNode) jTree.getLastSelectedPathComponent()).getUserObject());
+			settingGUI.filterSelectedPerform(((DefaultMutableTreeNode) jTree.getLastSelectedPathComponent()));
+	}
+
+	public JTree getJTree() {
+		return jTree;
 	}
 }

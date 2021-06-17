@@ -5,6 +5,7 @@ import Celebrities.Celebrity;
 import Celebrities.Crawlers.Crawler;
 import Core.CrawlPosts;
 import GUI.Filter.FilterGUI;
+import GUI.Setting.SettingGUI;
 import Posts.PostList;
 
 import javax.swing.*;
@@ -21,6 +22,7 @@ public class MainGUI extends JFrame {
 	private final JButton toggleSettingButton;
 	private final FilterGUI filterGUI;
 	private Celebrities celebrities;
+	private List<String> directories;
 	private final JButton refreshButton;
 	private final SettingGUI settingGUI;
 
@@ -66,6 +68,7 @@ public class MainGUI extends JFrame {
 		// setting GUI
 		settingGUI = new SettingGUI();
 //		settingGUI.setVisible(false);
+		settingGUI.setFilterGUI(filterGUI);
 		filterGUI.addSelectEventListener(settingGUI);
 		contentPane.add(settingGUI);
 		springLayout.putConstraint(NORTH, settingGUI, 10, NORTH, contentPane);
@@ -87,13 +90,21 @@ public class MainGUI extends JFrame {
 		filterGUI.loadTree();
 	}
 
+	public void setDirectories(List<String> directories) {
+		this.directories = directories;
+		filterGUI.setDirectories(directories);
+	}
+
 	public void setCelebrities(Celebrities celebrities) {
 		this.celebrities = celebrities;
 		filterGUI.setCelebrities(celebrities);
-		loadFilter();
+		settingGUI.setCelebrities(celebrities);
 	}
 
-	public void setRefreshEnabled(boolean enabled) { refreshButton.setEnabled(enabled);}
+	public void setFunctionEnabled(boolean enabled) {
+		refreshButton.setEnabled(enabled);
+		toggleSettingButton.setEnabled(enabled);
+	}
 
 	/**
 	 * Handle refresh event.

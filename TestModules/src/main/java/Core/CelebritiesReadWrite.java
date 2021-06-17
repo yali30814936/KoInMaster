@@ -17,7 +17,7 @@ import java.security.GeneralSecurityException;
 public class CelebritiesReadWrite {
 	private static final String filename = "Celebrities.json";
 
-	public static void write(Celebrities celebrities) throws IOException {
+	public static synchronized void write(Celebrities celebrities) throws IOException {
 		FileWriter fw = new FileWriter(Paths.get(filename).toString());
 		fw.write(celebrities.toJSONArray().toString());
 		fw.flush();

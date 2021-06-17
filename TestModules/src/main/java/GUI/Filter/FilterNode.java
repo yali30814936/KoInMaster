@@ -3,8 +3,8 @@ package GUI.Filter;
 import Celebrities.Celebrity;
 
 public class FilterNode {
-	private final String name;
-	private Celebrity celebrity;
+	private String name;
+	private Celebrity celebrity = null;
 	private boolean enabled = false;
 
 	/**
@@ -33,7 +33,19 @@ public class FilterNode {
 			celebrity.setEnabled(enabled);
 	}
 
+	public void setName(String name) {
+		this.name = name;
+	}
 	public String getName(){ return name; }
+
+	public Celebrity getCelebrity() {
+		return celebrity;
+	}
+
+	public void reload() {
+		if (celebrity != null)
+			name = celebrity.getName();
+	}
 
 	public boolean isCelebrity() {
 		return celebrity != null;

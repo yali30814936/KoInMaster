@@ -10,8 +10,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FoldersReadWrite {
-	private static final String filename = "Folders.json";
+public class FiltersDirectoriesReadWrite {
+	private static final String filename = "Directories.json";
 
 	public static void write(List<String> folders) throws IOException {
 		JSONArray array = new JSONArray(folders);
@@ -29,5 +29,14 @@ public class FoldersReadWrite {
 		for (int i = 0; i < obj.length(); i++)
 			list.add(obj.getString(i));
 		return list;
+	}
+
+	public static void main(String[] args) throws IOException {
+		List<String> test = new ArrayList<>();
+		test.add("hololive/零期生");
+		test.add("hololive/一期生");
+		test.add("hololive/二期生");
+		test.add("nijisanji");
+		write(test);
 	}
 }
