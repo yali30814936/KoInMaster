@@ -12,7 +12,6 @@ import javax.swing.tree.TreeNode;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.util.Enumeration;
 import java.util.List;
 
@@ -93,11 +92,7 @@ public class NewSector extends JPanel {
 					directories.add(newDir);
 
 
-				try {
-					data.writeData();
-				} catch (IOException ioException) {
-					ioException.printStackTrace();
-				}
+				data.writeData();
 			}
 		}
 
@@ -146,11 +141,7 @@ public class NewSector extends JPanel {
 				}
 				celebrities.add(celebrity);
 
-				try {
-					data.writeData();
-				} catch (IOException ioException) {
-					ioException.printStackTrace();
-				}
+				data.writeData();
 			}
 		}
 

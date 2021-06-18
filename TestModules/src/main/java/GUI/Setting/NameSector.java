@@ -12,7 +12,6 @@ import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.util.Enumeration;
 import java.util.List;
 
@@ -134,11 +133,7 @@ public class NameSector extends Box {
 					for (Celebrity celebrity:celebrities)
 						celebrity.setPath(celebrity.getPath().replaceAll("^" + oldPath, newPath));
 
-					try {
-						data.writeData();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
+					data.writeData();
 
 					((FilterNode) selectedNode.getUserObject()).setName(newName);
 					data.getJTree().getModel().valueForPathChanged(new TreePath(path), selectedNode.getUserObject());
@@ -157,11 +152,7 @@ public class NameSector extends Box {
 					selectedNode.getPath();
 
 					nameLabel.setText(newName);
-					try {
-						data.writeData();
-					} catch (IOException ioException) {
-						ioException.printStackTrace();
-					}
+					data.writeData();
 				}
 			}
 			cancel();

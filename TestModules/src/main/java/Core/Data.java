@@ -57,9 +57,13 @@ public class Data {
 		directories = FiltersDirectoriesReadWrite.read();
 	}
 
-	public void writeData() throws IOException {
-		CelebritiesReadWrite.write(celebrities);
-		FiltersDirectoriesReadWrite.write(directories);
+	public void writeData() {
+		try {
+			CelebritiesReadWrite.write(celebrities);
+			FiltersDirectoriesReadWrite.write(directories);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public JTree getJTree() {

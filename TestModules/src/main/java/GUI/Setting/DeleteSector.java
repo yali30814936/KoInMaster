@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 public class DeleteSector extends JPanel {
 	private Data data;
-	private SettingGUI parent;
+	private final SettingGUI parent;
 
 	public DeleteSector(SettingGUI parent,  int padding) {
 		super();
@@ -58,7 +58,6 @@ public class DeleteSector extends JPanel {
 
 					// remove
 					data.getDirectories().remove(target);
-					((DefaultTreeModel) data.getJTree().getModel()).removeNodeFromParent(data.getSelected().getNode());
 				} else {
 					confirm = JOptionPane.showConfirmDialog(getRootPane(),
 					                                        "<html><div align='center'>確認刪除資料夾？<br><font color=red>注意：資料夾的內容將被刪除</div></html>",
@@ -80,7 +79,10 @@ public class DeleteSector extends JPanel {
 					                                        .stream()
 					                                        .filter(celebrity -> !celebrity.getPath().matches(target + ".*"))
 					                                        .collect(Collectors.toList())));
-					((DefaultTreeModel) data.getJTree().getModel()).removeNodeFromParent(data.getSelected().getNode());
+					data.setDirectories(data.getDirectories()
+					                        .stream()
+					                        .filter(dir -> !dir.matches(target + ".*"))
+					                        .collect(Collectors.toList()));
 				}
 
 			}
@@ -95,8 +97,8 @@ public class DeleteSector extends JPanel {
 					return;
 
 				data.getCelebrities().remove(data.getSelected().getCelebrity());
-				((DefaultTreeModel) data.getJTree().getModel()).removeNodeFromParent(data.getSelected().getNode());
 			}
+			((DefaultTreeModel) data.getJTree().getModel()).removeNodeFromParent(data.getSelected().getNode());
 
 			// simulate root node selected.
 			Selected selected = new Selected();
@@ -106,11 +108,7 @@ public class DeleteSector extends JPanel {
 			data.setSelected(selected);
 			parent.filterSelectedPerform();
 
-//			try {
-//				data.writeData();
-//			} catch (IOException ioException) {
-//				ioException.printStackTrace();
-//			}
+			data.writeData();
 		}
 	}
 }
