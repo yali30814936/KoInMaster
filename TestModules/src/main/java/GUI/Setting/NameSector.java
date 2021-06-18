@@ -2,9 +2,7 @@ package GUI.Setting;
 
 import Celebrities.Celebrities;
 import Celebrities.Celebrity;
-import Core.CelebritiesReadWrite;
-import Core.FiltersDirectoriesReadWrite;
-import GUI.Filter.FilterGUI;
+import Core.Data;
 import GUI.Filter.FilterNode;
 
 import javax.swing.*;
@@ -20,10 +18,7 @@ import java.util.List;
 
 public class NameSector extends Box {
 	private final int padding;
-	private FilterGUI filterGUI;
-	private Celebrities celebrities;
-	private Celebrity celebrity;
-	private DefaultMutableTreeNode selectedNode;
+	private Data data;
 	private final JLabel nameLabel;
 	private final JButton nameButton;
 	private final JTextField modifyName;
@@ -67,16 +62,8 @@ public class NameSector extends Box {
 		nameLabel.setText(name);
 	}
 
-	public void setInitVisible() {
-		nameButton.setVisible(true);
-	}
-
-	public void setCelebrity(Celebrity celebrity) {
-		this.celebrity = celebrity;
-	}
-
-	public void setSelectedNode(DefaultMutableTreeNode selectedNode) {
-		this.selectedNode = selectedNode;
+	public void setSelected(boolean enabled) {
+		nameButton.setVisible(enabled);
 	}
 
 	public void toggleMode(boolean mode) {
@@ -88,12 +75,8 @@ public class NameSector extends Box {
 		nameGlue.setVisible(!mode);
 	}
 
-	public void setCelebrities(Celebrities celebrities) {
-		this.celebrities = celebrities;
-	}
-
-	public void setFilterGUI(FilterGUI filterGUI) {
-		this.filterGUI = filterGUI;
+	public void setData(Data data) {
+		this.data = data;
 	}
 
 	private class ModifyName implements ActionListener {
@@ -115,12 +98,16 @@ public class NameSector extends Box {
 		private void confirmModify() {
 			// get new name
 			String newName = modifyName.getText();
+			Celebrities celebrities = data.getCelebrities();
+			DefaultMutableTreeNode selectedNode = data.getSelected().getNode();
 
-			if (nameLabel.getText().equals(newName))
+			if (nameLabel.getText().equals(newName)) {
+				cancel();
 				return;
+			}
 
 			// is directory
-			if (celebrity == null) {
+			if (!data.getSelected().getFilterNode().isCelebrity()) {
 				if (isRepeatedDirectory(newName)) {
 					JOptionPane.showMessageDialog(getRootPane(), "同個層裡已有同名資料夾！", "更名失敗", JOptionPane.WARNING_MESSAGE);
 				} else {
@@ -139,18 +126,22 @@ public class NameSector extends Box {
 					}
 					String oldPath = oldBuilder.substring(1);
 					String newPath = newBuilder.substring(1);
+					List<String> directories = data.getDirectories();
+					for (int i = 0 ; i < directories.size(); i++)
+						directories.set(i, directories.get(i).replaceAll("^" + oldPath, newPath));
+					data.setDirectories(directories);
+
+					for (Celebrity celebrity:celebrities)
+						celebrity.setPath(celebrity.getPath().replaceAll("^" + oldPath, newPath));
+
 					try {
-						List<String> directories = FiltersDirectoriesReadWrite.read();
-						for (int i = 0 ; i < directories.size(); i++)
-							directories.set(i, directories.get(i).replaceAll("^" + oldPath + ".*", newPath));
-						FiltersDirectoriesReadWrite.write(directories);
+						data.writeData();
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
 
 					((FilterNode) selectedNode.getUserObject()).setName(newName);
-					JTree jTree = filterGUI.getJTree();
-					jTree.getModel().valueForPathChanged(new TreePath(path), selectedNode.getUserObject());
+					data.getJTree().getModel().valueForPathChanged(new TreePath(path), selectedNode.getUserObject());
 				}
 			}
 			// is celebrity
@@ -158,17 +149,16 @@ public class NameSector extends Box {
 				if (isRepeatedName(newName)) {
 					JOptionPane.showMessageDialog(getRootPane(), "此名稱已被使用！", "更名失敗", JOptionPane.WARNING_MESSAGE);
 				} else {
-					celebrity.setName(newName);
+					data.getSelected().getCelebrity().setName(newName);
 					((FilterNode) selectedNode.getUserObject()).reload();
 
-					JTree jTree = filterGUI.getJTree();
-					jTree.getModel().valueForPathChanged(new TreePath(selectedNode.getPath()), selectedNode.getUserObject());
+					data.getJTree().getModel().valueForPathChanged(new TreePath(selectedNode.getPath()), selectedNode.getUserObject());
 
 					selectedNode.getPath();
 
 					nameLabel.setText(newName);
 					try {
-						CelebritiesReadWrite.write(celebrities);
+						data.writeData();
 					} catch (IOException ioException) {
 						ioException.printStackTrace();
 					}
@@ -182,14 +172,15 @@ public class NameSector extends Box {
 		}
 
 		private boolean isRepeatedName(String newName) {
-			long count = celebrities.stream()
-			                        .filter(celebrity1 -> celebrity1.getName().equals(newName))
-			                        .count();
+			long count = data.getCelebrities()
+			                 .stream()
+			                 .filter(celebrity1 -> celebrity1.getName().equals(newName))
+			                 .count();
 			return count > 0;
 		}
 
 		private boolean isRepeatedDirectory(String newName) {
-			DefaultMutableTreeNode parent = (DefaultMutableTreeNode) selectedNode.getParent();
+			DefaultMutableTreeNode parent = (DefaultMutableTreeNode) data.getSelected().getNode().getParent();
 			Enumeration<TreeNode> enumeration = parent.children();
 			int count = 0;
 			while (enumeration.hasMoreElements()) {

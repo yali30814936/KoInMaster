@@ -1,18 +1,15 @@
 package Core;
 
-import Celebrities.Celebrities;
 import GUI.MainGUI;
 
 import javax.swing.*;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.security.GeneralSecurityException;
-import java.util.List;
 
 public class Main {
 	private static MainGUI app;
-	private static Celebrities celebrities;
-	private static List<String> directories;
+	private static Data data;
 
 	public static void main(String[] args) {
 		// show main window
@@ -21,10 +18,11 @@ public class Main {
 		app.setSize(1080,720);
 		app.setVisible(true);
 
+		data = new Data();
+
 		// load celebrities
 		try {
-			celebrities = CelebritiesReadWrite.read();
-			directories = FiltersDirectoriesReadWrite.read();
+			data.readData();
 		} catch (GeneralSecurityException | URISyntaxException | IOException e) {
 			JOptionPane.showMessageDialog(app, e.getMessage(), "讀取模組時發生錯誤！", JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
@@ -32,8 +30,7 @@ public class Main {
 		}
 
 		// setup filter
-		app.setDirectories(directories);
-		app.setCelebrities(celebrities);
+		app.setData(data);
 		app.loadFilter();
 		app.setFunctionEnabled(true);
 	}

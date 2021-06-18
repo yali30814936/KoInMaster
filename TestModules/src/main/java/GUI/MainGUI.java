@@ -1,9 +1,9 @@
 package GUI;
 
-import Celebrities.Celebrities;
 import Celebrities.Celebrity;
 import Celebrities.Crawlers.Crawler;
 import Core.CrawlPosts;
+import Core.Data;
 import GUI.Filter.FilterGUI;
 import GUI.Setting.SettingGUI;
 import Posts.PostList;
@@ -21,10 +21,9 @@ import static javax.swing.SpringLayout.*;
 public class MainGUI extends JFrame {
 	private final JButton toggleSettingButton;
 	private final FilterGUI filterGUI;
-	private Celebrities celebrities;
-	private List<String> directories;
 	private final JButton refreshButton;
 	private final SettingGUI settingGUI;
+	private Data data;
 
 	public MainGUI() {
 		super("KoInMaster");
@@ -51,12 +50,6 @@ public class MainGUI extends JFrame {
 		vBox.add(Box.createVerticalStrut(10));
 		vBox.add(hBox2);
 		filterPanel.add(vBox);
-//		hBox2.setBorder(BorderFactory.createCompoundBorder(
-//				BorderFactory.createLineBorder(Color.red),
-//				hBox2.getBorder()));
-//		filterPanel.setBorder(BorderFactory.createCompoundBorder(
-//				BorderFactory.createLineBorder(Color.BLUE),
-//				filterPanel.getBorder()));
 
 		// setting filter panel layout.
 		contentPane.add(filterPanel);
@@ -68,7 +61,7 @@ public class MainGUI extends JFrame {
 		// setting GUI
 		settingGUI = new SettingGUI();
 //		settingGUI.setVisible(false);
-		settingGUI.setFilterGUI(filterGUI);
+//		settingGUI.setFilterGUI(filterGUI);
 		filterGUI.addSelectEventListener(settingGUI);
 		contentPane.add(settingGUI);
 		springLayout.putConstraint(NORTH, settingGUI, 10, NORTH, contentPane);
@@ -90,20 +83,15 @@ public class MainGUI extends JFrame {
 		filterGUI.loadTree();
 	}
 
-	public void setDirectories(List<String> directories) {
-		this.directories = directories;
-		filterGUI.setDirectories(directories);
-	}
-
-	public void setCelebrities(Celebrities celebrities) {
-		this.celebrities = celebrities;
-		filterGUI.setCelebrities(celebrities);
-		settingGUI.setCelebrities(celebrities);
-	}
-
 	public void setFunctionEnabled(boolean enabled) {
 		refreshButton.setEnabled(enabled);
 		toggleSettingButton.setEnabled(enabled);
+	}
+
+	public void setData(Data data) {
+		this.data = data;
+		filterGUI.setData(data);
+		settingGUI.setData(data);
 	}
 
 	/**
@@ -117,7 +105,7 @@ public class MainGUI extends JFrame {
 
 			refreshButton.setEnabled(false);
 
-			for (Celebrity cel:celebrities)
+			for (Celebrity cel:data.getCelebrities())
 				if (cel.isEnabled())
 					for (Crawler cr:cel.getCrawlers().values())
 						tasks.add(new FutureTask<>(cr));
@@ -137,7 +125,6 @@ public class MainGUI extends JFrame {
 			} else {
 				settingGUI.setVisible(true);
 				toggleSettingButton.setText("關閉面板");
-
 			}
 		}
 	}

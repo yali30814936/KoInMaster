@@ -1,8 +1,9 @@
 package GUI.Filter;
 
-import Celebrities.Celebrities;
 import Celebrities.Celebrity;
 import Core.CelebritiesReadWrite;
+import Core.Data;
+import Core.Selected;
 import GUI.Setting.SettingGUI;
 
 import javax.swing.*;
@@ -13,7 +14,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.Enumeration;
-import java.util.List;
 
 /**
  * GUI of the filter, using JTree structure
@@ -22,8 +22,7 @@ public class FilterGUI extends JScrollPane {
 	private final JTree jTree;
 	private final DefaultMutableTreeNode top;
 	private SettingGUI settingGUI;
-	private List<String> directories;
-	private Celebrities celebrities;
+	private Data data;
 
 	// constructor
 	public FilterGUI() {
@@ -40,18 +39,6 @@ public class FilterGUI extends JScrollPane {
 	}
 
 	/**
-	 * Set the celebrities data which will be showed by this filter.
-	 * @param celebrities The Celebrities data.
-	 */
-	public void setCelebrities(Celebrities celebrities) {
-		this.celebrities = celebrities;
-	}
-
-	public void setDirectories(List<String> directories) {
-		this.directories = directories;
-	}
-
-	/**
 	 * Reload the tree by giving the celebrity list (Celebrities)
 	 */
 	public void loadTree() {
@@ -62,7 +49,7 @@ public class FilterGUI extends JScrollPane {
 		top.removeAllChildren();
 
 		// load directories
-		for (String dir:directories) {
+		for (String dir:data.getDirectories()) {
 			prev = top;
 			buffer = dir.split("/");
 			for (String bf:buffer) {
@@ -78,7 +65,7 @@ public class FilterGUI extends JScrollPane {
 		}
 
 		// load celebrities
-		for (Celebrity cel:celebrities) {
+		for (Celebrity cel:data.getCelebrities()) {
 			leaf = new DefaultMutableTreeNode(new FilterNode(cel));
 			buffer = cel.getPath().split("/");
 			prev = top;
@@ -111,6 +98,12 @@ public class FilterGUI extends JScrollPane {
 				return tmp;
 		}
 		return null;
+	}
+
+	public void setData(Data data) {
+		this.data = data;
+		data.setTop(top);
+		data.setJTree(jTree);
 	}
 
 	/**
@@ -150,7 +143,7 @@ public class FilterGUI extends JScrollPane {
 
 			// save changes
 			try {
-				CelebritiesReadWrite.write(celebrities);
+				CelebritiesReadWrite.write(data.getCelebrities());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -202,11 +195,16 @@ public class FilterGUI extends JScrollPane {
 	 * Ignored root(hint/select all) node and    none select bug.
 	 */
 	public void valueChanged(TreeSelectionEvent ev) {
-		if (jTree.getLastSelectedPathComponent() != null && jTree.getLastSelectedPathComponent() != top)
-			settingGUI.filterSelectedPerform(((DefaultMutableTreeNode) jTree.getLastSelectedPathComponent()));
-	}
-
-	public JTree getJTree() {
-		return jTree;
+		if (jTree.getLastSelectedPathComponent() != null) {
+			DefaultMutableTreeNode node = (DefaultMutableTreeNode) jTree.getLastSelectedPathComponent();
+			FilterNode filterNode = (FilterNode) node.getUserObject();
+			Selected selected = new Selected();
+			selected.setNode(node);
+			selected.setFilterNode(filterNode);
+			selected.setCelebrity(filterNode.getCelebrity());
+			selected.setName(filterNode.getName());
+			data.setSelected(selected);
+			settingGUI.filterSelectedPerform();
+		}
 	}
 }

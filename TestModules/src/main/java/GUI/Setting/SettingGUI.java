@@ -1,22 +1,17 @@
 package GUI.Setting;
 
-import Celebrities.Celebrities;
-import Celebrities.Celebrity;
-import GUI.Filter.FilterGUI;
-import GUI.Filter.FilterNode;
+import Core.Data;
 
 import javax.swing.*;
-import javax.swing.tree.DefaultMutableTreeNode;
 
 public class SettingGUI extends JScrollPane {
 	private final int padding = 20;
-	private FilterGUI filterGUI;
-	private Celebrities celebrities;
-	private Celebrity celebrity;
-	private DefaultMutableTreeNode selectedNode;
+//	private FilterGUI filterGUI;
 	private final JPanel innerPanel;
 	private final Box vBox;
 	private final NameSector nameSector;
+	private final NewSector newSector;
+	private Data data;
 
 	public SettingGUI() {
 		setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
@@ -35,28 +30,31 @@ public class SettingGUI extends JScrollPane {
 		nameSector = new NameSector(padding);
 		vBox.add(nameSector);
 
+		// new
+		newSector = new NewSector(this, padding);
+		newSector.setVisible(false);
+		vBox.add(Box.createHorizontalBox().add(newSector));
+
 		vBox.add(Box.createVerticalGlue());
 		vBox.add(Box.createVerticalStrut(padding));
 		innerPanel.add(vBox);
 	}
 
-	public void setFilterGUI(FilterGUI filterGUI) {
-		this.filterGUI = filterGUI;
-		nameSector.setFilterGUI(filterGUI);
-	}
-
-	public void setCelebrities(Celebrities celebrities) {
-		this.celebrities = celebrities;
-		nameSector.setCelebrities(celebrities);
-	}
-
-	public void filterSelectedPerform(DefaultMutableTreeNode node) {
-		selectedNode = node;
+	public void filterSelectedPerform() {
 		nameSector.toggleMode(false);
-		celebrity = ((FilterNode) node.getUserObject()).getCelebrity();
-		nameSector.setName(((FilterNode) node.getUserObject()).getName());
-		nameSector.setInitVisible();
-		nameSector.setSelectedNode(selectedNode);
-		nameSector.setCelebrity(celebrity);
+		if (!data.isSelectTop()) {
+			nameSector.setName(data.getSelected().getName());
+			nameSector.setSelected(true);
+		} else {
+			nameSector.setName("選取一個節點來編輯");
+			nameSector.setSelected(false);
+		}
+		newSector.setVisible(!data.getSelected().getFilterNode().isCelebrity());
+	}
+
+	public void setData(Data data) {
+		this.data = data;
+		nameSector.setData(data);
+		newSector.setData(data);
 	}
 }

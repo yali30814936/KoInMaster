@@ -1,5 +1,4 @@
 package GUI.Block;
-import GUI.HyperLink;
 import Posts.Post;
 import Posts.TYPE;
 import Posts.TwitterPost;

@@ -1,9 +1,8 @@
-package GUI;
-import java.awt.Cursor;
-import java.awt.Desktop;
+package GUI.Block;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import javax.swing.JLabel;
 public class HyperLink extends JLabel {
     private String text,url;
     private boolean isSupported;
