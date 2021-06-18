@@ -20,6 +20,7 @@ public class Celebrity {
 		this.name = name;
 		crawlers = new Crawlers();
 		path = "";
+		enabled = true;
 	}
 
 	public Celebrity(JSONObject object) throws GeneralSecurityException, IOException, URISyntaxException {

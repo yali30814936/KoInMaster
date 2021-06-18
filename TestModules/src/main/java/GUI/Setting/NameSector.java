@@ -101,7 +101,7 @@ public class NameSector extends Box {
 			Celebrities celebrities = data.getCelebrities();
 			DefaultMutableTreeNode selectedNode = data.getSelected().getNode();
 
-			if (nameLabel.getText().equals(newName)) {
+			if (nameLabel.getText().equals(newName) || newName.equals("")) {
 				cancel();
 				return;
 			}

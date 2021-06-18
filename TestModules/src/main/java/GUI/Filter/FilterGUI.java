@@ -29,7 +29,7 @@ public class FilterGUI extends JScrollPane {
 		setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 
-		top = new DefaultMutableTreeNode(new FilterNode("選擇要顯示的模組"));
+		top = new DefaultMutableTreeNode(new FilterNode("選擇要顯示的人物"));
 		jTree = new JTree(top);
 		jTree.setCellRenderer(new FilterCellRenderer());
 		jTree.addTreeSelectionListener(this::valueChanged);
