@@ -1,14 +1,17 @@
 package GUI.Setting;
 
+import Celebrities.Celebrities;
 import Core.Data;
 import Core.Selected;
 import GUI.Filter.FilterNode;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeNode;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.stream.Collectors;
 
 public class DeleteSector extends JPanel {
 	private Data data;
@@ -45,6 +48,17 @@ public class DeleteSector extends JPanel {
 					                                            JOptionPane.WARNING_MESSAGE);
 					if (confirm != 0)
 						return;
+
+					// build path
+					TreeNode[] path = data.getSelected().getNode().getPath();
+					StringBuilder builder = new StringBuilder();
+					for (int i = 1; i < path.length; i++)
+						builder.append("/").append(path[i]);
+					String target = builder.substring(1);
+
+					// remove
+					data.getDirectories().remove(target);
+					((DefaultTreeModel) data.getJTree().getModel()).removeNodeFromParent(data.getSelected().getNode());
 				} else {
 					confirm = JOptionPane.showConfirmDialog(getRootPane(),
 					                                        "<html><div align='center'>確認刪除資料夾？<br><font color=red>注意：資料夾的內容將被刪除</div></html>",
@@ -53,6 +67,20 @@ public class DeleteSector extends JPanel {
 					                                        JOptionPane.WARNING_MESSAGE);
 					if (confirm != 0)
 						return;
+
+					// build path
+					TreeNode[] path = data.getSelected().getNode().getPath();
+					StringBuilder builder = new StringBuilder();
+					for (int i = 1; i < path.length; i++)
+						builder.append("/").append(path[i]);
+					String target = builder.substring(1);
+
+					// remove
+					data.setCelebrities(new Celebrities(data.getCelebrities()
+					                                        .stream()
+					                                        .filter(celebrity -> !celebrity.getPath().matches(target + ".*"))
+					                                        .collect(Collectors.toList())));
+					((DefaultTreeModel) data.getJTree().getModel()).removeNodeFromParent(data.getSelected().getNode());
 				}
 
 			}

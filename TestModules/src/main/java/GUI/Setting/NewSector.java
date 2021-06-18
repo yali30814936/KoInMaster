@@ -133,7 +133,7 @@ public class NewSector extends JPanel {
 				DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(new FilterNode(celebrity));
 				((DefaultTreeModel) data.getJTree().getModel()).insertNodeInto(newNode, parent, parent.getChildCount());
 
-				// save 三期生
+				// save
 				TreeNode[] path = parent.getPath();
 				StringBuilder builder = new StringBuilder();
 				for (int i = 1 ; i < path.length; i++)
