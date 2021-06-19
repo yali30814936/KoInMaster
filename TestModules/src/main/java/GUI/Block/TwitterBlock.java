@@ -24,12 +24,11 @@ public class TwitterBlock extends JPanel{
     private JButton Detail;
     private int mediaSize;
     private List<String> mediaList;
+    private JPanel panel;
     public TwitterBlock(Post post) throws IOException {
-        super(new GridBagLayout());
-        GridBagConstraints gridBagConstraints=new GridBagConstraints();
-        gridBagConstraints.weightx=1;
-        gridBagConstraints.weighty=1;
-        gridBagConstraints.fill=GridBagConstraints.HORIZONTAL;
+
+        super(new GridLayout(0,1));
+
         if(post.getType()==TYPE.NONE) {
             Title = new HyperLink(String.format("%s在%s平台發布了貼文", post.getName(), post.getPlatform().toString(), post.getType()),((TwitterPost)post).getUrl());
         }
@@ -42,13 +41,10 @@ public class TwitterBlock extends JPanel{
         else if(post.getType()==TYPE.QUOTED){
             Title = new HyperLink(String.format("%s在%s平台引用了%s的貼文", post.getName(), post.getPlatform().toString(), ((TwitterPost)post).getUser()),((TwitterPost)post).getUrl());
         }
-        gridBagConstraints.gridx=0;
-        gridBagConstraints.gridy=0;
-        gridBagConstraints.gridwidth=1;
-        add(Title,gridBagConstraints);
-        gridBagConstraints.gridx=1;
-        gridBagConstraints.gridy=0;
-        gridBagConstraints.gridwidth=1;
+        panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel,BoxLayout.X_AXIS));
+        panel.add(Title);
+
         Detail = new JButton("更多資訊");
         if(post.getMedia().size()<=1){
             Detail.setEnabled(false);
@@ -56,18 +52,15 @@ public class TwitterBlock extends JPanel{
         else {
             Detail.setEnabled(true);
         }
-        add(Detail,gridBagConstraints);
+        panel.add(Detail);
+        add(panel);
         Detail.addActionListener(new OpenDetail());
-        gridBagConstraints.gridx=0;
-        gridBagConstraints.gridy=1;
-        gridBagConstraints.weightx=3;
+        panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
         SimpleDateFormat ft = new SimpleDateFormat("MM月dd日 HH:mm");
         Date=new JLabel(String.format(ft.format(post.getPublishedTime())));
-        add(Date,gridBagConstraints);
-        gridBagConstraints.gridx=0;
-        gridBagConstraints.gridy=2;
-        gridBagConstraints.gridwidth=3;
-        gridBagConstraints.gridheight=2;
+        panel.add(Date);
+
         if(post.getType()==TYPE.QUOTED){
             String qu =((TwitterPost)post).getStatus().getQuotedStatus().getText();
             qu = qu.replaceAll("https://.*?$","");
@@ -84,11 +77,8 @@ public class TwitterBlock extends JPanel{
         else {
             Text = new JLabel(post.getText());
         }
-        add(Text,gridBagConstraints);
-        gridBagConstraints.gridx=0;
-        gridBagConstraints.gridy=4;
-        gridBagConstraints.gridwidth=3;
-        gridBagConstraints.gridheight=4;
+        panel.add(Text);
+
         mediaSize = post.getMedia().size();
         mediaList=post.getMedia();
         if(post.getMedia().size()!=0) {
@@ -98,7 +88,7 @@ public class TwitterBlock extends JPanel{
             Image image = ImageIO.read(ur);
             Mediatmp = new JLabel(new ImageIcon(image));
             MediaPanel.add(Mediatmp);
-            add(MediaPanel, gridBagConstraints);
+            panel.add(MediaPanel);
         }
         else if(post.getType()==TYPE.QUOTED){
             for(MediaEntity me:((TwitterPost)post).getStatus().getQuotedStatus().getMediaEntities()){
@@ -110,37 +100,21 @@ public class TwitterBlock extends JPanel{
             Image image = ImageIO.read(ur);
             Mediatmp = new JLabel(new ImageIcon(image));
             MediaPanel.add(Mediatmp);
-            add(MediaPanel, gridBagConstraints);
+            panel.add(MediaPanel);
         }
+        add(panel);
     }
     private class OpenDetail implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             JFrame moreFrame = new JFrame();
             moreFrame.setVisible(true);
+            moreFrame.setLayout( new GridLayout(0,1));
             JPanel morePanel = new JPanel();
-            morePanel.setLayout(new GridBagLayout());
-            GridBagConstraints gridBagConstraints=new GridBagConstraints();
-            gridBagConstraints.weightx=1;
-            gridBagConstraints.weighty=1;
-            gridBagConstraints.fill=GridBagConstraints.NONE;
-            gridBagConstraints.gridx=0;
-            gridBagConstraints.gridy=0;
-            gridBagConstraints.gridwidth=3;
-            morePanel.add(Title,gridBagConstraints);
-            gridBagConstraints.gridx=0;
-            gridBagConstraints.gridy=1;
-            gridBagConstraints.weightx=3;
-            morePanel.add(Date,gridBagConstraints);
-            gridBagConstraints.gridx=0;
-            gridBagConstraints.gridy=2;
-            gridBagConstraints.gridwidth=3;
-            gridBagConstraints.gridheight=2;
-            morePanel.add(Text,gridBagConstraints);
-            gridBagConstraints.gridx=0;
-            gridBagConstraints.gridy=4;
-            gridBagConstraints.gridwidth=3;
-            gridBagConstraints.gridheight=4;
+            morePanel.setLayout(new BoxLayout(morePanel,BoxLayout.Y_AXIS));
+            morePanel.add(Title);
+            morePanel.add(Date);
+            morePanel.add(Text);
             JPanel mediaPanel = new JPanel(new GridLayout(mediaSize, 1));
             for(String url:mediaList){
                 URL ur = null;
@@ -158,7 +132,7 @@ public class TwitterBlock extends JPanel{
                 Mediatmp = new JLabel(new ImageIcon(image));
                 mediaPanel.add(Mediatmp);
             }
-            morePanel.add(mediaPanel,gridBagConstraints);
+            morePanel.add(mediaPanel);
             JScrollPane scrollPane = new JScrollPane(morePanel);
             moreFrame.add(scrollPane);
             moreFrame.setSize(1000, 1000);
