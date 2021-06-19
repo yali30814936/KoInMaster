@@ -11,7 +11,7 @@ public enum PLATFORM {
 	PLATFORM(String displayName) {this.displayName = displayName;}
 
 	public static PLATFORM fromString(String platform) {
-		for (PLATFORM p:PLATFORM.values()) {
+		for (PLATFORM p:values()) {
 			if (p.displayName.equals(platform))
 				return p;
 		}
@@ -19,7 +19,7 @@ public enum PLATFORM {
 	}
 
 	public static String[] getValues() {
-		return Stream.of(PLATFORM.values())
+		return Stream.of(values())
 		             .map(PLATFORM::toString)
 		             .toArray(String[]::new);
 	}

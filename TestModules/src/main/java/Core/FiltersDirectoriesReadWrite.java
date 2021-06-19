@@ -30,13 +30,4 @@ public class FiltersDirectoriesReadWrite {
 			list.add(obj.getString(i));
 		return list;
 	}
-
-	public static void main(String[] args) throws IOException {
-		List<String> test = new ArrayList<>();
-		test.add("hololive/零期生");
-		test.add("hololive/一期生");
-		test.add("hololive/二期生");
-		test.add("nijisanji");
-		write(test);
-	}
 }

@@ -1,22 +1,22 @@
 package Posts;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class PostListContainer {
-    private PostList originalList;
+    private final PostList originalList;
     private PostList finalList;
-    private ArrayList<PLATFORM> platformWhiteList;
-    private ArrayList<String> nameWhiteList;
+    private List<String> nameWhiteList;
+    private List<TYPE> typeWhiteList;
 
     public PostListContainer(PostList originalList){
         this.originalList=originalList;
     }
 
-    public void setPlatformWhiteList(ArrayList<PLATFORM> platformWhiteList) {
-        this.platformWhiteList = platformWhiteList;
+    public void setTypeWhiteList(List<TYPE> typeWhiteList) {
+        this.typeWhiteList = typeWhiteList;
     }
 
-    public void setNameWhiteList(ArrayList<String> nameWhiteList) {
+    public void setNameWhiteList(List<String> nameWhiteList) {
         this.nameWhiteList = nameWhiteList;
     }
 
@@ -49,21 +49,26 @@ public class PostListContainer {
             }
             hasInput=false;
         }
-
     }
+
+    public PostList getOriginalList() {
+        return originalList;
+    }
+
     public PostList getFinalList() {
         filter();
         return finalList;
     }
+
     public void filter(){
         finalList=new PostList();
-        boolean flag=false;
+        boolean flag;
         for(Post p:originalList) {
             flag=false;
             for (String name : nameWhiteList) {
                 if(!flag) {
-                    for (PLATFORM pla : platformWhiteList) {
-                        if (p.getPlatform() == pla && p.getName().equals(name)) {
+                    for (TYPE type : typeWhiteList) {
+                        if (p.getType() == type && p.getName().equals(name)) {
                             finalList.add(p);
                             flag=true;
                             break;
