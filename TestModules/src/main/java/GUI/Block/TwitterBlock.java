@@ -1,3 +1,4 @@
+
 package GUI.Block;
 import Posts.Post;
 import Posts.TYPE;
@@ -6,7 +7,6 @@ import twitter4j.MediaEntity;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -30,80 +30,76 @@ public class TwitterBlock extends JPanel{
     private JScrollPane scrollPane;
     public TwitterBlock(Post post) throws IOException {
 
-        this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
-        if(post.getType()==TYPE.NONE) {
-            Title = new HyperLink(String.format("%s在%s平台發布了貼文", post.getName(), post.getPlatform().toString(), post.getType()),((TwitterPost)post).getUrl());
+        this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+        if (post.getType() == TYPE.NONE) {
+            Title = new HyperLink(String.format("%s在%s平台發布了貼文", post.getName(), post.getPlatform().toString(), post.getType()), ((TwitterPost) post).getUrl());
+        } else if (post.getType() == TYPE.RT) {
+            Title = new HyperLink(String.format("%s在%s平台轉推了%s的貼文", post.getName(), post.getPlatform().toString(), ((TwitterPost) post).getUser()), ((TwitterPost) post).getUrl());
+        } else if (post.getType() == TYPE.REPLY) {
+            Title = new HyperLink(String.format("%s在%s平台回復了%s的貼文", post.getName(), post.getPlatform().toString(), ((TwitterPost) post).getUser()), ((TwitterPost) post).getUrl());
+        } else if (post.getType() == TYPE.QUOTED) {
+            Title = new HyperLink(String.format("%s在%s平台引用了%s的貼文", post.getName(), post.getPlatform().toString(), ((TwitterPost) post).getUser()), ((TwitterPost) post).getUrl());
         }
-        else if(post.getType()==TYPE.RT){
-            Title = new HyperLink(String.format("%s在%s平台轉推了%s的貼文", post.getName(), post.getPlatform().toString(), ((TwitterPost)post).getUser()),((TwitterPost)post).getUrl());
-        }
-        else  if(post.getType()==TYPE.REPLY){
-            Title = new HyperLink(String.format("%s在%s平台回復了%s的貼文", post.getName(), post.getPlatform().toString(), ((TwitterPost)post).getUser()),((TwitterPost)post).getUrl());
-        }
-        else if(post.getType()==TYPE.QUOTED){
-            Title = new HyperLink(String.format("%s在%s平台引用了%s的貼文", post.getName(), post.getPlatform().toString(), ((TwitterPost)post).getUser()),((TwitterPost)post).getUrl());
-        }
-        panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel,BoxLayout.X_AXIS));
-        panel.setBorder(new LineBorder(Color.red));
-        panel.add(Title);
-        panel.add(Box.createGlue());
+
+        Box hBox1 = Box.createHorizontalBox();
         Detail = new JButton("更多資訊");
-        if(post.getMedia().size()<=1){
+        if (post.getMedia().size() <= 1) {
             Detail.setEnabled(false);
-        }
-        else {
+        } else {
             Detail.setEnabled(true);
         }
-        panel.add(Detail);
-        add(panel);
-        add(Box.createGlue());
+
+        hBox1.add(Title);
+        hBox1.add(Box.createHorizontalGlue());
+        hBox1.add(Detail);
+        add(hBox1);
         Detail.addActionListener(new OpenDetail());
-        panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
         SimpleDateFormat ft = new SimpleDateFormat("MM月dd日 HH:mm");
-        Date=new JLabel(String.format(ft.format(post.getPublishedTime())),2);
-        Date.setBorder(new LineBorder(Color.red));
-        add(Date);
-        add(Box.createGlue());
+        Date = new JLabel(String.format(ft.format(post.getPublishedTime())), 2);
+        //Date.setBorder(new LineBorder(Color.red));
+        Box hBox2 = Box.createHorizontalBox();
+        hBox2.add(Date);
+        hBox2.add(Box.createHorizontalGlue());
+        add(hBox2);
 
 
-        if(post.getType()==TYPE.QUOTED){
-            String qu =((TwitterPost)post).getStatus().getQuotedStatus().getText();
-            qu = qu.replaceAll("https://.*?$","");
-            String tmp = ((TwitterPost)post).getStatus().getText();
-            tmp = tmp.replaceAll("https://.*?$","");
-            tmp = tmp+"\n\n<hr>"+qu;
-            tmp = tmp.replaceAll("^RT ","");
-            tmp = tmp.replaceAll("^@.*? ","");
-            tmp = tmp.replaceAll("\n","<br>");
+        if (post.getType() == TYPE.QUOTED) {
+            String qu = ((TwitterPost) post).getStatus().getQuotedStatus().getText();
+            qu = qu.replaceAll("https://.*?$", "");
+            String tmp = ((TwitterPost) post).getStatus().getText();
+            tmp = tmp.replaceAll("https://.*?$", "");
+            tmp = tmp + "\n\n<hr>" + qu;
+            tmp = tmp.replaceAll("^RT ", "");
+            tmp = tmp.replaceAll("^@.*? ", "");
+            tmp = tmp.replaceAll("\n", "<br>");
 
-            tmp = "<html>"+tmp+"</html>";
+            tmp = "<html>" + tmp + "</html>";
             Text = new JLabel(tmp);
+        } else {
+            Text = new JLabel(post.getText(), 2);
         }
-        else {
-            Text = new JLabel(post.getText(),2);
-        }
-        Text.setBorder(new LineBorder(Color.red));
-        add(Text);
-        add(Box.createGlue());
-
-
-        mediaList=post.getMedia();
-        if(post.getMedia().size()!=0) {
+        //Text.setBorder(new LineBorder(Color.red));
+        Box hBox3 = Box.createHorizontalBox();
+        hBox3.add(Text);
+        hBox3.add(Box.createHorizontalGlue());
+        add(hBox3);
+        Box hBox4 = Box.createHorizontalBox();
+        mediaSize = post.getMedia().size();
+        mediaList = post.getMedia();
+        if (post.getMedia().size() != 0) {
             MediaPanel = new JPanel(new GridLayout());
             String url = post.getMedia().get(0);
             URL ur = new URL(url);
             Image image = ImageIO.read(ur);
             int x = image.getWidth(null);
             int y = image.getHeight(null);
-            image = image.getScaledInstance(x/2,y/2,Image.SCALE_DEFAULT);
-            Mediatmp = new JLabel(new ImageIcon(image),2);
-            MediaPanel.add(Mediatmp);
-            MediaPanel.setBorder(new LineBorder(Color.red));
-            add(MediaPanel);
-        }
-        else if(post.getType()==TYPE.QUOTED){
-            for(MediaEntity me:((TwitterPost)post).getStatus().getQuotedStatus().getMediaEntities()){
+            image = image.getScaledInstance(x / 2, y / 2, Image.SCALE_SMOOTH);
+            Mediatmp = new JLabel(new ImageIcon(image), 2);
+            //Mediatmp.setBorder(new LineBorder(Color.red));
+            hBox4.add(Mediatmp);
+            add(hBox4);
+        } else if (post.getType() == TYPE.QUOTED) {
+            for (MediaEntity me : ((TwitterPost) post).getStatus().getQuotedStatus().getMediaEntities()) {
                 post.getMedia().add(me.getMediaURL());
             }
             MediaPanel = new JPanel(new GridLayout());
@@ -112,45 +108,61 @@ public class TwitterBlock extends JPanel{
             Image image = ImageIO.read(ur);
             int x = image.getWidth(null);
             int y = image.getHeight(null);
-            image = image.getScaledInstance(x/2,y/2,Image.SCALE_DEFAULT);
-            Mediatmp = new JLabel(new ImageIcon(image),2);
-            MediaPanel.add(Mediatmp);
-            MediaPanel.setBorder(new LineBorder(Color.red));
-            add(MediaPanel);
+            image = image.getScaledInstance(x / 2, y / 2, Image.SCALE_SMOOTH);
+            Mediatmp = new JLabel(new ImageIcon(image), 2);
+            //Mediatmp.setBorder(new LineBorder(Color.red));
+            hBox4.add(Mediatmp);
+            add(hBox4);
         }
     }
-    private class OpenDetail implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            JFrame moreFrame = new JFrame();
-            moreFrame.setVisible(true);
-            moreFrame.setLayout( new GridLayout(0,1));
-            JPanel morePanel = new JPanel();
-            morePanel.setLayout(new BoxLayout(morePanel,BoxLayout.Y_AXIS));
-            morePanel.add(Title);
-            morePanel.add(Date);
-            morePanel.add(Text);
-            JPanel mediaPanel = new JPanel(new GridLayout(mediaSize, 1));
-            for(String url:mediaList){
-                URL ur = null;
-                try {
-                    ur = new URL(url);
-                } catch (MalformedURLException malformedURLException) {
-                    malformedURLException.printStackTrace();
+        private class OpenDetail implements ActionListener {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame moreFrame = new JFrame();
+                moreFrame.setSize(1000, 1000);
+                moreFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                moreFrame.setVisible(true);
+                panel = new JPanel();
+                panel.setLayout(new BoxLayout(panel,BoxLayout.PAGE_AXIS));
+                Box hBox1 = Box.createHorizontalBox();
+                Box hBox2 = Box.createHorizontalBox();
+                Box hBox3 = Box.createHorizontalBox();
+                Box hBox4 = Box.createHorizontalBox();
+                Box hBox5 = Box.createVerticalBox();
+                hBox1.add(Title);
+                hBox1.add(Box.createHorizontalGlue());
+                hBox5.add(hBox1);
+                hBox2.add(Date);
+                hBox2.add(Box.createHorizontalGlue());
+                hBox5.add(hBox2);
+                hBox3.add(Text);
+                hBox3.add(Box.createHorizontalGlue());
+                hBox5.add(hBox3);
+                JPanel mediaPanel = new JPanel(new GridLayout(mediaSize, 1));
+                for(String url:mediaList){
+                    URL ur = null;
+                    try {
+                        ur = new URL(url);
+                    } catch (MalformedURLException malformedURLException) {
+                        malformedURLException.printStackTrace();
+                    }
+                    Image image = null;
+                    try {
+                        image = ImageIO.read(ur);
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    }
+                    Mediatmp = new JLabel(new ImageIcon(image));
+                    mediaPanel.add(Mediatmp);
                 }
-                Image image = null;
-                try {
-                    image = ImageIO.read(ur);
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                }
-                Mediatmp = new JLabel(new ImageIcon(image));
-                mediaPanel.add(Mediatmp);
+                hBox4.add(mediaPanel);
+                hBox5.add(hBox4);
+                panel.add(hBox5);
+                scrollPane = new JScrollPane(panel);
+                scrollPane.getVerticalScrollBar().setUnitIncrement(20);
+                scrollPane.getHorizontalScrollBar().setUnitIncrement(20);
+                moreFrame.add(scrollPane);
+
             }
-            morePanel.add(mediaPanel);
-            JScrollPane scrollPane = new JScrollPane(morePanel);
-            moreFrame.add(scrollPane);
-            moreFrame.setSize(1000, 1000);
         }
     }
-}
