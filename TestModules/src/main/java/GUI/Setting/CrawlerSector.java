@@ -1,5 +1,6 @@
 package GUI.Setting;
 
+import Celebrities.Celebrity;
 import Celebrities.Crawlers.Crawler;
 import Core.Data;
 import Posts.PLATFORM;
@@ -8,6 +9,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.security.GeneralSecurityException;
 import java.util.Map;
 
 public class CrawlerSector extends Box {
@@ -33,7 +37,7 @@ public class CrawlerSector extends Box {
 		// show crawlers
 		CrawlerInfo crawlerInfo;
 		for (Map.Entry<String, Crawler> entry:data.getSelected().getCelebrity().getCrawlers().entrySet()) {
-			crawlerInfo = new CrawlerInfo(entry.getValue().getPlatform(), entry.getKey(), entry.getValue().getFormatParam());
+			crawlerInfo = new CrawlerInfo(entry.getKey(), entry.getValue());
 //			crawlerInfo.setBorder(new LineBorder(Color.red));
 			add(crawlerInfo);
 			add(Box.createVerticalStrut(10));
@@ -46,20 +50,25 @@ public class CrawlerSector extends Box {
 		// resize
 //		setMinimumSize(new Dimension(Integer.MAX_VALUE, 20 + 36 * count));
 		getParent().setMaximumSize(new Dimension(Integer.MAX_VALUE, 20 + 36 * count));
+
+		revalidate();
 	}
 
-	protected static class CrawlerInfo extends Box {
+	protected class CrawlerInfo extends Box {
+		private final String name;
 
-		public CrawlerInfo(PLATFORM platform, String name, String param) {
+		public CrawlerInfo(String name, Crawler crawler) {
 			super(BoxLayout.LINE_AXIS);
+			this.name = name;
+
 			setMaximumSize(new Dimension(Integer.MAX_VALUE, 26));
 
-			JLabel platformLabel = new JLabel(platform.toString());
+			JLabel platformLabel = new JLabel(crawler.getPlatform().toString());
 			platformLabel.setPreferredSize(new Dimension(85, 26));
 			JTextField nameField = new JTextField(name);
 			nameField.setEditable(false);
 			nameField.setBorder(null);
-			JTextField paramField = new JTextField(param);
+			JTextField paramField = new JTextField(crawler.getFormatParam());
 			paramField.setEditable(false);
 			paramField.setBorder(null);
 
@@ -75,12 +84,24 @@ public class CrawlerSector extends Box {
 		private class DeleteAction implements ActionListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				int confirm = JOptionPane.showConfirmDialog(getRootPane(),
+				                                            "確認刪除？",
+				                                            "確認",
+				                                            JOptionPane.OK_CANCEL_OPTION,
+				                                            JOptionPane.WARNING_MESSAGE);
 
+				if (confirm != 0)
+					return;
+
+				data.getSelected().getCelebrity().getCrawlers().remove(name);
+				showCrawlers();
+
+				data.writeData();
 			}
 		}
 	}
 
-	protected static class NewCrawler extends Box {
+	protected class NewCrawler extends Box {
 		private final JComboBox<String> platform;
 		private final HintTextField crawlerName;
 		private final HintTextField crawlerParam;
@@ -106,7 +127,36 @@ public class CrawlerSector extends Box {
 		private class AddCrawler implements ActionListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println(platform.getSelectedIndex());
+				if (!crawlerName.isValid() || !crawlerParam.isValid())
+					return;
+
+				String newName = crawlerName.getText();
+
+				if (data.getSelected().getCelebrity().getCrawlers().keySet()
+				        .stream().anyMatch(key -> key.equals(newName))) {
+					int confirm = JOptionPane.showConfirmDialog(getRootPane(),
+					                                            "存在同名的抓取器，是否取代？",
+					                                            "確認",
+					                                            JOptionPane.OK_CANCEL_OPTION,
+					                                            JOptionPane.WARNING_MESSAGE);
+					if (confirm != 0)
+						return;
+				}
+
+				Celebrity celebrity = data.getSelected().getCelebrity();
+				try {
+					celebrity.getCrawlers().put(newName, Crawler.rawBuild(PLATFORM.values()[platform.getSelectedIndex()],
+					                                                      celebrity.getName(),
+					                                                      crawlerParam.getText()));
+				} catch (GeneralSecurityException | IOException | URISyntaxException generalSecurityException) {
+					JOptionPane.showMessageDialog(getRootPane(), "新增抓取器失敗！請確認參數格式是否正確");
+					generalSecurityException.printStackTrace();
+				}
+
+				// save
+				data.writeData();
+
+				showCrawlers();
 			}
 		}
 	}

@@ -8,6 +8,7 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.youtube.YouTube;
+import com.google.api.services.youtube.model.ChannelListResponse;
 import com.google.api.services.youtube.model.SearchListResponse;
 import com.google.api.services.youtube.model.SearchResult;
 
@@ -22,18 +23,10 @@ public class YoutubeCrawler extends Crawler{
 	private final String apiKey;
 	private final YouTube.Search.List request;
 
-	public YoutubeCrawler(String name, String URL) throws GeneralSecurityException, IOException {
+	public YoutubeCrawler(String name, String channelId) throws GeneralSecurityException, IOException {
 		super(name, PLATFORM.YOUTUBE);
 
-		// extract channel id from URL
-		Matcher matcher = Pattern.compile("((https?://)?www.youtube.com/(channel|c)/)?(?<ID>[^?]*)\\??")
-		                         .matcher(URL);
-		if (matcher.find())
-			param = matcher.group("ID");
-		else {
-			param = "error"; //待處理，還沒想好
-			throw new IOException("分析 '" + name + "' 的YT頻道 url='" + URL +"' 失敗");
-		}
+		param = channelId;
 
 		// to load api key from properties file
 		Properties props = new Properties();
@@ -50,6 +43,48 @@ public class YoutubeCrawler extends Crawler{
 		YouTube youTube = new YouTube.Builder(httpTransport, JSON_FACTORY, null)
 				.setApplicationName("KoInMaster").build();
 		request = youTube.search().list(Collections.singletonList("snippet"));
+	}
+
+
+	public static Crawler rawBuild(String name, String raw) throws IOException, GeneralSecurityException {
+		// extract channel id from URL
+		Matcher matcher = Pattern.compile("((https?://)?www.youtube.com/(channel|c|user)/)?(?<ID>[^?]*)\\??")
+		                         .matcher(raw);
+		String param;
+		if (matcher.find())
+			param = matcher.group("ID");
+		else {
+			throw new IOException("分析 '" + name + "' 的YouTube頻道 url='" + raw +"' 失敗");
+		}
+
+		return new YoutubeCrawler(name, validate(param));
+	}
+
+	private static String validate(String param) throws GeneralSecurityException, IOException {
+		// to load api key from properties file
+		Properties props = new Properties();
+		try {
+			props.load(YoutubeCrawler.class.getClassLoader().getResourceAsStream("api.properties"));
+		} catch (IOException e) {
+			throw new IOException("YouTube api-key 載入失敗");
+		}
+
+		JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
+		// this throw GeneralSecurityException
+		NetHttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
+		YouTube youTube = new YouTube.Builder(httpTransport, JSON_FACTORY, null)
+				.setApplicationName("KoInMaster").build();
+		YouTube.Channels.List request = youTube.channels().list(Collections.singletonList("contentDetails"));
+		ChannelListResponse response = request.setKey(props.getProperty("youtube"))
+		                                      .setForUsername(param)
+		                                      .execute();
+		if (response.getItems() != null) {
+			if (response.getItems().size() > 0)
+				return response.getItems().get(0).getId();
+			else
+				throw new IOException();
+		} else
+			return param;
 	}
 
 	public PostList searchChannel(String channelId){

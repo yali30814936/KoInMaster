@@ -60,7 +60,7 @@ public class MainGUI extends JFrame {
 
 		// setting GUI
 		settingGUI = new SettingGUI();
-//		settingGUI.setVisible(false);
+		settingGUI.setVisible(false);
 		filterGUI.addSelectEventListener(settingGUI);
 		contentPane.add(settingGUI);
 		springLayout.putConstraint(NORTH, settingGUI, 10, NORTH, contentPane);

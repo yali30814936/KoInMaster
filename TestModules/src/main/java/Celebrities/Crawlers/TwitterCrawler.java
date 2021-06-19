@@ -5,7 +5,10 @@ import Posts.PostList;
 import Posts.TwitterPost;
 import twitter4j.*;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class TwitterCrawler extends Crawler{
     private final Twitter twitter;
@@ -15,6 +18,19 @@ public class TwitterCrawler extends Crawler{
         param = searchId;
         twitter = new TwitterFactory().getInstance();
     }
+
+    public static Crawler rawBuild(String name, String raw) throws IOException {
+        Matcher matcher = Pattern.compile("((https?://)?twitter.com/)?(?<ID>[^?]*)\\??")
+                                 .matcher(raw);
+        String param;
+        if (matcher.find())
+            param = matcher.group("ID");
+        else {
+            throw new IOException("分析 '" + name + "' 的Twitter帳號 url='" + raw +"' 失敗");
+        }
+        return new TwitterCrawler(name, param);
+    }
+
     public PostList searchTweets(String searchName) {
         PostList list = new PostList();
         try {

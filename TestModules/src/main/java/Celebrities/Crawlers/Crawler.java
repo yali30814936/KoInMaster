@@ -32,6 +32,20 @@ public abstract class Crawler implements Callable<PostList> {
 		}
 	}
 
+	// builder for setting GUI
+	public static Crawler rawBuild(PLATFORM platform, String name, String raw) throws GeneralSecurityException, IOException, URISyntaxException {
+		switch (platform) {
+			case YOUTUBE:
+				return YoutubeCrawler.rawBuild(name, raw);
+			case TWITTER:
+				return TwitterCrawler.rawBuild(name, raw);
+			case FACEBOOK:
+				return FacebookCrawler.rawBuild(name, raw);
+			default:
+				return null;
+		}
+	}
+
 	public PLATFORM getPlatform() {	return platform; }
 
 	public String getParam() { return param; }

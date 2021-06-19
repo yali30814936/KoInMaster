@@ -8,10 +8,15 @@ import java.net.URISyntaxException;
 
 public class FacebookCrawler extends Crawler {
     private final FacebookRequestPosts requestPosts;
-    public FacebookCrawler(String name, String URL) throws URISyntaxException, IOException {
-      super(name, PLATFORM.FACEBOOK);
-      param = FacebookPageIdFetcher.getPageId(URL);
-      requestPosts=new FacebookRequestPosts(param);
+    public FacebookCrawler(String name, String pageId) throws URISyntaxException{
+        super(name, PLATFORM.FACEBOOK);
+        param = pageId;
+        requestPosts = new FacebookRequestPosts(param);
+    }
+
+    public static Crawler rawBuild(String name, String raw) throws URISyntaxException, IOException {
+        String pageId = FacebookPageIdFetcher.getPageId(raw);
+        return new FacebookCrawler(name, pageId);
     }
 
     public  PostList getList() throws IOException, InterruptedException {

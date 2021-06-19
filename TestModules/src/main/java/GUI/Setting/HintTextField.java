@@ -6,9 +6,10 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
 public class HintTextField extends JTextField {
-
 	Font gainFont = new Font(Font.SERIF, Font.PLAIN, 12);
 	Font lostFont = new Font(Font.SERIF, Font.ITALIC, 12);
+	private boolean valid = false;
+
 
 	public HintTextField(final String hint) {
 
@@ -23,10 +24,13 @@ public class HintTextField extends JTextField {
 				if (getText().equals(hint)) {
 					setText("");
 					setForeground(Color.BLACK);
-					setFont(lostFont);
+					setFont(gainFont);
+					valid = false;
 				} else {
 					setText(getText());
+					setForeground(Color.BLACK);
 					setFont(gainFont);
+					valid = true;
 				}
 			}
 
@@ -36,13 +40,20 @@ public class HintTextField extends JTextField {
 					setText(hint);
 					setFont(lostFont);
 					setForeground(Color.GRAY);
+					valid = false;
 				} else {
 					setText(getText());
 					setFont(gainFont);
 					setForeground(Color.BLACK);
+					valid = true;
 				}
 			}
 		});
 
+	}
+
+	@Override
+	public boolean isValid() {
+		return valid;
 	}
 }
