@@ -10,6 +10,7 @@ public class SettingGUI extends JScrollPane {
 	private final JPanel innerPanel;
 	private final Box vBox;
 	private final NameSector nameSector;
+	private final CrawlerSector crawlerSector;
 	private final NewSector newSector;
 	private final DeleteSector deleteSector;
 	private Data data;
@@ -30,6 +31,14 @@ public class SettingGUI extends JScrollPane {
 		// name
 		nameSector = new NameSector(padding);
 		vBox.add(nameSector);
+
+		// crawlers
+		crawlerSector = new CrawlerSector(padding);
+		crawlerSector.setVisible(false);
+		Box crawlersBox = Box.createHorizontalBox();
+		crawlersBox.add(Box.createHorizontalStrut(padding));
+		crawlersBox.add(crawlersBox);
+		vBox.add(crawlersBox);
 
 		// new
 		newSector = new NewSector(padding);
@@ -53,21 +62,30 @@ public class SettingGUI extends JScrollPane {
 
 	public void filterSelectedPerform() {
 		nameSector.toggleMode(false);
+		// root selected
 		if (!data.isSelectTop()) {
 			nameSector.setName(data.getSelected().getName());
 			nameSector.setSelected(true);
+
 			deleteSector.setVisible(true);
 		} else {
 			nameSector.setName("選取一個節點來編輯");
 			nameSector.setSelected(false);
+
 			deleteSector.setVisible(false);
 		}
+
+		crawlerSector.setVisible(data.getSelected().getFilterNode().isCelebrity());
+		if (!data.getSelected().getFilterNode().isCelebrity())
+			crawlerSector.showCrawlers();
+
 		newSector.setVisible(!data.getSelected().getFilterNode().isCelebrity());
 	}
 
 	public void setData(Data data) {
 		this.data = data;
 		nameSector.setData(data);
+		crawlerSector.setData(data);
 		newSector.setData(data);
 		deleteSector.setData(data);
 	}

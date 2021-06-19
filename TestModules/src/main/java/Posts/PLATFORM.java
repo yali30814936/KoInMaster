@@ -2,8 +2,8 @@ package Posts;
 
 public enum PLATFORM {
 	YOUTUBE("YouTube"),
-	TWITTER("推特"),
-	FACEBOOK("臉書");
+	TWITTER("Twitter"),
+	FACEBOOK("Facebook");
 
 	private final String displayName;
 	PLATFORM(String displayName) {this.displayName = displayName;}
