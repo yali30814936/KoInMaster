@@ -31,6 +31,11 @@ public class TwitterCrawler extends Crawler{
     }
 
     @Override
+    public String getFormatParam() {
+        return "user name = @" + param;
+    }
+
+    @Override
     public PostList call() {
         return searchTweets(param);
     }

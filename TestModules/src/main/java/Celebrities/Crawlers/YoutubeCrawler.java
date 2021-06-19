@@ -73,6 +73,11 @@ public class YoutubeCrawler extends Crawler{
 	}
 
 	@Override
+	public String getFormatParam() {
+		return "channel id = " + param;
+	}
+
+	@Override
 	public PostList call() {
 		return searchChannel(param);
 	}

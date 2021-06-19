@@ -10,6 +10,7 @@ public class SettingGUI extends JScrollPane {
 	private final JPanel innerPanel;
 	private final Box vBox;
 	private final NameSector nameSector;
+	private final Box crawlersBox;
 	private final CrawlerSector crawlerSector;
 	private final NewSector newSector;
 	private final DeleteSector deleteSector;
@@ -33,11 +34,12 @@ public class SettingGUI extends JScrollPane {
 		vBox.add(nameSector);
 
 		// crawlers
+		crawlersBox = Box.createHorizontalBox();
 		crawlerSector = new CrawlerSector(padding);
-		crawlerSector.setVisible(false);
-		Box crawlersBox = Box.createHorizontalBox();
+		crawlersBox.add(Box.createHorizontalStrut(padding * 2));
+		crawlersBox.add(crawlerSector);
 		crawlersBox.add(Box.createHorizontalStrut(padding));
-		crawlersBox.add(crawlersBox);
+		crawlersBox.setVisible(false);
 		vBox.add(crawlersBox);
 
 		// new
@@ -75,8 +77,8 @@ public class SettingGUI extends JScrollPane {
 			deleteSector.setVisible(false);
 		}
 
-		crawlerSector.setVisible(data.getSelected().getFilterNode().isCelebrity());
-		if (!data.getSelected().getFilterNode().isCelebrity())
+		crawlersBox.setVisible(data.getSelected().getFilterNode().isCelebrity());
+		if (data.getSelected().getFilterNode().isCelebrity())
 			crawlerSector.showCrawlers();
 
 		newSector.setVisible(!data.getSelected().getFilterNode().isCelebrity());

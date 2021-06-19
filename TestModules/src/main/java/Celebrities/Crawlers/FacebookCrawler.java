@@ -19,6 +19,10 @@ public class FacebookCrawler extends Crawler {
         return fbJsoup.getList();
     }
 
+    public String getFormatParam() {
+        return "page id = " + param;
+    }
+
     @Override
     public PostList call() throws InterruptedException, IOException { return getList(); }
 

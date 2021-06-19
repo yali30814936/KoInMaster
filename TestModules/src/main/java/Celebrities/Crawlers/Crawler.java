@@ -36,6 +36,8 @@ public abstract class Crawler implements Callable<PostList> {
 
 	public String getParam() { return param; }
 
+	public abstract String getFormatParam();
+
 	@Override
 	public abstract String toString();
 }
