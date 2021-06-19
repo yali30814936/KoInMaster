@@ -6,6 +6,7 @@ import twitter4j.MediaEntity;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,6 +14,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class TwitterBlock extends JPanel{
@@ -25,10 +27,10 @@ public class TwitterBlock extends JPanel{
     private int mediaSize;
     private List<String> mediaList;
     private JPanel panel;
+    private JScrollPane scrollPane;
     public TwitterBlock(Post post) throws IOException {
 
-        super(new GridLayout(0,1));
-
+        this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
         if(post.getType()==TYPE.NONE) {
             Title = new HyperLink(String.format("%s在%s平台發布了貼文", post.getName(), post.getPlatform().toString(), post.getType()),((TwitterPost)post).getUrl());
         }
@@ -43,8 +45,9 @@ public class TwitterBlock extends JPanel{
         }
         panel = new JPanel();
         panel.setLayout(new BoxLayout(panel,BoxLayout.X_AXIS));
+        panel.setBorder(new LineBorder(Color.red));
         panel.add(Title);
-
+        panel.add(Box.createGlue());
         Detail = new JButton("更多資訊");
         if(post.getMedia().size()<=1){
             Detail.setEnabled(false);
@@ -54,12 +57,15 @@ public class TwitterBlock extends JPanel{
         }
         panel.add(Detail);
         add(panel);
+        add(Box.createGlue());
         Detail.addActionListener(new OpenDetail());
-        panel = new JPanel();
         panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
         SimpleDateFormat ft = new SimpleDateFormat("MM月dd日 HH:mm");
-        Date=new JLabel(String.format(ft.format(post.getPublishedTime())));
-        panel.add(Date);
+        Date=new JLabel(String.format(ft.format(post.getPublishedTime())),2);
+        Date.setBorder(new LineBorder(Color.red));
+        add(Date);
+        add(Box.createGlue());
+
 
         if(post.getType()==TYPE.QUOTED){
             String qu =((TwitterPost)post).getStatus().getQuotedStatus().getText();
@@ -75,20 +81,26 @@ public class TwitterBlock extends JPanel{
             Text = new JLabel(tmp);
         }
         else {
-            Text = new JLabel(post.getText());
+            Text = new JLabel(post.getText(),2);
         }
-        panel.add(Text);
+        Text.setBorder(new LineBorder(Color.red));
+        add(Text);
+        add(Box.createGlue());
 
-        mediaSize = post.getMedia().size();
+
         mediaList=post.getMedia();
         if(post.getMedia().size()!=0) {
             MediaPanel = new JPanel(new GridLayout());
             String url = post.getMedia().get(0);
             URL ur = new URL(url);
             Image image = ImageIO.read(ur);
-            Mediatmp = new JLabel(new ImageIcon(image));
+            int x = image.getWidth(null);
+            int y = image.getHeight(null);
+            image = image.getScaledInstance(x/2,y/2,Image.SCALE_DEFAULT);
+            Mediatmp = new JLabel(new ImageIcon(image),2);
             MediaPanel.add(Mediatmp);
-            panel.add(MediaPanel);
+            MediaPanel.setBorder(new LineBorder(Color.red));
+            add(MediaPanel);
         }
         else if(post.getType()==TYPE.QUOTED){
             for(MediaEntity me:((TwitterPost)post).getStatus().getQuotedStatus().getMediaEntities()){
@@ -98,11 +110,14 @@ public class TwitterBlock extends JPanel{
             String url = post.getMedia().get(0);
             URL ur = new URL(url);
             Image image = ImageIO.read(ur);
-            Mediatmp = new JLabel(new ImageIcon(image));
+            int x = image.getWidth(null);
+            int y = image.getHeight(null);
+            image = image.getScaledInstance(x/2,y/2,Image.SCALE_DEFAULT);
+            Mediatmp = new JLabel(new ImageIcon(image),2);
             MediaPanel.add(Mediatmp);
-            panel.add(MediaPanel);
+            MediaPanel.setBorder(new LineBorder(Color.red));
+            add(MediaPanel);
         }
-        add(panel);
     }
     private class OpenDetail implements ActionListener {
         @Override
