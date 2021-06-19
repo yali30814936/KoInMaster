@@ -6,7 +6,7 @@ import java.util.List;
 
 public class TwitterCrawlerTest {
     public static void main(String[] args) throws Exception {
-        TwitterCrawler tweets = new TwitterCrawler("momosuzunene", "momosuzunene");
+        TwitterCrawler tweets = new TwitterCrawler("uruharushia", "uruharushia");
         List<Post> list = tweets.call();
         for (Post p:list)
             System.out.println(p);
