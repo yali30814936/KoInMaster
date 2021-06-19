@@ -1,20 +1,27 @@
 package Core;
 
 import Celebrities.Celebrities;
+import Posts.PostListContainer;
+import Posts.PostListReadWrite;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.security.GeneralSecurityException;
+import java.text.ParseException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Data {
 	private List<String> directories;
 	private Celebrities celebrities;
+	private PostListContainer container;
 	private Selected selected;
 	private JTree jTree;
 	private DefaultMutableTreeNode top;
+
+	public Data() {}
 
 	public Celebrities getCelebrities() {
 		return celebrities;
@@ -72,5 +79,36 @@ public class Data {
 
 	public void setJTree(JTree jTree) {
 		this.jTree = jTree;
+	}
+
+	public PostListContainer getContainer() {
+		return container;
+	}
+
+	public void setContainer(PostListContainer container) {
+		this.container = container;
+	}
+
+	public void readPosts() {
+		try {
+			container = new PostListContainer(PostListReadWrite.read());
+		} catch (IOException | GeneralSecurityException | URISyntaxException | ParseException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void writePosts() {
+		try {
+			PostListReadWrite.write(container.getOriginalList());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public List<String> getEnabledNames() {
+		return celebrities.stream()
+		                  .filter(celebrity -> celebrity.isEnabled())
+		                  .map(celebrity -> celebrity.getName())
+		                  .collect(Collectors.toList());
 	}
 }

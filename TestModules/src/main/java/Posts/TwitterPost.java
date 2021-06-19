@@ -41,7 +41,7 @@ public class TwitterPost extends Post{
         }
         // normal tweet
         else{
-            type = TYPE.NONE;
+            type = TYPE.TWEET;
             user = status.getUser().getName();
         }
 

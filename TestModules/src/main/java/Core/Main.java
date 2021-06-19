@@ -32,6 +32,10 @@ public class Main {
 		// setup filter
 		app.setData(data);
 		app.loadFilter();
-		app.setFunctionEnabled(true);
+		app.setFilterEnabled(true);
+
+		// load PostList
+		data.readPosts();
+		app.setRefreshEnabled(true);
 	}
 }

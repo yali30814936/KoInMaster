@@ -1,11 +1,8 @@
 package Posts;
 
-import Celebrities.Celebrities;
 import twitter4j.JSONArray;
 import twitter4j.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -42,7 +39,6 @@ public class PostListReadWrite {
 		catch (NoSuchElementException  elementException){
 			System.out.println("File improperly formed. Terminating");
 		}
-		PostList posts=new PostList(objs);
-		return posts;
+		return new PostList(objs);
 	}
 }

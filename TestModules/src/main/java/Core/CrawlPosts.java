@@ -1,6 +1,5 @@
 package Core;
 
-import Posts.Post;
 import Posts.PostList;
 import Posts.PostSort;
 
@@ -17,10 +16,12 @@ import java.util.concurrent.FutureTask;
 public class CrawlPosts extends SwingWorker<PostList,Object> {
 	private final List<FutureTask<PostList>> tasks;
 	private final JButton button;
+	private final Data data;
 
-	public CrawlPosts(List<FutureTask<PostList>> tasks, JButton button) {
+	public CrawlPosts(List<FutureTask<PostList>> tasks, JButton button, Data data) {
 		this.tasks = tasks;
 		this.button = button;
+		this.data = data;
 	}
 
 	private PostList getPostList() throws ExecutionException, InterruptedException {
@@ -52,8 +53,8 @@ public class CrawlPosts extends SwingWorker<PostList,Object> {
 	protected void done() {
 		try {
 			// debug
-			for (Post p:get())
-				System.out.println(p);
+			data.getContainer().add(get());
+			data.writeData();
 			button.setEnabled(true);
 		} catch (InterruptedException | ExecutionException e) {
 			System.out.println(e.getMessage());

@@ -1,28 +1,22 @@
 package GUI;
 
-import Celebrities.Celebrity;
-import Celebrities.Crawlers.Crawler;
-import Core.CrawlPosts;
 import Core.Data;
 import GUI.Filter.FilterGUI;
 import GUI.Setting.SettingGUI;
-import Posts.PostList;
+import GUI.Type.TypeRefreshGUI;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.FutureTask;
 
 import static javax.swing.SpringLayout.*;
 
 public class MainGUI extends JFrame {
 	private final JButton toggleSettingButton;
 	private final FilterGUI filterGUI;
-	private final JButton refreshButton;
 	private final SettingGUI settingGUI;
+	private final TypeRefreshGUI typeRefreshGUI;
 	private Data data;
 
 	public MainGUI() {
@@ -68,11 +62,12 @@ public class MainGUI extends JFrame {
 		springLayout.putConstraint(EAST, settingGUI, -10, EAST, contentPane);
 		springLayout.putConstraint(WEST, settingGUI, 10, EAST, filterPanel);
 
-		// debug button
-		refreshButton = new JButton("Get Posts");
-		refreshButton.addActionListener(new RefreshPostList());
-		contentPane.add(refreshButton);
-		refreshButton.setEnabled(false);
+		// type-refresh GUI
+		typeRefreshGUI = new TypeRefreshGUI();
+		contentPane.add(typeRefreshGUI);
+		springLayout.putConstraint(NORTH, typeRefreshGUI, 10, NORTH, contentPane);
+		springLayout.putConstraint(EAST, typeRefreshGUI, -10, EAST, contentPane);
+		springLayout.putConstraint(WEST, typeRefreshGUI, 10, EAST, filterGUI);
 	}
 
 	/**
@@ -82,36 +77,19 @@ public class MainGUI extends JFrame {
 		filterGUI.loadTree();
 	}
 
-	public void setFunctionEnabled(boolean enabled) {
-		refreshButton.setEnabled(enabled);
+	public void setFilterEnabled(boolean enabled) {
 		toggleSettingButton.setEnabled(enabled);
+	}
+
+	public void setRefreshEnabled(boolean enabled) {
+		typeRefreshGUI.setEnabled(enabled);
 	}
 
 	public void setData(Data data) {
 		this.data = data;
 		filterGUI.setData(data);
 		settingGUI.setData(data);
-	}
-
-	/**
-	 * Handle refresh event.
-	 * Call asynchronous class to crawl.
-	 */
-	private class RefreshPostList implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			List<FutureTask<PostList>> tasks = new ArrayList<>();
-
-			refreshButton.setEnabled(false);
-
-			for (Celebrity cel:data.getCelebrities())
-				if (cel.isEnabled())
-					for (Crawler cr:cel.getCrawlers().values())
-						tasks.add(new FutureTask<>(cr));
-
-			CrawlPosts crawlPosts = new CrawlPosts(tasks, refreshButton);
-			crawlPosts.execute();
-		}
+		typeRefreshGUI.setData(data);
 	}
 
 	private class toggleSetting implements ActionListener {
