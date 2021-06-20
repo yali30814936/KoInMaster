@@ -1,10 +1,11 @@
 package Posts;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PostListContainer {
     private final PostList originalList;
-    private PostList finalList;
+    private PostList filteredList;
     private List<String> nameWhiteList;
     private List<TYPE> typeWhiteList;
 
@@ -55,30 +56,17 @@ public class PostListContainer {
         return originalList;
     }
 
-    public PostList getFinalList() {
+    public PostList getFilteredList() {
         filter();
-        return finalList;
+        return filteredList;
     }
 
     public void filter(){
-        finalList=new PostList();
-        boolean flag;
-        for(Post p:originalList) {
-            flag=false;
-            for (String name : nameWhiteList) {
-                if(!flag) {
-                    for (TYPE type : typeWhiteList) {
-                        if (p.getType() == type && p.getName().equals(name)) {
-                            finalList.add(p);
-                            flag=true;
-                            break;
-                        }
-                    }
-                }
-                else{
-                    break;
-                }
-            }
-        }
+        filteredList = new PostList(originalList.stream()
+                                                .filter(post -> nameWhiteList.stream()
+                                                                             .anyMatch(s -> s.equals(post.name)))
+                                                .filter(post -> typeWhiteList.stream()
+                                                                             .anyMatch(type -> type == post.getType()))
+                                                .collect(Collectors.toList()));
     }
 }

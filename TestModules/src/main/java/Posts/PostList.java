@@ -1,7 +1,6 @@
 package Posts;
 
 
-import Celebrities.Celebrity;
 import twitter4j.JSONArray;
 import twitter4j.JSONObject;
 
@@ -10,10 +9,16 @@ import java.net.URISyntaxException;
 import java.security.GeneralSecurityException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class PostList extends ArrayList<Post>{
 
-    public PostList(){};
+    public PostList(){super();};
+
+    public PostList(List<Post> list) {
+        super();
+        addAll(list);
+    }
 
     public PostList(JSONArray jsonArray) throws GeneralSecurityException, IOException, URISyntaxException, ParseException {
         YoutubePost temp=new YoutubePost();

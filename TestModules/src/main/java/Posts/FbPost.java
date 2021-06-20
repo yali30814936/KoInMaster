@@ -52,6 +52,7 @@ public class FbPost extends Post{
     public Boolean getHasSubPost(){
         return hasSubPost;
     }
+    
     @Override
     public String toString() {
         if(getHasSubPost()){

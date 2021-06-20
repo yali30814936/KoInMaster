@@ -102,7 +102,7 @@ public class YoutubeCrawler extends Crawler{
 			for (SearchResult s:response.getItems())
 				list.add(new YoutubePost(name, s));
 		} catch (IOException e) {
-			System.err.println("搜尋 '" + name + "' 的YT頻道 id='" + channelId +"' 時發生錯誤");
+			System.err.println("搜尋 '" + name + "' 的YT頻道 id='" + channelId +"' 時發生錯誤：" + e);
 		}
 		return list;
 	}

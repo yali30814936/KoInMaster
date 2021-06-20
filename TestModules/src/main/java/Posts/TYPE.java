@@ -8,8 +8,8 @@ public enum TYPE {
 	UPCOMING("即將上映"),
 	TWEET("推文"),
 	RT("轉推"),
-	REPLY("回覆貼文"),
-	QUOTED("引用貼文"),
+	REPLY("回覆推文"),
+	QUOTED("引用推文"),
 	POST("貼文");
 
 	private final String displayName;

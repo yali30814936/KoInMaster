@@ -1,21 +1,11 @@
 package Posts;
 
-import Celebrities.Crawlers.Crawler;
-import Celebrities.Crawlers.FacebookCrawler;
-import Celebrities.Crawlers.TwitterCrawler;
-import Celebrities.Crawlers.YoutubeCrawler;
-import org.openqa.selenium.Platform;
 import twitter4j.JSONObject;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.security.GeneralSecurityException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 public abstract class Post {
 	protected String name;
@@ -66,7 +56,7 @@ public abstract class Post {
 				temp.platform= PLATFORM.fromString(param.get(2));
 				temp.type= TYPE.fromString(param.get(3));
 				temp.url= param.get(4);
-				temp.publishedTime= new SimpleDateFormat("dow mmm dd hh:mm:ss zzz yyyy").parse(param.get(5));
+				temp.publishedTime= new Date(Long.parseLong(param.get(5)));
 				temp.media=param2;
 				return temp;
 			case TWITTER:
@@ -76,7 +66,7 @@ public abstract class Post {
 				temp.platform= PLATFORM.fromString(param.get(2));
 				temp.type= TYPE.fromString(param.get(3));
 				temp.url= param.get(4);
-				temp.publishedTime= new SimpleDateFormat("dow mmm dd hh:mm:ss zzz yyyy").parse(param.get(5));
+				temp.publishedTime= new Date(Long.parseLong(param.get(5)));
 				temp.media=param2;
 				return temp;
 			case FACEBOOK:
@@ -127,7 +117,7 @@ public abstract class Post {
 
 		obj.put("url", url);
 
-		obj.put("publishedTime",Long.toString(publishedTime.getTime()));
+		obj.put("publishedTime", publishedTime.getTime());
 
 		JSONObject medias = new JSONObject();
 		JSONObject sub;
