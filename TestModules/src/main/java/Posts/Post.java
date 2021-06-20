@@ -54,7 +54,7 @@ public abstract class Post {
 
 	public abstract JSONObject toJSONObject();
 
-	public static Post build(List<String> param, List<String> param2,boolean ytBollen) throws ParseException {
+	public static Post build(List<String> param, List<String> param2) throws ParseException {
 		switch (PLATFORM.fromString(param.get(2))) {
 			case YOUTUBE:
 				YoutubePost temp = new YoutubePost();
@@ -65,9 +65,8 @@ public abstract class Post {
 				temp.url = param.get(4);
 				temp.publishedTime = new Date(Long.parseLong(param.get(5)));
 				temp.media = param2;
-				temp.SetDescription(param.get(6));
-				temp.SetfullDescription(param.get(7));
-				temp.SetfullyLoaded(ytBollen);
+				temp.setDescription(param.get(6));
+				temp.setFullDescription(param.get(7));
 				return temp;
 			case TWITTER:
 				TwitterPost temp2 = new TwitterPost();

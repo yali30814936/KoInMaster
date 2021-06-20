@@ -35,6 +35,7 @@ public class PostListContainer {
             originalList.add(post);
         }
     }
+
     public void add(PostList posts){
         boolean hasInput=false;
         for(Post p:posts){
@@ -50,6 +51,8 @@ public class PostListContainer {
             }
             hasInput=false;
         }
+
+        originalList.sort(new PostSort().reversed());
     }
 
     public PostList getOriginalList() {

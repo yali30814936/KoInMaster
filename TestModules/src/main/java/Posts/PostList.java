@@ -26,7 +26,6 @@ public class PostList extends ArrayList<Post>{
             JSONObject object= (JSONObject) jsonArray.get(i);
             ArrayList<String> param=new ArrayList<>();
             ArrayList<String> param2=new ArrayList<>();
-            Boolean ytBollen=true;
             param.add(object.getString("name"));
             param.add(object.getString("text"));
             param.add(object.getString("platform"));
@@ -36,7 +35,6 @@ public class PostList extends ArrayList<Post>{
             if(object.getString("platform").equals("YouTube")){
                 param.add(object.getString("description"));
                 param.add(object.getString("fullDescription"));
-                ytBollen=object.getBoolean("fullyLoaded");
             }
             else if(object.getString("platform").equals("Twitter")) {
                 param.add(object.getString("user"));
@@ -44,7 +42,7 @@ public class PostList extends ArrayList<Post>{
             for (String key:object.getJSONObject("media").keySet()) {
                 param2.add(object.getJSONObject("media").getJSONObject(key).getString("oneMedia"));
             }
-            add(Post.build(param,param2,ytBollen));
+            add(Post.build(param,param2));
         }
     }
 

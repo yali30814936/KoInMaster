@@ -72,15 +72,15 @@ public class MainGUI extends JFrame {
 		contentPane.add(typeRefreshGUI);
 		springLayout.putConstraint(NORTH, typeRefreshGUI, 10, NORTH, contentPane);
 		springLayout.putConstraint(EAST, typeRefreshGUI, -10, EAST, contentPane);
-		springLayout.putConstraint(WEST, typeRefreshGUI, 10, EAST, filterGUI);
+		springLayout.putConstraint(WEST, typeRefreshGUI, 10, EAST, filterPanel);
 
 		// Block GUI
 		blockGUI = new BlockGUI();
-		contentPane.add(blockGUI);
 		blockGUI.setBorder(new LineBorder(Color.BLUE));
-		springLayout.putConstraint(NORTH, blockGUI, 10, SOUTH, typeRefreshGUI);
+		contentPane.add(blockGUI);
+		springLayout.putConstraint(NORTH, blockGUI, 3, SOUTH, typeRefreshGUI);
 		springLayout.putConstraint(EAST, blockGUI, -10, EAST, contentPane);
-//		springLayout.putConstraint(SOUTH, blockGUI, -10, SOUTH, contentPane);
+		springLayout.putConstraint(SOUTH, blockGUI, 0, SOUTH, contentPane);
 		springLayout.putConstraint(WEST, blockGUI, 10, EAST, filterPanel);
 	}
 
@@ -109,6 +109,10 @@ public class MainGUI extends JFrame {
 		blockGUI.refresh();
 	}
 
+	public void savePosts() {
+		data.writePosts();
+	}
+
 	public void setData(Data data) {
 		this.data = data;
 		filterGUI.setData(data);
@@ -130,5 +134,4 @@ public class MainGUI extends JFrame {
 			}
 		}
 	}
-
 }

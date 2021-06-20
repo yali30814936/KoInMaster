@@ -4,8 +4,6 @@ import com.google.api.services.youtube.model.SearchResult;
 import com.google.api.services.youtube.model.SearchResultSnippet;
 import twitter4j.JSONObject;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -14,8 +12,7 @@ public class YoutubePost extends Post{
 	private final String urlHead = "https://www.youtube.com/watch?v=";
 
 	private String description;
-	private String fullDescription = "";
-	private boolean fullyLoaded = false;
+	private String fullDescription;
 
 	public YoutubePost(){};
 
@@ -38,52 +35,16 @@ public class YoutubePost extends Post{
 		description = snippet.getDescription();
 	}
 
-	public YoutubePost(JSONObject object) throws ParseException {
-
-		name = object.getString("name");
-
-		text=object.getString("text");
-
-		platform=PLATFORM.fromString(object.getString("platform"));
-
-		type=TYPE.fromString(object.getString("type"));
-
-		url=object.getString("url");
-
-		publishedTime=new SimpleDateFormat("dow mon dd hh:mm:ss zzz yyyy").parse(object.getString("publishedTime"));
-
-		description=object.getString("description");
-
-		fullDescription=object.getString("fullDescription");
-
-		fullyLoaded=object.getBoolean("fullyLoaded");
-
-		ArrayList<String> tempMedias=new ArrayList<>();
-		for (String key:object.getJSONObject("media").keySet()) {
-			tempMedias.add(object.getJSONObject("media").getJSONObject(key).getString("oneMedia"));
-		}
-		media=tempMedias;
-	}
 	public JSONObject toJSONObject(){
 		JSONObject obj = new JSONObject();
-
 		obj.put("name", name);
-
 		obj.put("text", text);
-
 		obj.put("platform",platform.toString());
-
 		obj.put("type", type.toString());
-
 		obj.put("url", url);
-
 		obj.put("publishedTime", publishedTime.getTime());
-
 		obj.put("description",description);
-
 		obj.put("fullDescription",fullDescription);
-
-		obj.put("fullyLoaded",fullyLoaded);
 
 		JSONObject medias = new JSONObject();
 		JSONObject sub;
@@ -96,17 +57,19 @@ public class YoutubePost extends Post{
 		return obj;
 	}
 
-	public void  SetDescription(String description){
+
+	public String getFullDescription() {
+		return fullDescription;
+	}
+
+	public void setDescription(String description){
 		this.description=description;
 	}
 
-	public void SetfullDescription(String fullDescription){
+	public void setFullDescription(String fullDescription){
 		this.fullDescription=fullDescription;
 	}
 
-	public void SetfullyLoaded(boolean fullyLoaded){
-		this.fullyLoaded=fullyLoaded;
-	}
 	public String getDescription() {
 		return description;
 	}
@@ -122,7 +85,6 @@ public class YoutubePost extends Post{
 				", media=" + media +
 				", description='" + description + '\'' +
 				", fullDescription='" + fullDescription + '\'' +
-				", fullyLoad=" + fullyLoaded +
 				'}';
 	}
 }

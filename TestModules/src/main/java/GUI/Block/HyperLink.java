@@ -3,12 +3,18 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-public class HyperLink extends JLabel {
-    private String text,url;
+public class HyperLink extends JTextField {
+    private final String text;
+    private final String url;
     private boolean isSupported;
     public HyperLink (String text,String url){
         this.text = text;
         this.url = url;
+        setText(text);
+        setFont(new Font(Font.SERIF, Font.PLAIN, 16));
+        setBorder(null);
+        setBackground(Color.white);
+        setEditable(false);
         try {
             this.isSupported = Desktop.isDesktopSupported()
                     && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE);
@@ -32,14 +38,15 @@ public class HyperLink extends JLabel {
                     Desktop.getDesktop().browse(
                             new java.net.URI(HyperLink.this.url));
                 } catch (Exception ex) {
+                    ex.printStackTrace();
                 }
             }
         });
     }
     private void setText(boolean b) {
         if (!b)
-            setText("<html><font color=blue><u>" + text);
+            setForeground(Color.BLUE);
         else
-            setText("<html><font color=red><u>" + text);
+            setForeground(Color.RED);
     }
 }

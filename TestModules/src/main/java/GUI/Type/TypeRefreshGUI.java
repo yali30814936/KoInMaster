@@ -40,6 +40,7 @@ public class TypeRefreshGUI extends Box {
 		refreshButton.addActionListener(new RefreshPosts());
 
 		add(panel);
+		add(Box.createHorizontalGlue());
 		add(refreshButton);
 	}
 

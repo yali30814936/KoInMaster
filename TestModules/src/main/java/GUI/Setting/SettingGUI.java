@@ -7,8 +7,6 @@ import java.awt.*;
 
 public class SettingGUI extends JScrollPane {
 	private final int padding = 20;
-	private final JPanel innerPanel;
-	private final Box vBox;
 	private final NameSector nameSector;
 	private final Box crawlersBox;
 	private final CrawlerSector crawlerSector;
@@ -21,12 +19,12 @@ public class SettingGUI extends JScrollPane {
 		setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		getVerticalScrollBar().setUnitIncrement(20);
 
-		innerPanel = new JPanel();
+		JPanel innerPanel = new JPanel();
 		innerPanel.setLayout(new BoxLayout(innerPanel, BoxLayout.Y_AXIS));
 		setViewportView(innerPanel);
 
-		// stew
-		vBox = Box.createVerticalBox();
+		// bone
+		Box vBox = Box.createVerticalBox();
 		vBox.add(Box.createVerticalStrut(padding));
 
 		// name

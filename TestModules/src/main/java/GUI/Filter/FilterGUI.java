@@ -71,6 +71,7 @@ public class FilterGUI extends JScrollPane {
 			buffer = cel.getPath().split("/");
 			prev = top;
 			for (String bf:buffer) {
+				if (bf.equals("")) break;
 				curr = find(prev, bf);
 
 				prev = curr;

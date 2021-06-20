@@ -8,6 +8,12 @@ import java.io.IOException;
 
 public class BlockGUI extends JScrollPane {
 	private Data data;
+	private JPanel panel;
+
+	public BlockGUI() {
+		super();
+		getVerticalScrollBar().setUnitIncrement(20);
+	}
 
 	public void setData(Data data) {
 		this.data = data;
@@ -16,14 +22,12 @@ public class BlockGUI extends JScrollPane {
 	public void refresh() {
 		PostList list = data.getContainer().getFilteredList();
 
-		removeAll();
+		if (panel != null)
+			remove(panel);
 
 		try {
-			JPanel blockPanel = BlockList.generateBlockList(list);
-			add(blockPanel);
-			setViewportView(blockPanel);
-			repaint();
-			revalidate();
+			panel = new BlockList(list);
+			setViewportView(panel);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

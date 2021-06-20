@@ -8,13 +8,13 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.youtube.YouTube;
-import com.google.api.services.youtube.model.ChannelListResponse;
-import com.google.api.services.youtube.model.SearchListResponse;
-import com.google.api.services.youtube.model.SearchResult;
+import com.google.api.services.youtube.model.*;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -22,6 +22,8 @@ import java.util.regex.Pattern;
 public class YoutubeCrawler extends Crawler{
 	private final String apiKey;
 	private final YouTube.Search.List request;
+	private final YouTube.Videos.List details;
+	private PostList postList;
 
 	public YoutubeCrawler(String name, String channelId) throws GeneralSecurityException, IOException {
 		super(name, PLATFORM.YOUTUBE);
@@ -41,8 +43,9 @@ public class YoutubeCrawler extends Crawler{
 		// this throw GeneralSecurityException
 		NetHttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
 		YouTube youTube = new YouTube.Builder(httpTransport, JSON_FACTORY, null)
-				.setApplicationName("KoInMaster").build();
+									 .setApplicationName("KoInMaster").build();
 		request = youTube.search().list(Collections.singletonList("snippet"));
+		details = youTube.videos().list(Collections.singletonList("snippet"));
 	}
 
 
@@ -88,7 +91,8 @@ public class YoutubeCrawler extends Crawler{
 	}
 
 	public PostList searchChannel(String channelId){
-		PostList list = new PostList();
+		postList = new PostList();
+		List<String> ids = new ArrayList<>();
 		try {
 			SearchListResponse response = request.setKey(apiKey)
 			                                     .setChannelId(channelId)
@@ -99,12 +103,31 @@ public class YoutubeCrawler extends Crawler{
 			                                     .setMaxResults(20L)
 			                                     .setType(Collections.singletonList("video"))
 			                                     .execute();
-			for (SearchResult s:response.getItems())
-				list.add(new YoutubePost(name, s));
+			for (SearchResult s:response.getItems()) {
+				ids.add(s.getId().getVideoId());
+				postList.add(new YoutubePost(name, s));
+			}
 		} catch (IOException e) {
-			System.err.println("搜尋 '" + name + "' 的YT頻道 id='" + channelId +"' 時發生錯誤：" + e);
+			System.err.println("搜尋 '" + name + "' 的YT頻道 id='" + channelId +"' 時發生錯誤：\n" + e);
 		}
-		return list;
+
+		List<String> details = getDetailList(ids);
+		for (int i = 0; i < details.size(); i++)
+			((YoutubePost) postList.get(i)).setFullDescription(details.get(i));
+
+		return postList;
+	}
+
+	private List<String> getDetailList(List<String> ids) {
+		List<String> detailList = new ArrayList<>();
+		try {
+			VideoListResponse response = details.setKey(apiKey).setId(ids).execute();
+			for (Video s:response.getItems())
+				detailList.add(s.getSnippet().getDescription());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return detailList;
 	}
 
 	@Override
