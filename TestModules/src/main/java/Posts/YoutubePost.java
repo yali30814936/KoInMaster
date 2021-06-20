@@ -1,6 +1,5 @@
 package Posts;
 
-import com.google.api.services.youtube.YouTube;
 import com.google.api.services.youtube.model.SearchResult;
 import com.google.api.services.youtube.model.SearchResultSnippet;
 import twitter4j.JSONObject;
@@ -15,6 +14,8 @@ public class YoutubePost extends Post{
 	private final String urlHead = "https://www.youtube.com/watch?v=";
 
 	private String description;
+	private String fullDescription = "";
+	private boolean fullyLoaded = false;
 
 	public YoutubePost(){};
 
@@ -72,6 +73,8 @@ public class YoutubePost extends Post{
 				", publishedTime=" + publishedTime +
 				", media=" + media +
 				", description='" + description + '\'' +
+				", fullDescription='" + fullDescription + '\'' +
+				", fullyLoad=" + fullyLoaded +
 				'}';
 	}
 }
