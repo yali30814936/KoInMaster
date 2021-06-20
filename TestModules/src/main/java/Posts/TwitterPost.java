@@ -89,6 +89,35 @@ public class TwitterPost extends Post{
         media=tempMedias;
     }
 
+    public JSONObject toJSONObject(){
+        JSONObject obj = new JSONObject();
+
+        obj.put("name", name);
+
+        obj.put("text", text);
+
+        obj.put("platform",platform.toString());
+
+        obj.put("type", type.toString());
+
+        obj.put("url", url);
+
+        obj.put("publishedTime", publishedTime.getTime());
+
+        obj.put("user",user);
+
+        JSONObject medias = new JSONObject();
+        JSONObject sub;
+        for(int i=0;i<media.size();i++){
+            sub=new JSONObject();
+            sub.put("oneMedia",media.get(i));
+            medias.put(String.valueOf(i),sub);
+        }
+        obj.put("media",medias);
+        return obj;
+    }
+
+
     public String getUser(){
         return user;
     }
