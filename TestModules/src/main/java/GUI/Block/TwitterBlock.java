@@ -87,18 +87,6 @@ public class TwitterBlock extends JPanel{
             //Mediatmp.setBorder(new LineBorder(Color.red));
             hBox4.add(Mediatmp);
             add(hBox4);
-        } else if (post.getType() == TYPE.QUOTED) {
-            MediaPanel = new JPanel(new GridLayout());
-            String url = post.getMedia().get(0);
-            URL ur = new URL(url);
-            Image image = ImageIO.read(ur);
-            int x = image.getWidth(null);
-            int y = image.getHeight(null);
-            image = image.getScaledInstance(x / 2, y / 2, Image.SCALE_SMOOTH);
-            Mediatmp = new JLabel(new ImageIcon(image), 2);
-            //Mediatmp.setBorder(new LineBorder(Color.red));
-            hBox4.add(Mediatmp);
-            add(hBox4);
         }
     }
         private class OpenDetail implements ActionListener {
