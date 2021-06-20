@@ -6,14 +6,8 @@ import Posts.PostList;
 import javax.swing.*;
 import java.io.IOException;
 
-public class BlockGUI extends JPanel {
+public class BlockGUI extends JScrollPane {
 	private Data data;
-
-	public BlockGUI() {
-		super();
-	}
-
-
 
 	public void setData(Data data) {
 		this.data = data;
@@ -25,7 +19,11 @@ public class BlockGUI extends JPanel {
 		removeAll();
 
 		try {
-			add(new BlockList(list));
+			JPanel blockPanel = BlockList.generateBlockList(list);
+			add(blockPanel);
+			setViewportView(blockPanel);
+			repaint();
+			revalidate();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
