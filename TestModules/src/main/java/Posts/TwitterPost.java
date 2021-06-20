@@ -82,6 +82,8 @@ public class TwitterPost extends Post{
 
         publishedTime=new SimpleDateFormat("dow mon dd hh:mm:ss zzz yyyy").parse(object.getString("publishedTime"));
 
+        user=object.getString("user");
+
         ArrayList<String> tempMedias=new ArrayList<>();
         for (String key:object.getJSONObject("media").keySet()) {
             tempMedias.add(object.getJSONObject("media").getJSONObject(key).getString("oneMedia"));
@@ -126,6 +128,9 @@ public class TwitterPost extends Post{
         return status;
     }
 
+    public void  SetUser(String user){
+        this.user=user;
+    }
     @Override
     public String toString() {
         return "TwitterPost{" +

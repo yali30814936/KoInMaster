@@ -43,7 +43,6 @@ public class FacebookJsoup {
                 mediaTemp.add(image2.attr("src"));
             }
             finalText=content.html();
-            finalText="<html>"+finalText+"</html>";
             finalText=finalText.replaceAll("⋯⋯","");
             finalText=finalText.replaceAll("查看更多","");
             finalText=finalText.replaceAll("<a .*?>","");
@@ -62,22 +61,22 @@ public class FacebookJsoup {
             URL=URL.replaceAll("\\?.*","");
             FbPost temp=new FbPost(name,URL,mediaTemp,date,finalText,!subPostItems.isEmpty());
             if(!subPostItems.isEmpty()){
-                Post tempSubpost= getsubpost(subPostItems);
-                temp.setSubPost(tempSubpost);
+                String finalsubText=getsubpost(subPostItems);
+                finalText=finalText+"<br>"+finalsubText;
+                finalText="<html>"+finalText+"</html>";
             }
-            list.add(temp);
         }
         return list;
     }
-    public Post getsubpost(Elements subPostItems){
-        Post temp=new FbPost("1","1",new ArrayList<>(),new Date(),"1",false);
+    public String getsubpost(Elements subPostItems){
+        String finalText="";
             for(Element subPostItem:subPostItems){
                 Elements content= subPostItem.getElementsByClass("mtm _5pco");
                 Elements time=subPostItem.getElementsByClass("_5ptz");
                 Elements subName =subPostItem.getElementsByClass("fwb");
                 Elements postHref=subPostItem.getElementsByClass("_5pcq");
                 Date date=new Date(Long.valueOf(time.attr("data-utime"))*1000);
-                String finalText;
+
                 List<String> mediaTemp=new ArrayList<>();
                 String URL="https://www.facebook.com/"+postHref.attr("href");
                 finalText=content.html();
@@ -85,6 +84,7 @@ public class FacebookJsoup {
                 finalText=finalText.replaceAll("查看更多","");
                 finalText=finalText.replaceAll("<a .*?>","");
                 finalText=finalText.replaceAll("</a>","");
+                finalText=subName.text()+"<br>"+date.toString()+"<br>"+finalText;
                // finalText=finalText.replaceAll("<span .*?>","");
                 //finalText=finalText.replaceAll("<br>","\n");
                // finalText=finalText.replaceAll("<p>","");
@@ -92,9 +92,9 @@ public class FacebookJsoup {
                // finalText=finalText.replaceAll("</div>","");
                // finalText=finalText.replaceAll("<div.*?>","");
                // finalText=finalText.replaceAll("</span>","");
-                temp=new FbPost(subName.text(),URL,mediaTemp,date,finalText,false);
+
 
             }
-        return  temp;
+        return  finalText;
     }
 }

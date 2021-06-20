@@ -52,6 +52,12 @@ public class YoutubePost extends Post{
 
 		publishedTime=new SimpleDateFormat("dow mon dd hh:mm:ss zzz yyyy").parse(object.getString("publishedTime"));
 
+		description=object.getString("description");
+
+		fullDescription=object.getString("fullDescription");
+
+		fullyLoaded=object.getBoolean("fullyLoaded");
+
 		ArrayList<String> tempMedias=new ArrayList<>();
 		for (String key:object.getJSONObject("media").keySet()) {
 			tempMedias.add(object.getJSONObject("media").getJSONObject(key).getString("oneMedia"));
@@ -75,6 +81,10 @@ public class YoutubePost extends Post{
 
 		obj.put("description",description);
 
+		obj.put("fullDescription",fullDescription);
+
+		obj.put("fullyLoaded",fullyLoaded);
+
 		JSONObject medias = new JSONObject();
 		JSONObject sub;
 		for(int i=0;i<media.size();i++){
@@ -86,8 +96,17 @@ public class YoutubePost extends Post{
 		return obj;
 	}
 
+	public void  SetDescription(String description){
+		this.description=description;
+	}
 
+	public void SetfullDescription(String fullDescription){
+		this.fullDescription=fullDescription;
+	}
 
+	public void SetfullyLoaded(boolean fullyLoaded){
+		this.fullyLoaded=fullyLoaded;
+	}
 	public String getDescription() {
 		return description;
 	}

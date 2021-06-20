@@ -21,21 +21,30 @@ public class PostList extends ArrayList<Post>{
     }
 
     public PostList(JSONArray jsonArray) throws GeneralSecurityException, IOException, URISyntaxException, ParseException {
-        YoutubePost temp=new YoutubePost();
+
         for (int i = 0; i < jsonArray.length(); i++){
             JSONObject object= (JSONObject) jsonArray.get(i);
             ArrayList<String> param=new ArrayList<>();
             ArrayList<String> param2=new ArrayList<>();
+            Boolean ytBollen=true;
             param.add(object.getString("name"));
             param.add(object.getString("text"));
             param.add(object.getString("platform"));
             param.add(object.getString("type"));
             param.add(object.getString("url"));
             param.add(object.getString("publishedTime"));
+            if(object.getString("platform").equals("YouTube")){
+                param.add(object.getString("description"));
+                param.add(object.getString("fullDescription"));
+                ytBollen=object.getBoolean("fullyLoaded");
+            }
+            else if(object.getString("platform").equals("Twitter")) {
+                param.add(object.getString("user"));
+            }
             for (String key:object.getJSONObject("media").keySet()) {
                 param2.add(object.getJSONObject("media").getJSONObject(key).getString("oneMedia"));
             }
-            add(temp.build(param,param2));
+            add(Post.build(param,param2,ytBollen));
         }
     }
 

@@ -54,11 +54,10 @@ public abstract class Post {
 
 	public abstract JSONObject toJSONObject();
 
-	public static Post build(List<String> param, List<String> param2) throws ParseException {
-		Post temp;
+	public static Post build(List<String> param, List<String> param2,boolean ytBollen) throws ParseException {
 		switch (PLATFORM.fromString(param.get(2))) {
 			case YOUTUBE:
-				temp = new YoutubePost();
+				YoutubePost temp = new YoutubePost();
 				temp.name = param.get(0);
 				temp.text = param.get(1);
 				temp.platform = PLATFORM.fromString(param.get(2));
@@ -66,27 +65,31 @@ public abstract class Post {
 				temp.url = param.get(4);
 				temp.publishedTime = new Date(Long.parseLong(param.get(5)));
 				temp.media = param2;
+				temp.SetDescription(param.get(6));
+				temp.SetfullDescription(param.get(7));
+				temp.SetfullyLoaded(ytBollen);
 				return temp;
 			case TWITTER:
-				temp = new TwitterPost();
-				temp.name = param.get(0);
-				temp.text = param.get(1);
-				temp.platform = PLATFORM.fromString(param.get(2));
-				temp.type = TYPE.fromString(param.get(3));
-				temp.url = param.get(4);
-				temp.publishedTime = new Date(Long.parseLong(param.get(5)));
-				temp.media = param2;
-				return temp;
+				TwitterPost temp2 = new TwitterPost();
+				temp2.name = param.get(0);
+				temp2.text = param.get(1);
+				temp2.platform = PLATFORM.fromString(param.get(2));
+				temp2.type = TYPE.fromString(param.get(3));
+				temp2.url = param.get(4);
+				temp2.publishedTime = new Date(Long.parseLong(param.get(5)));
+				temp2.SetUser(param.get(6));
+				temp2.media = param2;
+				return temp2;
 			case FACEBOOK:
-				temp = new FbPost();
-				temp.name = param.get(0);
-				temp.text = param.get(1);
-				temp.platform = PLATFORM.fromString(param.get(2));
-				temp.type = TYPE.fromString(param.get(3));
-				temp.url = param.get(4);
-				temp.publishedTime = new Date(Long.parseLong(param.get(5)));
-				temp.media = param2;
-				return temp;
+				FbPost temp3 = new FbPost();
+				temp3.name = param.get(0);
+				temp3.text = param.get(1);
+				temp3.platform = PLATFORM.fromString(param.get(2));
+				temp3.type = TYPE.fromString(param.get(3));
+				temp3.url = param.get(4);
+				temp3.publishedTime = new Date(Long.parseLong(param.get(5)));
+				temp3.media = param2;
+				return temp3;
 			default:
 				return null;
 		}
