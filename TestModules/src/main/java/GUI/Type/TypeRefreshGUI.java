@@ -4,6 +4,7 @@ import Celebrities.Celebrity;
 import Celebrities.Crawlers.Crawler;
 import Core.CrawlPosts;
 import Core.Data;
+import GUI.MainGUI;
 import Posts.PostList;
 import Posts.TYPE;
 
@@ -42,15 +43,30 @@ public class TypeRefreshGUI extends Box {
 		add(refreshButton);
 	}
 
+	@Override
+	public void setEnabled(boolean enabled) {
+		for (JCheckBox checkBox:checkBoxes)
+			checkBox.setEnabled(enabled);
+		refreshButton.setEnabled(enabled);
+	}
+
 	public void setData(Data data) {
 		this.data = data;
 	}
 
-	private class TypeCheckBox extends JCheckBox {
-		private TYPE type;
+	public List<TYPE> getEnabledTypes() {
+		return checkBoxes.stream()
+		                 .filter(AbstractButton::isSelected)
+		                 .map(TypeCheckBox::getType)
+		                 .collect(Collectors.toList());
+	}
+
+	private static class TypeCheckBox extends JCheckBox {
+		private final TYPE type;
 
 		public TypeCheckBox(TYPE type) {
 			super(type.toString());
+			this.type = type;
 		}
 
 		public TYPE getType() {
@@ -61,10 +77,7 @@ public class TypeRefreshGUI extends Box {
 	private class RefreshType implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			data.getContainer().setTypeWhiteList(checkBoxes.stream()
-			                                               .filter(AbstractButton::isSelected)
-			                                               .map(TypeCheckBox::getType)
-			                                               .collect(Collectors.toList()));
+			((MainGUI) SwingUtilities.getWindowAncestor(refreshButton)).refreshBlock();
 		}
 	}
 
@@ -73,7 +86,7 @@ public class TypeRefreshGUI extends Box {
 		public void actionPerformed(ActionEvent e) {
 			List<FutureTask<PostList>> tasks = new ArrayList<>();
 
-			refreshButton.setEnabled(false);
+			setEnabled(false);
 
 			for (Celebrity cel:data.getCelebrities())
 				if (cel.isEnabled())

@@ -1,5 +1,6 @@
 package Core;
 
+import GUI.MainGUI;
 import Posts.PostList;
 import Posts.PostSort;
 
@@ -54,8 +55,10 @@ public class CrawlPosts extends SwingWorker<PostList,Object> {
 		try {
 			// debug
 			data.getContainer().add(get());
-			data.writeData();
-			button.setEnabled(true);
+			data.writePosts();
+			System.out.println("Done");
+			((MainGUI) SwingUtilities.getWindowAncestor(button)).setRefreshEnabled(true);
+			((MainGUI) SwingUtilities.getWindowAncestor(button)).refreshBlock();
 		} catch (InterruptedException | ExecutionException e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();

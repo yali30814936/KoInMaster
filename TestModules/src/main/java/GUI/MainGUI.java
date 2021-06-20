@@ -1,6 +1,8 @@
 package GUI;
 
+import Celebrities.Celebrity;
 import Core.Data;
+import GUI.Block.BlockGUI;
 import GUI.Filter.FilterGUI;
 import GUI.Setting.SettingGUI;
 import GUI.Type.TypeRefreshGUI;
@@ -9,6 +11,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.stream.Collectors;
 
 import static javax.swing.SpringLayout.*;
 
@@ -17,6 +20,7 @@ public class MainGUI extends JFrame {
 	private final FilterGUI filterGUI;
 	private final SettingGUI settingGUI;
 	private final TypeRefreshGUI typeRefreshGUI;
+	private final BlockGUI blockGUI;
 	private Data data;
 
 	public MainGUI() {
@@ -68,6 +72,14 @@ public class MainGUI extends JFrame {
 		springLayout.putConstraint(NORTH, typeRefreshGUI, 10, NORTH, contentPane);
 		springLayout.putConstraint(EAST, typeRefreshGUI, -10, EAST, contentPane);
 		springLayout.putConstraint(WEST, typeRefreshGUI, 10, EAST, filterGUI);
+
+		// Block GUI
+		blockGUI = new BlockGUI();
+		contentPane.add(blockGUI);
+		springLayout.putConstraint(NORTH, blockGUI, 10, SOUTH, typeRefreshGUI);
+		springLayout.putConstraint(EAST, blockGUI, -10, EAST, contentPane);
+//		springLayout.putConstraint(SOUTH, blockGUI, -10, SOUTH, contentPane);
+		springLayout.putConstraint(WEST, blockGUI, 10, EAST, filterPanel);
 	}
 
 	/**
@@ -85,11 +97,22 @@ public class MainGUI extends JFrame {
 		typeRefreshGUI.setEnabled(enabled);
 	}
 
+	public void refreshBlock() {
+		data.getContainer().setNameWhiteList(data.getCelebrities()
+		                                         .stream()
+		                                         .filter(Celebrity::isEnabled)
+		                                         .map(Celebrity::getName)
+		                                         .collect(Collectors.toList()));
+		data.getContainer().setTypeWhiteList(typeRefreshGUI.getEnabledTypes());
+		blockGUI.refresh();
+	}
+
 	public void setData(Data data) {
 		this.data = data;
 		filterGUI.setData(data);
 		settingGUI.setData(data);
 		typeRefreshGUI.setData(data);
+		blockGUI.setData(data);
 	}
 
 	private class toggleSetting implements ActionListener {

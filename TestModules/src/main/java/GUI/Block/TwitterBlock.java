@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 public class TwitterBlock extends JPanel{
@@ -32,13 +31,13 @@ public class TwitterBlock extends JPanel{
 
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         if (post.getType() == TYPE.TWEET) {
-            Title = new HyperLink(String.format("%s在%s平台發布了貼文", post.getName(), post.getPlatform().toString(), post.getType()), ((TwitterPost) post).getUrl());
+            Title = new HyperLink(String.format("%s在%s發布了推文", post.getName(), post.getPlatform().toString()), ((TwitterPost) post).getUrl());
         } else if (post.getType() == TYPE.RT) {
-            Title = new HyperLink(String.format("%s在%s平台轉推了%s的貼文", post.getName(), post.getPlatform().toString(), ((TwitterPost) post).getUser()), ((TwitterPost) post).getUrl());
+            Title = new HyperLink(String.format("%s在%s轉推了%s的推文", post.getName(), post.getPlatform().toString(), ((TwitterPost) post).getUser()), ((TwitterPost) post).getUrl());
         } else if (post.getType() == TYPE.REPLY) {
-            Title = new HyperLink(String.format("%s在%s平台回復了%s的貼文", post.getName(), post.getPlatform().toString(), ((TwitterPost) post).getUser()), ((TwitterPost) post).getUrl());
+            Title = new HyperLink(String.format("%s在%s回復了%s的推文", post.getName(), post.getPlatform().toString(), ((TwitterPost) post).getUser()), ((TwitterPost) post).getUrl());
         } else if (post.getType() == TYPE.QUOTED) {
-            Title = new HyperLink(String.format("%s在%s平台引用了%s的貼文", post.getName(), post.getPlatform().toString(), ((TwitterPost) post).getUser()), ((TwitterPost) post).getUrl());
+            Title = new HyperLink(String.format("%s在%s引用了%s的推文", post.getName(), post.getPlatform().toString(), ((TwitterPost) post).getUser()), ((TwitterPost) post).getUrl());
         }
 
         Box hBox1 = Box.createHorizontalBox();

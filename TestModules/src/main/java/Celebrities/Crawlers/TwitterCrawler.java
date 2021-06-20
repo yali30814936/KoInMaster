@@ -20,7 +20,7 @@ public class TwitterCrawler extends Crawler{
     }
 
     public static Crawler rawBuild(String name, String raw) throws IOException {
-        Matcher matcher = Pattern.compile("((https?://)?twitter.com/)?(?<ID>[^?]*)\\??")
+        Matcher matcher = Pattern.compile("((https?://)?(mobile.)?twitter.com/)?(?<ID>[^?]*)\\??")
                                  .matcher(raw);
         String param;
         if (matcher.find())

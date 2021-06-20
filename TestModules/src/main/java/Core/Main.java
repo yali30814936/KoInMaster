@@ -37,5 +37,6 @@ public class Main {
 		// load PostList
 		data.readPosts();
 		app.setRefreshEnabled(true);
+		app.refreshBlock();
 	}
 }
