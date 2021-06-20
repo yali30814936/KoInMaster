@@ -28,7 +28,7 @@ public class TwitterBlock extends JPanel{
     private JPanel panel;
     private JScrollPane scrollPane;
     public TwitterBlock(Post post) throws IOException {
-
+        this.setBackground(Color.white);
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         if (post.getType() == TYPE.TWEET) {
             Title = new HyperLink(String.format("%s在%s發布了推文", post.getName(), post.getPlatform().toString()), ((TwitterPost) post).getUrl());

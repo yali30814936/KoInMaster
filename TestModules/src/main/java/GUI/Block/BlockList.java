@@ -7,6 +7,7 @@ import Posts.PostList;
 import twitter4j.Twitter;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.io.IOException;
 
@@ -24,7 +25,9 @@ public class BlockList extends JScrollPane {
                 block = new TwitterBlock(post);
                 hBox = Box.createHorizontalBox();
                 hBox.add(block);
+                hBox.setBorder(new LineBorder(Color.cyan,3));
                 vBox.add(hBox);
+                vBox.add(Box.createVerticalStrut(20));
             }
         }
         panel.add(vBox);

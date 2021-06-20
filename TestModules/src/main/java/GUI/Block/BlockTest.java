@@ -9,7 +9,7 @@ public class BlockTest {
     private static TwitterCrawler Tweets;
     public static void main(String[] args) throws Exception {
         JFrame frame = new JFrame();
-        Tweets = new TwitterCrawler("uruharushia","uruharushia");
+        Tweets = new TwitterCrawler("tomoe_shirayuki","tomoe_shirayuki");
         PostList list = Tweets.call();
         TwitterBlock blockPanel = new TwitterBlock(list.get(13));
         JScrollPane scrollPane = new JScrollPane(blockPanel);
