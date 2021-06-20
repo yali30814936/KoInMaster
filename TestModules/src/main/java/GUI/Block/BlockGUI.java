@@ -26,6 +26,8 @@ public class BlockGUI extends JPanel {
 
 		try {
 			add(new BlockList(list));
+			repaint();
+			revalidate();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
