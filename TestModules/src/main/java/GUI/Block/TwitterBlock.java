@@ -31,7 +31,7 @@ public class TwitterBlock extends JPanel{
     public TwitterBlock(Post post) throws IOException {
 
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-        if (post.getType() == TYPE.NONE) {
+        if (post.getType() == TYPE.TWEET) {
             Title = new HyperLink(String.format("%s在%s平台發布了貼文", post.getName(), post.getPlatform().toString(), post.getType()), ((TwitterPost) post).getUrl());
         } else if (post.getType() == TYPE.RT) {
             Title = new HyperLink(String.format("%s在%s平台轉推了%s的貼文", post.getName(), post.getPlatform().toString(), ((TwitterPost) post).getUser()), ((TwitterPost) post).getUrl());
@@ -64,17 +64,7 @@ public class TwitterBlock extends JPanel{
 
 
         if (post.getType() == TYPE.QUOTED) {
-            String qu = ((TwitterPost) post).getStatus().getQuotedStatus().getText();
-            qu = qu.replaceAll("https://.*?$", "");
-            String tmp = ((TwitterPost) post).getStatus().getText();
-            tmp = tmp.replaceAll("https://.*?$", "");
-            tmp = tmp + "\n\n<hr>" + qu;
-            tmp = tmp.replaceAll("^RT ", "");
-            tmp = tmp.replaceAll("^@.*? ", "");
-            tmp = tmp.replaceAll("\n", "<br>");
-
-            tmp = "<html>" + tmp + "</html>";
-            Text = new JLabel(tmp);
+            Text = new JLabel(post.getText(),2);
         } else {
             Text = new JLabel(post.getText(), 2);
         }
@@ -99,9 +89,6 @@ public class TwitterBlock extends JPanel{
             hBox4.add(Mediatmp);
             add(hBox4);
         } else if (post.getType() == TYPE.QUOTED) {
-            for (MediaEntity me : ((TwitterPost) post).getStatus().getQuotedStatus().getMediaEntities()) {
-                post.getMedia().add(me.getMediaURL());
-            }
             MediaPanel = new JPanel(new GridLayout());
             String url = post.getMedia().get(0);
             URL ur = new URL(url);

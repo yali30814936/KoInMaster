@@ -38,6 +38,7 @@ public class TwitterPost extends Post{
         else if (status.getQuotedStatusId() != -1) {
             type = TYPE.QUOTED;
             user = status.getQuotedStatus().getUser().getName();
+            text = status.getText()+"\n\n<hr>"+status.getQuotedStatus().getText();
         }
         // normal tweet
         else{
@@ -55,8 +56,15 @@ public class TwitterPost extends Post{
 
         url = "https://twitter.com/"+status.getUser().getScreenName()+"/status/"+status.getId();
         publishedTime=status.getCreatedAt();
-        for(MediaEntity me:status.getMediaEntities()){
-            media.add(me.getMediaURL());
+        if(type==TYPE.QUOTED){
+            for (MediaEntity me : status.getQuotedStatus().getMediaEntities()) {
+                media.add(me.getMediaURL());
+            }
+        }
+        else {
+            for (MediaEntity me : status.getMediaEntities()) {
+                media.add(me.getMediaURL());
+            }
         }
     }
 
