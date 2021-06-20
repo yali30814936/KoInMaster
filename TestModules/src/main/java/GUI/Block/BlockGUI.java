@@ -28,8 +28,28 @@ public class BlockGUI extends JScrollPane {
 		try {
 			panel = new BlockList(list);
 			setViewportView(panel);
+			getVerticalScrollBar().setValue(0);
+			RestPos reset = new RestPos(getVerticalScrollBar());
+			reset.execute();
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+	}
+
+	private static class RestPos extends SwingWorker<Object,Object> {
+		private JScrollBar scrollBar;
+		public RestPos(JScrollBar scrollBar) {
+			this.scrollBar = scrollBar;
+		}
+		@Override
+		protected Object doInBackground() throws Exception {
+			Thread.sleep(100);
+			return null;
+		}
+
+		@Override
+		protected void done() {
+			scrollBar.setValue(0);
 		}
 	}
 }

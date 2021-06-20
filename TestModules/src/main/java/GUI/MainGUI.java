@@ -8,7 +8,6 @@ import GUI.Setting.SettingGUI;
 import GUI.Type.TypeRefreshGUI;
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -76,7 +75,6 @@ public class MainGUI extends JFrame {
 
 		// Block GUI
 		blockGUI = new BlockGUI();
-		blockGUI.setBorder(new LineBorder(Color.BLUE));
 		contentPane.add(blockGUI);
 		springLayout.putConstraint(NORTH, blockGUI, 3, SOUTH, typeRefreshGUI);
 		springLayout.putConstraint(EAST, blockGUI, -10, EAST, contentPane);

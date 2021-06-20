@@ -38,7 +38,5 @@ public class Main {
 		data.readPosts();
 		app.setRefreshEnabled(true);
 		app.refreshBlock();
-		app.repaint();
-		app.revalidate();
 	}
 }
