@@ -10,7 +10,8 @@ public enum TYPE {
 	RT("轉推"),
 	REPLY("回覆推文"),
 	QUOTED("引用推文"),
-	POST("貼文");
+	POST("貼文"),
+	SHARED("分享貼文");
 
 	private final String displayName;
 

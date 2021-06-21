@@ -2,6 +2,7 @@ package GUI.Block;
 
 import Posts.FbPost;
 import Posts.Post;
+import Posts.TYPE;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -27,9 +28,13 @@ public class FacebookBlock extends JPanel {
         Box vBox = Box.createVerticalBox();
 
         Box hBox = Box.createHorizontalBox();
-
-        String topTitle = post.getName()+" 在 Facebook　發布了一則貼文";
-
+        String topTitle;
+        if(post.getType()== TYPE.POST) {
+             topTitle = post.getName() + " 在 Facebook　發布了一則貼文";
+        }
+        else{
+             topTitle = post.getName() + " 在 Facebook　分享了一則貼文";
+        }
         Detail = new JButton("更多資訊");
         if (post.getMedia().size() <= 1) {
             Detail.setEnabled(false);
@@ -87,7 +92,13 @@ public class FacebookBlock extends JPanel {
             Box hBox3 = Box.createHorizontalBox();
             Box hBox4 = Box.createHorizontalBox();
             Box hBox5 = Box.createVerticalBox();
-            String topTitle = fp.getName()+" 在 Facebook　發布了一則貼文";
+            String topTitle;
+            if(fp.getType()== TYPE.POST) {
+                topTitle = fp.getName() + " 在 Facebook　發布了一則貼文";
+            }
+            else{
+                topTitle = fp.getName() + " 在 Facebook　分享了一則貼文";
+            }
             hBox1.add(new HyperLink(topTitle, fp.getUrl()));
             hBox1.add(Box.createHorizontalGlue());
             hBox5.add(hBox1);

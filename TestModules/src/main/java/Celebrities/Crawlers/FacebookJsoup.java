@@ -59,12 +59,16 @@ public class FacebookJsoup {
             Date date=new Date(Long.valueOf(time.attr("data-utime"))*1000);
             String URL="https://www.facebook.com/"+postHref.attr("href");
             URL=URL.replaceAll("\\?.*","");
-            FbPost temp=new FbPost(name,URL,mediaTemp,date,finalText,!subPostItems.isEmpty());
             if(!subPostItems.isEmpty()){
                 String finalsubText=getsubpost(subPostItems);
                 finalText=finalText+"<br>"+finalsubText;
                 finalText="<html>"+finalText+"</html>";
             }
+            else{
+                finalText="<html>"+finalText+"</html>";
+            }
+            FbPost temp=new FbPost(name,URL,mediaTemp,date,finalText,!subPostItems.isEmpty());
+            list.add(temp);
         }
         return list;
     }

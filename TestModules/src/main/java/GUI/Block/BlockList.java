@@ -28,7 +28,8 @@ public class BlockList extends JPanel {
                     hBox.setBorder(new LineBorder(new Color(215, 30, 24)));
                     break;
                 case FACEBOOK:
-
+                    block=new FacebookBlock(post);
+                    hBox.setBorder(new LineBorder(Color.blue,3));
                     break;
             }
             hBox.add(block);
