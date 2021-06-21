@@ -62,15 +62,8 @@ public class FacebookBlock extends JPanel {
 
         hBox = Box.createHorizontalBox();
         if (post.getMedia().size() != 0) {
-            String url = post.getMedia().get(0);
-            URL ur = new URL(url);
-            Image image = ImageIO.read(ur);
-            int x = image.getWidth(null);
-            int y = image.getHeight(null);
-            image = image.getScaledInstance(x / 2, y / 2, Image.SCALE_SMOOTH);
-            JLabel Mediatmp = new JLabel(new ImageIcon(image), 2);
-            hBox.add(Mediatmp);
-            vBox.add(hBox);
+            PutImageIcon put = new PutImageIcon(vBox, fp.getMedia().get(0));
+            put.execute();
         }
 
 
@@ -91,7 +84,7 @@ public class FacebookBlock extends JPanel {
             Box hBox2 = Box.createHorizontalBox();
             Box hBox3 = Box.createHorizontalBox();
             Box hBox4 = Box.createHorizontalBox();
-            Box hBox5 = Box.createVerticalBox();
+            Box vBox = Box.createVerticalBox();
             String topTitle;
             if(fp.getType()== TYPE.POST) {
                 topTitle = fp.getName() + " 在 Facebook　發布了一則貼文";
@@ -101,37 +94,22 @@ public class FacebookBlock extends JPanel {
             }
             hBox1.add(new HyperLink(topTitle, fp.getUrl()));
             hBox1.add(Box.createHorizontalGlue());
-            hBox5.add(hBox1);
+            vBox.add(hBox1);
             SimpleDateFormat ft = new SimpleDateFormat("MM月dd日 HH:mm");
             hBox2.add(new BlockTextField(ft.format(fp.getPublishedTime())));
             hBox2.add(Box.createHorizontalGlue());
-            hBox5.add(hBox2);
+            vBox.add(hBox2);
             JLabel text = new JLabel(fp.getText(), 2);
             hBox3.add(text);
             hBox3.add(Box.createHorizontalGlue());
-            hBox5.add(hBox3);
-            int mediaSize = fp.getMedia().size();
+            vBox.add(hBox3);
             List<String> mediaList = fp.getMedia();
-            JPanel mediaPanel = new JPanel(new GridLayout(mediaSize, 1));
             for(String url:mediaList){
-                URL ur = null;
-                try {
-                    ur = new URL(url);
-                } catch (MalformedURLException malformedURLException) {
-                    malformedURLException.printStackTrace();
-                }
-                Image image = null;
-                try {
-                    image = ImageIO.read(ur);
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                }
-                JLabel Mediatmp = new JLabel(new ImageIcon(image));
-                mediaPanel.add(Mediatmp);
+                PutImageIcon put = new PutImageIcon(hBox4, url);
+                put.execute();
             }
-            hBox4.add(mediaPanel);
-            hBox5.add(hBox4);
-            panel.add(hBox5);
+            vBox.add(hBox4);
+            panel.add(vBox);
             JScrollPane scrollPane = new JScrollPane(panel);
             scrollPane.getVerticalScrollBar().setUnitIncrement(20);
             scrollPane.getHorizontalScrollBar().setUnitIncrement(20);
@@ -140,4 +118,34 @@ public class FacebookBlock extends JPanel {
         }
     }
 
+
+    private static class PutImageIcon extends SwingWorker<JLabel, Object> {
+        private final Box parent;
+        private final String url;
+
+        public PutImageIcon(Box parent, String url) {
+            this.parent = parent;
+            this.url = url;
+        }
+
+        @Override
+        protected JLabel doInBackground() throws Exception {
+            URL u;
+            try {
+                u = new URL(url);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+                return null;
+            }
+            Image image = ImageIO.read(u);
+
+            JLabel label = new JLabel(new ImageIcon(image.getScaledInstance(1152,
+                    648,
+                    Image.SCALE_SMOOTH)));
+            Box box = Box.createHorizontalBox();
+            box.add(label);
+            parent.add(box);
+            return null;
+        }
+    }
 }
