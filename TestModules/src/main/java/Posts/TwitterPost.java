@@ -50,9 +50,6 @@ public class TwitterPost extends Post{
         text = text.replaceAll("^RT ","");
         text = text.replaceAll("^@.*? ","");
         text = text.replaceAll("https://.*?$","");
-        // html transform
-        text = text.replaceAll("\n","<br>");
-        text = "<html>"+text+"</html>";
 
         url = "https://twitter.com/"+status.getUser().getScreenName()+"/status/"+status.getId();
         publishedTime=status.getCreatedAt();

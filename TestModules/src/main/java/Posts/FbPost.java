@@ -20,7 +20,10 @@ public class FbPost extends Post{
         publishedTime=TIME;
         text=TEXT;
         platform = PLATFORM.FACEBOOK;
-        type = TYPE.POST;
+        if (hasSubPost)
+            type = TYPE.SHARED;
+        else
+            type = TYPE.POST;
         this.hasSubPost=hasSubPost;
     }
 

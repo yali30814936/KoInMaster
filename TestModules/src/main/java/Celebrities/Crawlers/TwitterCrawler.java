@@ -34,7 +34,7 @@ public class TwitterCrawler extends Crawler{
     public PostList searchTweets(String searchName) {
         PostList list = new PostList();
         try {
-            List<Status> statuses = twitter.getUserTimeline(searchName,new Paging(2));
+            List<Status> statuses = twitter.getUserTimeline(searchName);
             for (Status status : statuses) {
                 list.add(new TwitterPost(name, status));
             }

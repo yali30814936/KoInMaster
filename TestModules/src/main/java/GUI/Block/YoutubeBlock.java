@@ -119,13 +119,17 @@ public class YoutubeBlock extends JPanel {
 				return null;
 			}
 			Image image = ImageIO.read(u);
+			int width = image.getWidth(null);
+			int height = image.getHeight(null);
+			float scale = 1200f / width;
 
-			JLabel label = new JLabel(new ImageIcon(image.getScaledInstance(1152,
-			                                                        648,
-			                                                        Image.SCALE_SMOOTH)));
+			JLabel label = new JLabel(new ImageIcon(image.getScaledInstance(Math.round(width * scale),
+			                                                                Math.round(height * scale),
+			                                                                Image.SCALE_SMOOTH)));
 			Box box = Box.createHorizontalBox();
 			box.add(label);
 			parent.add(box);
+			parent.revalidate();
 			return null;
 		}
 	}

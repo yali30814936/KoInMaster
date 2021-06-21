@@ -16,59 +16,51 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class TwitterBlock extends JPanel{
-    private HyperLink Title;
-    private JLabel Date;
-    private JLabel Text;
-    private JLabel Mediatmp;
-    private JPanel MediaPanel;
-    private JButton Detail;
-    private int mediaSize;
-    private List<String> mediaList;
-    private JPanel panel;
-    private JScrollPane scrollPane;
+    private HyperLink title;
+    private final BlockTextField date;
+    private final BlockTextArea text;
+    private final int mediaSize;
+    private final List<String> mediaList;
+
     public TwitterBlock(Post post) throws IOException {
         this.setBackground(Color.white);
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         if (post.getType() == TYPE.TWEET) {
-            Title = new HyperLink(String.format("%s在%s發布了推文", post.getName(), post.getPlatform().toString()), ((TwitterPost) post).getUrl());
+            title = new HyperLink(String.format("%s在%s發布了推文", post.getName(), post.getPlatform().toString()), ((TwitterPost) post).getUrl());
         } else if (post.getType() == TYPE.RT) {
-            Title = new HyperLink(String.format("%s在%s轉推了%s的推文", post.getName(), post.getPlatform().toString(), ((TwitterPost) post).getUser()), ((TwitterPost) post).getUrl());
+            title = new HyperLink(String.format("%s在%s轉推了%s的推文", post.getName(), post.getPlatform().toString(), ((TwitterPost) post).getUser()), ((TwitterPost) post).getUrl());
         } else if (post.getType() == TYPE.REPLY) {
-            Title = new HyperLink(String.format("%s在%s回復了%s的推文", post.getName(), post.getPlatform().toString(), ((TwitterPost) post).getUser()), ((TwitterPost) post).getUrl());
+            title = new HyperLink(String.format("%s在%s回復了%s的推文", post.getName(), post.getPlatform().toString(), ((TwitterPost) post).getUser()), ((TwitterPost) post).getUrl());
         } else if (post.getType() == TYPE.QUOTED) {
-            Title = new HyperLink(String.format("%s在%s引用了%s的推文", post.getName(), post.getPlatform().toString(), ((TwitterPost) post).getUser()), ((TwitterPost) post).getUrl());
+            title = new HyperLink(String.format("%s在%s引用了%s的推文", post.getName(), post.getPlatform().toString(), ((TwitterPost) post).getUser()), ((TwitterPost) post).getUrl());
         }
 
         Box hBox1 = Box.createHorizontalBox();
-        Detail = new JButton("更多資訊");
+        JButton detail = new JButton("更多資訊");
         if (post.getMedia().size() <= 1) {
-            Detail.setEnabled(false);
+            detail.setEnabled(false);
         } else {
-            Detail.setEnabled(true);
+            detail.setEnabled(true);
         }
 
-        hBox1.add(Title);
+        hBox1.add(title);
         hBox1.add(Box.createHorizontalGlue());
-        hBox1.add(Detail);
+        hBox1.add(detail);
         add(hBox1);
-        Detail.addActionListener(new OpenDetail());
+        detail.addActionListener(new OpenDetail());
         SimpleDateFormat ft = new SimpleDateFormat("MM月dd日 HH:mm");
-        Date = new JLabel(String.format(ft.format(post.getPublishedTime())), 2);
+        date = new BlockTextField(ft.format(post.getPublishedTime()));
         //Date.setBorder(new LineBorder(Color.red));
         Box hBox2 = Box.createHorizontalBox();
-        hBox2.add(Date);
+        hBox2.add(date);
         hBox2.add(Box.createHorizontalGlue());
         add(hBox2);
 
 
-        if (post.getType() == TYPE.QUOTED) {
-            Text = new JLabel(post.getText(),2);
-        } else {
-            Text = new JLabel(post.getText(), 2);
-        }
+        text = new BlockTextArea(post.getText());
         //Text.setBorder(new LineBorder(Color.red));
         Box hBox3 = Box.createHorizontalBox();
-        hBox3.add(Text);
+        hBox3.add(text);
         hBox3.add(Box.createHorizontalGlue());
         add(hBox3);
         Box hBox4 = Box.createHorizontalBox();
@@ -83,15 +75,15 @@ public class TwitterBlock extends JPanel{
     private class OpenDetail implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            HyperLink moreLink = Title;
-            JLabel moreDate = Date;
-            JLabel moreText = Text;
+            HyperLink moreLink = title;
+            BlockTextField moreDate = date;
+            BlockTextArea moreText = text;
             JFrame moreFrame = new JFrame();
             moreFrame.setSize(1000, 1000);
             moreFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             moreFrame.setVisible(true);
-            panel = new JPanel();
-            panel.setLayout(new BoxLayout(panel,BoxLayout.PAGE_AXIS));
+            JPanel panel = new JPanel();
+            panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
             Box hBox1 = Box.createHorizontalBox();
             Box hBox2 = Box.createHorizontalBox();
             Box hBox3 = Box.createHorizontalBox();
@@ -120,13 +112,13 @@ public class TwitterBlock extends JPanel{
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                 }
-                Mediatmp = new JLabel(new ImageIcon(image));
-                mediaPanel.add(Mediatmp);
+                JLabel mediatmp = new JLabel(new ImageIcon(image));
+                mediaPanel.add(mediatmp);
             }
             hBox4.add(mediaPanel);
             hBox5.add(hBox4);
             panel.add(hBox5);
-            scrollPane = new JScrollPane(panel);
+            JScrollPane scrollPane = new JScrollPane(panel);
             scrollPane.getVerticalScrollBar().setUnitIncrement(20);
             scrollPane.getHorizontalScrollBar().setUnitIncrement(20);
             moreFrame.add(scrollPane);
@@ -154,10 +146,15 @@ public class TwitterBlock extends JPanel{
             Image image = ImageIO.read(u);
             int x = image.getWidth(null);
             int y = image.getHeight(null);
-            JLabel label = new JLabel(new ImageIcon(image.getScaledInstance(x/2,
-                    y/2,
-                    Image.SCALE_SMOOTH)));
+
+            if (y > 700) {
+                float scale = 700f / y;
+                image = image.getScaledInstance(Math.round(x * scale), Math.round(y * scale), Image.SCALE_SMOOTH);
+            }
+
+            JLabel label = new JLabel(new ImageIcon(image));
             parent.add(label);
+            parent.revalidate();
             return null;
         }
     }

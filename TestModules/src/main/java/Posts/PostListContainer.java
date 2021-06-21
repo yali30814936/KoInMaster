@@ -60,6 +60,8 @@ public class PostListContainer {
     }
 
     public PostList getFilteredList() {
+        originalList.sort(new PostSort().reversed());
+
         filter();
         return filteredList;
     }

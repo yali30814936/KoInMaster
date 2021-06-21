@@ -57,7 +57,7 @@ public class MainGUI extends JFrame {
 		springLayout.putConstraint(NORTH, filterPanel, 10, NORTH, contentPane);
 		springLayout.putConstraint(SOUTH, filterPanel, -10, SOUTH, contentPane);
 		springLayout.putConstraint(WEST, filterPanel, 10, WEST, contentPane);
-		springLayout.putConstraint(EAST, filterPanel, -400, HORIZONTAL_CENTER, contentPane);
+		springLayout.putConstraint(EAST, filterPanel, 300, WEST, contentPane);
 
 		// setting GUI
 		settingGUI = new SettingGUI();

@@ -135,7 +135,7 @@ public class NewSector extends JPanel {
 					builder.append("/").append(path[i].toString());
 
 				Celebrities celebrities = data.getCelebrities();
-				if (path.length > 2) {
+				if (path.length > 1) {
 					String storePath = builder.substring(1);
 					celebrity.setPath(storePath);
 				}

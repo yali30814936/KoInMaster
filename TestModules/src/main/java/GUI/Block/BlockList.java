@@ -25,7 +25,7 @@ public class BlockList extends JPanel {
                     break;
                 case YOUTUBE:
                     block = new YoutubeBlock(post);
-                    hBox.setBorder(new LineBorder(new Color(215, 30, 24)));
+                    hBox.setBorder(new LineBorder(new Color(215, 30, 24), 3));
                     break;
                 case FACEBOOK:
                     block=new FacebookBlock(post);
@@ -37,6 +37,8 @@ public class BlockList extends JPanel {
             vBox.add(Box.createVerticalStrut(20));
         }
         vBox.setMaximumSize(new Dimension(1300, Integer.MAX_VALUE));
+        setMaximumSize(new Dimension(1300, Integer.MAX_VALUE));
+        setBackground(Color.black);
         add(vBox);
     }
 }

@@ -6,6 +6,7 @@ import Posts.TYPE;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -54,21 +55,18 @@ public class FacebookBlock extends JPanel {
         hBox.add(Box.createHorizontalGlue()); // left align
         vBox.add(hBox);
 
-        JLabel text = new JLabel(post.getText(), 2);
+        BlockTextArea text = new BlockTextArea(post.getText());
+        text.setBorder(new LineBorder(Color.BLACK));
         hBox = Box.createHorizontalBox();
         hBox.add(text);
         hBox.add(Box.createHorizontalGlue());
         vBox.add(hBox);
 
-        hBox = Box.createHorizontalBox();
+        add(vBox);
         if (post.getMedia().size() != 0) {
             PutImageIcon put = new PutImageIcon(vBox, fp.getMedia().get(0));
             put.execute();
         }
-
-
-
-        add(vBox);
     }
 
     private class OpenDetail implements ActionListener {
@@ -139,12 +137,12 @@ public class FacebookBlock extends JPanel {
             }
             Image image = ImageIO.read(u);
 
-            JLabel label = new JLabel(new ImageIcon(image.getScaledInstance(1152,
-                    648,
-                    Image.SCALE_SMOOTH)));
+            JLabel label = new JLabel(new ImageIcon(image));
             Box box = Box.createHorizontalBox();
             box.add(label);
             parent.add(box);
+            parent.repaint();
+            parent.revalidate();
             return null;
         }
     }
