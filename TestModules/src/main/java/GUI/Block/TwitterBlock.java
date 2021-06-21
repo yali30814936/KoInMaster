@@ -75,70 +75,90 @@ public class TwitterBlock extends JPanel{
         mediaSize = post.getMedia().size();
         mediaList = post.getMedia();
         if (post.getMedia().size() != 0) {
-            MediaPanel = new JPanel(new GridLayout());
-            String url = post.getMedia().get(0);
-            URL ur = new URL(url);
-            Image image = ImageIO.read(ur);
+            add(hBox4);
+            PutImageIcon put = new TwitterBlock.PutImageIcon(hBox4, post.getMedia().get(0));
+            put.execute();
+        }
+    }
+    private class OpenDetail implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            HyperLink moreLink = Title;
+            JLabel moreDate = Date;
+            JLabel moreText = Text;
+            JFrame moreFrame = new JFrame();
+            moreFrame.setSize(1000, 1000);
+            moreFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            moreFrame.setVisible(true);
+            panel = new JPanel();
+            panel.setLayout(new BoxLayout(panel,BoxLayout.PAGE_AXIS));
+            Box hBox1 = Box.createHorizontalBox();
+            Box hBox2 = Box.createHorizontalBox();
+            Box hBox3 = Box.createHorizontalBox();
+            Box hBox4 = Box.createHorizontalBox();
+            Box hBox5 = Box.createVerticalBox();
+            hBox1.add(moreLink);
+            hBox1.add(Box.createHorizontalGlue());
+            hBox5.add(hBox1);
+            hBox2.add(moreDate);
+            hBox2.add(Box.createHorizontalGlue());
+            hBox5.add(hBox2);
+            hBox3.add(moreText);
+            hBox3.add(Box.createHorizontalGlue());
+            hBox5.add(hBox3);
+            JPanel mediaPanel = new JPanel(new GridLayout(mediaSize, 1));
+            for(String url:mediaList){
+                URL ur = null;
+                try {
+                    ur = new URL(url);
+                } catch (MalformedURLException malformedURLException) {
+                    malformedURLException.printStackTrace();
+                }
+                Image image = null;
+                try {
+                    image = ImageIO.read(ur);
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+                Mediatmp = new JLabel(new ImageIcon(image));
+                mediaPanel.add(Mediatmp);
+            }
+            hBox4.add(mediaPanel);
+            hBox5.add(hBox4);
+            panel.add(hBox5);
+            scrollPane = new JScrollPane(panel);
+            scrollPane.getVerticalScrollBar().setUnitIncrement(20);
+            scrollPane.getHorizontalScrollBar().setUnitIncrement(20);
+            moreFrame.add(scrollPane);
+
+        }
+    }
+    private static class PutImageIcon extends SwingWorker<JLabel, Object> {
+        private final Box parent;
+        private final String url;
+
+        public PutImageIcon(Box parent, String url) {
+            this.parent = parent;
+            this.url = url;
+        }
+
+        @Override
+        protected JLabel doInBackground() throws Exception {
+            URL u;
+            try {
+                u = new URL(url);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+                return null;
+            }
+            Image image = ImageIO.read(u);
             int x = image.getWidth(null);
             int y = image.getHeight(null);
-            image = image.getScaledInstance(x / 2, y / 2, Image.SCALE_SMOOTH);
-            Mediatmp = new JLabel(new ImageIcon(image), 2);
-            //Mediatmp.setBorder(new LineBorder(Color.red));
-            hBox4.add(Mediatmp);
-            add(hBox4);
+            JLabel label = new JLabel(new ImageIcon(image.getScaledInstance(x/2,
+                    y/2,
+                    Image.SCALE_SMOOTH)));
+            parent.add(label);
+            return null;
         }
     }
-        private class OpenDetail implements ActionListener {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                HyperLink moreLink = Title;
-                JLabel moreDate = Date;
-                JLabel moreText = Text;
-                JFrame moreFrame = new JFrame();
-                moreFrame.setSize(1000, 1000);
-                moreFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                moreFrame.setVisible(true);
-                panel = new JPanel();
-                panel.setLayout(new BoxLayout(panel,BoxLayout.PAGE_AXIS));
-                Box hBox1 = Box.createHorizontalBox();
-                Box hBox2 = Box.createHorizontalBox();
-                Box hBox3 = Box.createHorizontalBox();
-                Box hBox4 = Box.createHorizontalBox();
-                Box hBox5 = Box.createVerticalBox();
-                hBox1.add(moreLink);
-                hBox1.add(Box.createHorizontalGlue());
-                hBox5.add(hBox1);
-                hBox2.add(moreDate);
-                hBox2.add(Box.createHorizontalGlue());
-                hBox5.add(hBox2);
-                hBox3.add(moreText);
-                hBox3.add(Box.createHorizontalGlue());
-                hBox5.add(hBox3);
-                JPanel mediaPanel = new JPanel(new GridLayout(mediaSize, 1));
-                for(String url:mediaList){
-                    URL ur = null;
-                    try {
-                        ur = new URL(url);
-                    } catch (MalformedURLException malformedURLException) {
-                        malformedURLException.printStackTrace();
-                    }
-                    Image image = null;
-                    try {
-                        image = ImageIO.read(ur);
-                    } catch (IOException ioException) {
-                        ioException.printStackTrace();
-                    }
-                    Mediatmp = new JLabel(new ImageIcon(image));
-                    mediaPanel.add(Mediatmp);
-                }
-                hBox4.add(mediaPanel);
-                hBox5.add(hBox4);
-                panel.add(hBox5);
-                scrollPane = new JScrollPane(panel);
-                scrollPane.getVerticalScrollBar().setUnitIncrement(20);
-                scrollPane.getHorizontalScrollBar().setUnitIncrement(20);
-                moreFrame.add(scrollPane);
-
-            }
-        }
-    }
+}
