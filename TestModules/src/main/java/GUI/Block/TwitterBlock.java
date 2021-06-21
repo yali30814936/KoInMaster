@@ -91,6 +91,9 @@ public class TwitterBlock extends JPanel{
         private class OpenDetail implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
+                HyperLink moreLink = Title;
+                JLabel moreDate = Date;
+                JLabel moreText = Text;
                 JFrame moreFrame = new JFrame();
                 moreFrame.setSize(1000, 1000);
                 moreFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -102,13 +105,13 @@ public class TwitterBlock extends JPanel{
                 Box hBox3 = Box.createHorizontalBox();
                 Box hBox4 = Box.createHorizontalBox();
                 Box hBox5 = Box.createVerticalBox();
-                hBox1.add(Title);
+                hBox1.add(moreLink);
                 hBox1.add(Box.createHorizontalGlue());
                 hBox5.add(hBox1);
-                hBox2.add(Date);
+                hBox2.add(moreDate);
                 hBox2.add(Box.createHorizontalGlue());
                 hBox5.add(hBox2);
-                hBox3.add(Text);
+                hBox3.add(moreText);
                 hBox3.add(Box.createHorizontalGlue());
                 hBox5.add(hBox3);
                 JPanel mediaPanel = new JPanel(new GridLayout(mediaSize, 1));
