@@ -6,8 +6,8 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import java.awt.*;
 
 public class FilterCellRenderer extends DefaultTreeCellRenderer {
-	private final Font enabledFont = new Font(Font.SERIF, Font.BOLD, 12);
-	private final Font disabledFont = new Font(Font.SERIF, Font.PLAIN, 12);
+	private final Font enabledFont = new Font(Font.SERIF, Font.BOLD, 17);
+	private final Font disabledFont = new Font(Font.SERIF, Font.PLAIN, 18);
 
 	public Component getTreeCellRendererComponent(JTree tree,
 	                                              Object value,

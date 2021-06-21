@@ -9,6 +9,8 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.youtube.YouTube;
 import com.google.api.services.youtube.model.*;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -111,19 +113,23 @@ public class YoutubeCrawler extends Crawler{
 			System.err.println("搜尋 '" + name + "' 的YT頻道 id='" + channelId +"' 時發生錯誤：\n" + e);
 		}
 
-		List<String> details = getDetailList(ids);
-		for (int i = 0; i < details.size(); i++)
-			((YoutubePost) postList.get(i)).setFullDescription(details.get(i));
+		List<Pair<String, String>> details = getDetailList(ids);
+		for (int i = 0; i < details.size(); i++) {
+			postList.get(i).getMedia().add(details.get(i).getLeft());
+			((YoutubePost) postList.get(i)).setFullDescription(details.get(i).getRight());
+		}
 
 		return postList;
 	}
 
-	private List<String> getDetailList(List<String> ids) {
-		List<String> detailList = new ArrayList<>();
+	private List<Pair<String, String>> getDetailList(List<String> ids) {
+		List<Pair<String, String>> detailList = new ArrayList<>();
 		try {
 			VideoListResponse response = details.setKey(apiKey).setId(ids).execute();
-			for (Video s:response.getItems())
-				detailList.add(s.getSnippet().getDescription());
+			for (Video s:response.getItems()) {
+				detailList.add(new ImmutablePair<>(s.getSnippet().getThumbnails().getMaxres().getUrl(),
+				                                   s.getSnippet().getDescription()));
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

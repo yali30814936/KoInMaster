@@ -3,10 +3,13 @@ package GUI.Block;
 import Posts.Post;
 import Posts.YoutubePost;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 
 public class YoutubeBlock extends JPanel {
@@ -54,7 +57,7 @@ public class YoutubeBlock extends JPanel {
 		// title
 		hBox = Box.createHorizontalBox();
 		BlockTextField title = new BlockTextField(post.getText());
-		title.setFont(new Font(Font.SERIF, Font.BOLD, 14));
+		title.setFont(new Font(Font.SERIF, Font.BOLD, 22));
 		hBox.add(title);
 		hBox.add(Box.createHorizontalGlue()); // left align
 		vBox.add(hBox);
@@ -71,12 +74,14 @@ public class YoutubeBlock extends JPanel {
 		button = new JButton(normalHint);
 		button.setBorder(null);
 		button.setBackground(new Color(219, 219, 219));
-		button.setSize(70, 18);
+		button.setSize(80, 25);
 		button.addActionListener(new ExpandDescription());
 		hBox.add(button);
 		vBox.add(hBox);
 
 		add(vBox);
+		PutImageIcon put = new PutImageIcon(vBox, yp.getMedia().get(0));
+		put.execute();
 	}
 
 	private class ExpandDescription implements ActionListener {
@@ -92,6 +97,36 @@ public class YoutubeBlock extends JPanel {
 			}
 
 			expanded = !expanded;
+		}
+	}
+
+	private static class PutImageIcon extends SwingWorker<JLabel, Object> {
+		private final Box parent;
+		private final String url;
+
+		public PutImageIcon(Box parent, String url) {
+			this.parent = parent;
+			this.url = url;
+		}
+
+		@Override
+		protected JLabel doInBackground() throws Exception {
+			URL u;
+			try {
+				u = new URL(url);
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+				return null;
+			}
+			Image image = ImageIO.read(u);
+
+			JLabel label = new JLabel(new ImageIcon(image.getScaledInstance(1152,
+			                                                        648,
+			                                                        Image.SCALE_SMOOTH)));
+			Box box = Box.createHorizontalBox();
+			box.add(label);
+			parent.add(box);
+			return null;
 		}
 	}
 }

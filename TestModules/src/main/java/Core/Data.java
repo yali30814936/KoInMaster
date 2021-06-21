@@ -3,6 +3,8 @@ package Core;
 import Celebrities.Celebrities;
 import Posts.PostListContainer;
 import Posts.PostListReadWrite;
+import Posts.TYPE;
+import Posts.TypeReadWrite;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -20,6 +22,7 @@ public class Data {
 	private Selected selected;
 	private JTree jTree;
 	private DefaultMutableTreeNode top;
+	private List<TYPE> types;
 
 	public Data() {}
 
@@ -62,6 +65,7 @@ public class Data {
 	public void readData() throws GeneralSecurityException, IOException, URISyntaxException {
 		celebrities = CelebritiesReadWrite.read();
 		directories = FiltersDirectoriesReadWrite.read();
+		readTypes();
 	}
 
 	public void writeData() {
@@ -110,5 +114,29 @@ public class Data {
 		                  .filter(celebrity -> celebrity.isEnabled())
 		                  .map(celebrity -> celebrity.getName())
 		                  .collect(Collectors.toList());
+	}
+
+	public List<TYPE> getTypes() {
+		return types;
+	}
+
+	public void setTypes(List<TYPE> types) {
+		this.types = types;
+	}
+
+	public void writeTypes() {
+		try {
+			TypeReadWrite.write(types);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void readTypes() {
+		try {
+			types = TypeReadWrite.read();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

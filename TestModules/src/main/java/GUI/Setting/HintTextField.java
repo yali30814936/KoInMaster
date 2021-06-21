@@ -6,8 +6,8 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
 public class HintTextField extends JTextField {
-	Font gainFont = new Font(Font.SERIF, Font.PLAIN, 12);
-	Font lostFont = new Font(Font.SERIF, Font.ITALIC, 12);
+	Font gainFont = new Font(Font.SERIF, Font.PLAIN, 20);
+	Font lostFont = new Font(Font.SERIF, Font.ITALIC, 20);
 	private boolean valid = false;
 
 
@@ -16,7 +16,7 @@ public class HintTextField extends JTextField {
 		setText(hint);
 		setFont(lostFont);
 		setForeground(Color.GRAY);
-		setMaximumSize(new Dimension(Integer.MAX_VALUE, 26));
+		setMaximumSize(new Dimension(Integer.MAX_VALUE, 35));
 
 		this.addFocusListener(new FocusAdapter() {
 			@Override

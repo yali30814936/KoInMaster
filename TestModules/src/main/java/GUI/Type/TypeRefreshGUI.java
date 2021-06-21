@@ -30,13 +30,13 @@ public class TypeRefreshGUI extends Box {
 		RefreshType listener = new RefreshType();
 		for (TYPE type:TYPE.values()) {
 			TypeCheckBox checkBox = new TypeCheckBox(type);
-			checkBox.setSelected(true);
+			checkBox.setSelected(false);
 			checkBox.addActionListener(listener);
 			checkBoxes.add(checkBox);
 			panel.add(checkBox);
 		}
 
-		refreshButton = new JButton("重新整理");
+		refreshButton = new JButton("重新抓取");
 		refreshButton.addActionListener(new RefreshPosts());
 
 		add(panel);
@@ -53,13 +53,19 @@ public class TypeRefreshGUI extends Box {
 
 	public void setData(Data data) {
 		this.data = data;
+		for (TypeCheckBox b:checkBoxes)
+			if (data.getTypes().stream().anyMatch(type -> type == b.type))
+				b.setSelected(true);
 	}
 
 	public List<TYPE> getEnabledTypes() {
-		return checkBoxes.stream()
-		                 .filter(AbstractButton::isSelected)
-		                 .map(TypeCheckBox::getType)
-		                 .collect(Collectors.toList());
+		List<TYPE> list = checkBoxes.stream()
+		                            .filter(AbstractButton::isSelected)
+		                            .map(TypeCheckBox::getType)
+		                            .collect(Collectors.toList());
+		data.setTypes(list);
+		data.writeTypes();
+		return list;
 	}
 
 	private static class TypeCheckBox extends JCheckBox {

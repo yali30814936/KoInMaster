@@ -11,7 +11,7 @@ public class HyperLink extends JTextField {
         this.text = text;
         this.url = url;
         setText(text);
-        setFont(new Font(Font.SERIF, Font.PLAIN, 16));
+        setFont(new Font(Font.SERIF, Font.PLAIN, 26));
         setBorder(null);
         setBackground(Color.white);
         setEditable(false);

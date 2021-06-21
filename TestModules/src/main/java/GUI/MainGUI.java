@@ -8,9 +8,11 @@ import GUI.Setting.SettingGUI;
 import GUI.Type.TypeRefreshGUI;
 
 import javax.swing.*;
+import javax.swing.plaf.FontUIResource;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Enumeration;
 import java.util.stream.Collectors;
 
 import static javax.swing.SpringLayout.*;
@@ -25,6 +27,7 @@ public class MainGUI extends JFrame {
 
 	public MainGUI() {
 		super("KoInMaster");
+		setUIFont(new FontUIResource(Font.SERIF, Font.PLAIN, 20));
 		SpringLayout springLayout = new SpringLayout();
 		Container contentPane = getContentPane();
 		contentPane.setLayout(springLayout);
@@ -49,12 +52,12 @@ public class MainGUI extends JFrame {
 		vBox.add(hBox2);
 		filterPanel.add(vBox);
 
-		// setting filter panel layout.
+		// filter layout.
 		contentPane.add(filterPanel);
 		springLayout.putConstraint(NORTH, filterPanel, 10, NORTH, contentPane);
 		springLayout.putConstraint(SOUTH, filterPanel, -10, SOUTH, contentPane);
 		springLayout.putConstraint(WEST, filterPanel, 10, WEST, contentPane);
-		springLayout.putConstraint(EAST, filterPanel, -300, HORIZONTAL_CENTER, contentPane);
+		springLayout.putConstraint(EAST, filterPanel, -400, HORIZONTAL_CENTER, contentPane);
 
 		// setting GUI
 		settingGUI = new SettingGUI();
@@ -125,11 +128,23 @@ public class MainGUI extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			if (settingGUI.isVisible()) {
 				settingGUI.setVisible(false);
+				blockGUI.setVisible(true);
 				toggleSettingButton.setText("模組設定");
 			} else {
 				settingGUI.setVisible(true);
+				blockGUI.setVisible(false);
 				toggleSettingButton.setText("關閉面板");
 			}
+		}
+	}
+
+	public static void setUIFont (javax.swing.plaf.FontUIResource f){
+		Enumeration<Object> keys = UIManager.getDefaults().keys();
+		while (keys.hasMoreElements()) {
+			Object key = keys.nextElement();
+			Object value = UIManager.get (key);
+			if (value instanceof javax.swing.plaf.FontUIResource)
+				UIManager.put (key, f);
 		}
 	}
 }

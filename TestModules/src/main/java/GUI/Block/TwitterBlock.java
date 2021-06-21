@@ -3,7 +3,6 @@ package GUI.Block;
 import Posts.Post;
 import Posts.TYPE;
 import Posts.TwitterPost;
-import twitter4j.MediaEntity;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

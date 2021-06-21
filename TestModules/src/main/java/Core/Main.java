@@ -8,17 +8,18 @@ import java.net.URISyntaxException;
 import java.security.GeneralSecurityException;
 
 public class Main {
-	private static MainGUI app;
-	private static Data data;
 
 	public static void main(String[] args) {
+		// set image property
+		System.setProperty("sun.java2d.uiScale", "1.0");
+
 		// show main window
-		app = new MainGUI();
+		MainGUI app = new MainGUI();
 		app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		app.setSize(1080,720);
+		app.setSize(1080, 720);
 		app.setVisible(true);
 
-		data = new Data();
+		Data data = new Data();
 
 		// load celebrities
 		try {
@@ -28,6 +29,8 @@ public class Main {
 			e.printStackTrace();
 			System.exit(1);
 		}
+
+		// load type
 
 		// setup filter
 		app.setData(data);

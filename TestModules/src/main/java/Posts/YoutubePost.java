@@ -31,7 +31,6 @@ public class YoutubePost extends Post{
 		url = urlHead + video.getId().getVideoId();
 		publishedTime = new Date(snippet.getPublishedAt().getValue());
 		media = new ArrayList<>();
-		media.add(snippet.getThumbnails().getMedium().getUrl());
 		description = snippet.getDescription();
 	}
 

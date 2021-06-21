@@ -14,7 +14,7 @@ public class BlockList extends JPanel {
         super();
         setLayout(new BoxLayout(this,BoxLayout.PAGE_AXIS));
         Box vBox = Box.createVerticalBox();
-        Box hBox ;
+        Box hBox;
         for(Post post:postsList){
             hBox = Box.createHorizontalBox();
             JPanel block = null;
@@ -35,6 +35,7 @@ public class BlockList extends JPanel {
             vBox.add(hBox);
             vBox.add(Box.createVerticalStrut(20));
         }
+        vBox.setMaximumSize(new Dimension(1300, Integer.MAX_VALUE));
         add(vBox);
     }
 }

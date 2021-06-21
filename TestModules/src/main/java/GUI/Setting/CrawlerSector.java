@@ -49,7 +49,7 @@ public class CrawlerSector extends Box {
 		add(Box.createVerticalStrut(10));
 		// resize
 //		setMinimumSize(new Dimension(Integer.MAX_VALUE, 20 + 36 * count));
-		getParent().setMaximumSize(new Dimension(Integer.MAX_VALUE, 20 + 36 * count));
+//		getParent().setMaximumSize(new Dimension(Integer.MAX_VALUE, 20 + 36 * count));
 
 		revalidate();
 	}
@@ -61,10 +61,10 @@ public class CrawlerSector extends Box {
 			super(BoxLayout.LINE_AXIS);
 			this.name = name;
 
-			setMaximumSize(new Dimension(Integer.MAX_VALUE, 26));
+			setMaximumSize(new Dimension(Integer.MAX_VALUE, 35));
 
 			JLabel platformLabel = new JLabel(crawler.getPlatform().toString());
-			platformLabel.setPreferredSize(new Dimension(85, 26));
+			platformLabel.setPreferredSize(new Dimension(120, 35));
 			JTextField nameField = new JTextField(name);
 			nameField.setEditable(false);
 			nameField.setBorder(null);
@@ -110,7 +110,7 @@ public class CrawlerSector extends Box {
 			super(BoxLayout.LINE_AXIS);
 
 			platform = new JComboBox<>(PLATFORM.getValues());
-			platform.setMaximumSize(new Dimension(150, 26));
+			platform.setMaximumSize(new Dimension(150, 35));
 			add(platform);
 
 			crawlerName = new HintTextField("輸入識別名稱");

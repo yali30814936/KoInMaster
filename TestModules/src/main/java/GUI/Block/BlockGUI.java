@@ -12,7 +12,8 @@ public class BlockGUI extends JScrollPane {
 
 	public BlockGUI() {
 		super();
-		getVerticalScrollBar().setUnitIncrement(20);
+		getVerticalScrollBar().setUnitIncrement(60);
+		getHorizontalScrollBar().setUnitIncrement(20);
 	}
 
 	public void setData(Data data) {
@@ -28,7 +29,6 @@ public class BlockGUI extends JScrollPane {
 		try {
 			panel = new BlockList(list);
 			setViewportView(panel);
-			getVerticalScrollBar().setValue(0);
 			RestPos reset = new RestPos(getVerticalScrollBar());
 			reset.execute();
 		} catch (IOException e) {
@@ -37,7 +37,7 @@ public class BlockGUI extends JScrollPane {
 	}
 
 	private static class RestPos extends SwingWorker<Object,Object> {
-		private JScrollBar scrollBar;
+		private final JScrollBar scrollBar;
 		public RestPos(JScrollBar scrollBar) {
 			this.scrollBar = scrollBar;
 		}
