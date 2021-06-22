@@ -19,6 +19,7 @@ public class YoutubeBlock extends JPanel {
 	private boolean expanded = false;
 	private final String normalHint = "展開內容";
 	private final String expandedHint = "收起內容";
+	PutImageIcon put;
 
 	public YoutubeBlock(Post post) {
 		YoutubePost yp = (YoutubePost) post;
@@ -80,8 +81,12 @@ public class YoutubeBlock extends JPanel {
 		vBox.add(hBox);
 
 		add(vBox);
-		PutImageIcon put = new PutImageIcon(vBox, yp.getMedia().get(0));
+		put = new PutImageIcon(vBox, yp.getMedia().get(0));
 		put.execute();
+	}
+
+	public SwingWorker<Object, Object> getWorker() {
+		return put;
 	}
 
 	private class ExpandDescription implements ActionListener {
@@ -100,7 +105,7 @@ public class YoutubeBlock extends JPanel {
 		}
 	}
 
-	private static class PutImageIcon extends SwingWorker<JLabel, Object> {
+	private static class PutImageIcon extends SwingWorker<Object, Object> {
 		private final Box parent;
 		private final String url;
 
@@ -110,7 +115,7 @@ public class YoutubeBlock extends JPanel {
 		}
 
 		@Override
-		protected JLabel doInBackground() throws Exception {
+		protected Object doInBackground() throws Exception {
 			URL u;
 			try {
 				u = new URL(url);

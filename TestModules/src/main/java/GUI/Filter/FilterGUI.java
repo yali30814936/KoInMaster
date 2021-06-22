@@ -4,7 +4,6 @@ import Celebrities.Celebrity;
 import Core.CelebritiesReadWrite;
 import Core.Data;
 import Core.Selected;
-import GUI.MainGUI;
 import GUI.Setting.SettingGUI;
 
 import javax.swing.*;
@@ -151,9 +150,6 @@ public class FilterGUI extends JScrollPane {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-
-			// call refresh
-			((MainGUI) SwingUtilities.getWindowAncestor(jTree)).refreshBlock();
 		}
 	}
 

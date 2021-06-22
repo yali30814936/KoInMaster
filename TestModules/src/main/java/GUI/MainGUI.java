@@ -106,7 +106,7 @@ public class MainGUI extends JFrame {
 		                                         .filter(Celebrity::isEnabled)
 		                                         .map(Celebrity::getName)
 		                                         .collect(Collectors.toList()));
-		data.getContainer().setTypeWhiteList(typeRefreshGUI.getEnabledTypes());
+		data.getContainer().setTypeWhiteList(data.getTypes());
 		blockGUI.refresh();
 	}
 

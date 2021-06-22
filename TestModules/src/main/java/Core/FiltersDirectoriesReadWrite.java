@@ -2,10 +2,7 @@ package Core;
 
 import twitter4j.JSONArray;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,12 +19,16 @@ public class FiltersDirectoriesReadWrite {
 	}
 
 	public static List<String> read() throws IOException{
-		FileReader fr = new FileReader(Paths.get(filename).toString());
-		BufferedReader br = new BufferedReader(fr);
-		JSONArray obj = new JSONArray(br.readLine());
-		List<String> list = new ArrayList<>();
-		for (int i = 0; i < obj.length(); i++)
-			list.add(obj.getString(i));
-		return list;
+		try {
+			FileReader fr = new FileReader(Paths.get(filename).toString());
+			BufferedReader br = new BufferedReader(fr);
+			JSONArray obj = new JSONArray(br.readLine());
+			List<String> list = new ArrayList<>();
+			for (int i = 0; i < obj.length(); i++)
+				list.add(obj.getString(i));
+			return list;
+		} catch (FileNotFoundException ex) {
+			return new ArrayList<>();
+		}
 	}
 }

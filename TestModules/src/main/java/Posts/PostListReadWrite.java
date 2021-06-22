@@ -3,6 +3,7 @@ package Posts;
 import twitter4j.JSONArray;
 import twitter4j.JSONObject;
 
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -28,17 +29,17 @@ public class PostListReadWrite {
 	}
 
 	public static PostList read() throws IOException, GeneralSecurityException, URISyntaxException, ParseException {
-		Scanner input=new Scanner(Paths.get(filename));
-		JSONArray objs = new JSONArray();
 		try {
+			Scanner input=new Scanner(Paths.get(filename));
+			JSONArray objs = new JSONArray();
 			while (input.hasNext()){
 				JSONObject obj = new JSONObject(input.nextLine());
 				objs.put(obj);
 			}
+			return new PostList(objs);
 		}
-		catch (NoSuchElementException  elementException){
-			System.out.println("File improperly formed. Terminating");
+		catch (NoSuchElementException | FileNotFoundException ex){
+			return new PostList();
 		}
-		return new PostList(objs);
 	}
 }

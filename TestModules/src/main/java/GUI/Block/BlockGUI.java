@@ -1,23 +1,23 @@
 package GUI.Block;
 
 import Core.Data;
-import Posts.Post;
 import Posts.PostList;
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.io.IOException;
 
 public class BlockGUI extends JScrollPane {
 	private Data data;
-	private JPanel panel;
-	private Box vBox;
+	private final JPanel panel;
+	private BlockWorker worker;
 
 	public BlockGUI() {
 		super();
 		getVerticalScrollBar().setUnitIncrement(100);
 		getHorizontalScrollBar().setUnitIncrement(40);
+		panel = new JPanel();
+		setViewportView(panel);
 	}
 
 	public void setData(Data data) {
@@ -27,49 +27,19 @@ public class BlockGUI extends JScrollPane {
 	public void refresh() {
 		PostList list = data.getContainer().getFilteredList();
 
-		if (panel != null)
-			remove(panel);
+		panel.removeAll();
 
 		try {
-			vBox = Box.createVerticalBox();
-			Box hBox;
-			for(Post post:list){
-				hBox = Box.createHorizontalBox();
-				JPanel block = null;
-				switch (post.getPlatform()) {
-					case TWITTER:
-						block = new TwitterBlock(post);
-						hBox.setBorder(new LineBorder(Color.cyan, 3));
-						break;
-					case YOUTUBE:
-						block = new YoutubeBlock(post);
-						hBox.setBorder(new LineBorder(new Color(215, 30, 24), 3));
-						break;
-					case FACEBOOK:
-						block=new FacebookBlock(post);
-						hBox.setBorder(new LineBorder(Color.blue,3));
-						break;
-				}
-				hBox.add(block);
-				vBox.add(hBox);
-				vBox.add(Box.createVerticalStrut(20));
-			}
-//			vBox.setMaximumSize(new Dimension(1300, Integer.MAX_VALUE));
-			panel = new JPanel();
-			panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
-			panel.add(vBox);
-			setViewportView(panel);
+			if (worker != null)
+				worker.terminate();
+			worker = new BlockWorker(list, panel);
+			worker.execute();
 			RestPos reset;
 			reset = new RestPos(this);
 			reset.execute();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-
-	@Override
-	public Dimension getPreferredSize() {
-		return vBox.getPreferredSize();
 	}
 
 	private static class RestPos extends SwingWorker<Object,Object> {

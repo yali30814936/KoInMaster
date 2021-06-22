@@ -6,11 +6,9 @@ import Posts.TYPE;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -19,7 +17,8 @@ import java.util.List;
 public class FacebookBlock extends JPanel {
     private JButton Detail;
     private FbPost fp;
-    public FacebookBlock(Post post) throws IOException {
+    private PutImageIcon put;
+    public FacebookBlock(Post post) {
 
         this.fp=(FbPost)post;
 
@@ -37,11 +36,7 @@ public class FacebookBlock extends JPanel {
              topTitle = post.getName() + " 在 Facebook　分享了一則貼文";
         }
         Detail = new JButton("更多資訊");
-        if (post.getMedia().size() <= 1) {
-            Detail.setEnabled(false);
-        } else {
-            Detail.setEnabled(true);
-        }
+        Detail.setEnabled(post.getMedia().size() > 1);
 
         hBox.add(new HyperLink(topTitle, post.getUrl()));
         hBox.add(Box.createHorizontalGlue()); // left align
@@ -56,7 +51,6 @@ public class FacebookBlock extends JPanel {
         vBox.add(hBox);
 
         BlockTextArea text = new BlockTextArea(post.getText());
-        text.setBorder(new LineBorder(Color.BLACK));
         hBox = Box.createHorizontalBox();
         hBox.add(text);
         hBox.add(Box.createHorizontalGlue());
@@ -64,9 +58,13 @@ public class FacebookBlock extends JPanel {
 
         add(vBox);
         if (post.getMedia().size() != 0) {
-            PutImageIcon put = new PutImageIcon(vBox, fp.getMedia().get(0));
+            put = new PutImageIcon(vBox, fp.getMedia().get(0));
             put.execute();
         }
+    }
+
+    public SwingWorker<Object, Object> getWorker() {
+        return put;
     }
 
     private class OpenDetail implements ActionListener {
@@ -117,7 +115,7 @@ public class FacebookBlock extends JPanel {
     }
 
 
-    private static class PutImageIcon extends SwingWorker<JLabel, Object> {
+    private static class PutImageIcon extends SwingWorker<Object, Object> {
         private final Box parent;
         private final String url;
 
@@ -127,7 +125,7 @@ public class FacebookBlock extends JPanel {
         }
 
         @Override
-        protected JLabel doInBackground() throws Exception {
+        protected Object doInBackground() throws Exception {
             URL u;
             try {
                 u = new URL(url);
@@ -137,12 +135,20 @@ public class FacebookBlock extends JPanel {
             }
             Image image = ImageIO.read(u);
 
+            int x = image.getWidth(null);
+            int y = image.getHeight(null);
+
+            if (y > 700) {
+                float scale = 700f / y;
+                image = image.getScaledInstance(Math.round(x * scale), Math.round(y * scale), Image.SCALE_SMOOTH);
+            }
+
             JLabel label = new JLabel(new ImageIcon(image));
             Box box = Box.createHorizontalBox();
             box.add(label);
             parent.add(box);
-            parent.repaint();
-            parent.revalidate();
+//            parent.repaint();
+//            parent.revalidate();
             return null;
         }
     }

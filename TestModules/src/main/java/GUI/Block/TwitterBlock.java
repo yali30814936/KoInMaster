@@ -21,27 +21,27 @@ public class TwitterBlock extends JPanel{
     private final BlockTextArea text;
     private final int mediaSize;
     private final List<String> mediaList;
+    private PutImageIcon put;
 
-    public TwitterBlock(Post post) throws IOException {
+    public TwitterBlock(Post post) {
         this.setBackground(Color.white);
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         if (post.getType() == TYPE.TWEET) {
-            title = new HyperLink(String.format("%s在%s發布了推文", post.getName(), post.getPlatform().toString()), ((TwitterPost) post).getUrl());
+            title = new HyperLink(String.format("%s在%s發布了推文", post.getName(), post.getPlatform().toString()), post.getUrl());
         } else if (post.getType() == TYPE.RT) {
-            title = new HyperLink(String.format("%s在%s轉推了%s的推文", post.getName(), post.getPlatform().toString(), ((TwitterPost) post).getUser()), ((TwitterPost) post).getUrl());
+            title = new HyperLink(String.format("%s在%s轉推了%s的推文", post.getName(), post.getPlatform().toString(), ((TwitterPost) post).getUser()), post
+                    .getUrl());
         } else if (post.getType() == TYPE.REPLY) {
-            title = new HyperLink(String.format("%s在%s回復了%s的推文", post.getName(), post.getPlatform().toString(), ((TwitterPost) post).getUser()), ((TwitterPost) post).getUrl());
+            title = new HyperLink(String.format("%s在%s回復了%s的推文", post.getName(), post.getPlatform().toString(), ((TwitterPost) post).getUser()), post
+                    .getUrl());
         } else if (post.getType() == TYPE.QUOTED) {
-            title = new HyperLink(String.format("%s在%s引用了%s的推文", post.getName(), post.getPlatform().toString(), ((TwitterPost) post).getUser()), ((TwitterPost) post).getUrl());
+            title = new HyperLink(String.format("%s在%s引用了%s的推文", post.getName(), post.getPlatform().toString(), ((TwitterPost) post).getUser()), post
+                    .getUrl());
         }
 
         Box hBox1 = Box.createHorizontalBox();
         JButton detail = new JButton("更多資訊");
-        if (post.getMedia().size() <= 1) {
-            detail.setEnabled(false);
-        } else {
-            detail.setEnabled(true);
-        }
+        detail.setEnabled(post.getMedia().size() > 1);
 
         hBox1.add(title);
         hBox1.add(Box.createHorizontalGlue());
@@ -68,10 +68,15 @@ public class TwitterBlock extends JPanel{
         mediaList = post.getMedia();
         if (post.getMedia().size() != 0) {
             add(hBox4);
-            PutImageIcon put = new TwitterBlock.PutImageIcon(hBox4, post.getMedia().get(0));
+            put = new PutImageIcon(hBox4, post.getMedia().get(0));
             put.execute();
         }
     }
+
+    public SwingWorker<Object, Object> getWorker() {
+        return put;
+    }
+
     private class OpenDetail implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -112,8 +117,8 @@ public class TwitterBlock extends JPanel{
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                 }
-                JLabel mediatmp = new JLabel(new ImageIcon(image));
-                mediaPanel.add(mediatmp);
+                JLabel mediaTmp = new JLabel(new ImageIcon(image));
+                mediaPanel.add(mediaTmp);
             }
             hBox4.add(mediaPanel);
             hBox5.add(hBox4);
@@ -125,7 +130,7 @@ public class TwitterBlock extends JPanel{
 
         }
     }
-    private static class PutImageIcon extends SwingWorker<JLabel, Object> {
+    private static class PutImageIcon extends SwingWorker<Object, Object> {
         private final Box parent;
         private final String url;
 
@@ -135,7 +140,7 @@ public class TwitterBlock extends JPanel{
         }
 
         @Override
-        protected JLabel doInBackground() throws Exception {
+        protected Object doInBackground() throws Exception {
             URL u;
             try {
                 u = new URL(url);

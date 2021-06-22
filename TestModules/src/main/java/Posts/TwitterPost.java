@@ -38,7 +38,8 @@ public class TwitterPost extends Post{
         else if (status.getQuotedStatusId() != -1) {
             type = TYPE.QUOTED;
             user = status.getQuotedStatus().getUser().getName();
-            text = status.getText()+"\n\n<hr>"+status.getQuotedStatus().getText();
+            text = text.replaceAll("https://.*?$","");
+            text = status.getText()+"\n\n\n=========================================\n\n\n"+status.getQuotedStatus().getText();
         }
         // normal tweet
         else{
@@ -49,7 +50,6 @@ public class TwitterPost extends Post{
         // remove "RT @user" or "@user"
         text = text.replaceAll("^RT ","");
         text = text.replaceAll("^@.*? ","");
-        text = text.replaceAll("https://.*?$","");
 
         url = "https://twitter.com/"+status.getUser().getScreenName()+"/status/"+status.getId();
         publishedTime=status.getCreatedAt();

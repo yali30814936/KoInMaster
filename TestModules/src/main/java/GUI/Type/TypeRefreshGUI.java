@@ -27,20 +27,25 @@ public class TypeRefreshGUI extends Box {
 		checkBoxes = new ArrayList<>();
 		JPanel panel = new JPanel();
 
-		RefreshType listener = new RefreshType();
 		for (TYPE type:TYPE.values()) {
 			TypeCheckBox checkBox = new TypeCheckBox(type);
 			checkBox.setSelected(false);
-			checkBox.addActionListener(listener);
+			checkBox.addActionListener(e -> getEnabledTypes());
 			checkBoxes.add(checkBox);
 			panel.add(checkBox);
 		}
+
+		RefreshType listener = new RefreshType();
+		JButton filterButton = new JButton("套用過濾");
+		filterButton.addActionListener(listener);
 
 		refreshButton = new JButton("重新抓取");
 		refreshButton.addActionListener(new RefreshPosts());
 
 		add(panel);
 		add(Box.createHorizontalGlue());
+		add(filterButton);
+		add(Box.createHorizontalStrut(10));
 		add(refreshButton);
 	}
 
@@ -58,14 +63,13 @@ public class TypeRefreshGUI extends Box {
 				b.setSelected(true);
 	}
 
-	public List<TYPE> getEnabledTypes() {
+	public void getEnabledTypes() {
 		List<TYPE> list = checkBoxes.stream()
 		                            .filter(AbstractButton::isSelected)
 		                            .map(TypeCheckBox::getType)
 		                            .collect(Collectors.toList());
 		data.setTypes(list);
 		data.writeTypes();
-		return list;
 	}
 
 	private static class TypeCheckBox extends JCheckBox {
