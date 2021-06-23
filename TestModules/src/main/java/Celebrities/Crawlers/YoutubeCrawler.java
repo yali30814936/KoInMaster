@@ -22,7 +22,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class YoutubeCrawler extends Crawler{
-	private final String apiKey;
+	private final String apiKey = "AIzaSyBreiraSgMSXyel4Pk0wXZu-v8HejFIoIk";
 	private final YouTube.Search.List request;
 	private final YouTube.Videos.List details;
 	private PostList postList;
@@ -33,13 +33,13 @@ public class YoutubeCrawler extends Crawler{
 		param = channelId;
 
 		// to load api key from properties file
-		Properties props = new Properties();
-		try {
-			props.load(YoutubeCrawler.class.getClassLoader().getResourceAsStream("api.properties"));
-		} catch (IOException e) {
-			throw new IOException("YouTube api-key 載入失敗");
-		}
-		apiKey = props.getProperty("youtube");
+//		Properties props = new Properties();
+//		try {
+//			props.load(YoutubeCrawler.class.getClassLoader().getResourceAsStream("api.properties"));
+//		} catch (IOException e) {
+//			throw new IOException("YouTube api-key 載入失敗");
+//		}
+//		apiKey = props.getProperty("youtube");
 
 		JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
 		// this throw GeneralSecurityException
@@ -127,7 +127,12 @@ public class YoutubeCrawler extends Crawler{
 		try {
 			VideoListResponse response = details.setKey(apiKey).setId(ids).execute();
 			for (Video s:response.getItems()) {
-				detailList.add(new ImmutablePair<>(s.getSnippet().getThumbnails().getMaxres().getUrl(),
+				String left;
+				if (s.getSnippet().getThumbnails().getMaxres() == null)
+					left = s.getSnippet().getThumbnails().getHigh().getUrl();
+				else
+					left = s.getSnippet().getThumbnails().getMaxres().getUrl();
+				detailList.add(new ImmutablePair<>(left,
 				                                   s.getSnippet().getDescription()));
 			}
 		} catch (IOException e) {

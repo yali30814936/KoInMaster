@@ -12,7 +12,7 @@ import java.security.GeneralSecurityException;
  * Use this static class to read or write Celebrities object into "Celebrities.json"
  */
 public class CelebritiesReadWrite {
-	private static final String filename = "Celebrities.json";
+	private static final String filename = "Data/Celebrities.json";
 
 	public static synchronized void write(Celebrities celebrities) throws IOException {
 		FileWriter fw = new FileWriter(Paths.get(filename).toString());

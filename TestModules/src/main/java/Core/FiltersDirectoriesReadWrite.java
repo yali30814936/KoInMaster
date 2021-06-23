@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FiltersDirectoriesReadWrite {
-	private static final String filename = "Directories.json";
+	private static final String filename = "Data/Directories.json";
 
 	public static void write(List<String> folders) throws IOException {
 		JSONArray array = new JSONArray(folders);

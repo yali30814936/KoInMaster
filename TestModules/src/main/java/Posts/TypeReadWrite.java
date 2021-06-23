@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TypeReadWrite {
-	private static final String filename = "Types.json";
+	private static final String filename = "Data/Types.json";
 
 	public static void write(List<TYPE> types) throws IOException {
 		JSONArray array = new JSONArray();

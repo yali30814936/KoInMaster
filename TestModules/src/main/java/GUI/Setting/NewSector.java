@@ -57,7 +57,7 @@ public class NewSector extends JPanel {
 				DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(new FilterNode(newDir));
 				((DefaultTreeModel) data.getJTree().getModel()).insertNodeInto(newNode, parent, parent.getChildCount());
 
-				// save 三期生
+				// save
 				TreeNode[] path = newNode.getPath();
 				StringBuilder oldBuilder = new StringBuilder();
 				StringBuilder newBuilder = new StringBuilder();
@@ -90,7 +90,6 @@ public class NewSector extends JPanel {
 					}
 				} else
 					directories.add(newDir);
-
 
 				data.writeData();
 			}

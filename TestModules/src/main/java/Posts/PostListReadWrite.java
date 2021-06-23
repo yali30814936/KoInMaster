@@ -3,10 +3,10 @@ package Posts;
 import twitter4j.JSONArray;
 import twitter4j.JSONObject;
 
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 import java.security.GeneralSecurityException;
 import java.text.ParseException;
@@ -17,7 +17,7 @@ import java.util.Scanner;
  * Use this static class to read or write Celebrities object into "Celebrities.json"
  */
 public class PostListReadWrite {
-	private static final String filename = "PostList.json";
+	private static final String filename = "Data/PostList.json";
 
 	public static void write(PostList posts) throws IOException {
 		FileWriter fw = new FileWriter(Paths.get(filename).toString());
@@ -38,7 +38,7 @@ public class PostListReadWrite {
 			}
 			return new PostList(objs);
 		}
-		catch (NoSuchElementException | FileNotFoundException ex){
+		catch (NoSuchElementException | NoSuchFileException ex){
 			return new PostList();
 		}
 	}

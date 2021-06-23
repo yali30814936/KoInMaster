@@ -67,6 +67,7 @@ public class YoutubeBlock extends JPanel {
 		hBox = Box.createHorizontalBox();
 		description = new BlockTextArea(yp.getDescription());
 		description.setForeground(Color.gray);
+		description.setMaximumSize(new Dimension(1550, Integer.MAX_VALUE));
 		hBox.add(description);
 		vBox.add(hBox);
 

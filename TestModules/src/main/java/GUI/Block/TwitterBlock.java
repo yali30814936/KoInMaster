@@ -32,7 +32,7 @@ public class TwitterBlock extends JPanel{
             title = new HyperLink(String.format("%s在%s轉推了%s的推文", post.getName(), post.getPlatform().toString(), ((TwitterPost) post).getUser()), post
                     .getUrl());
         } else if (post.getType() == TYPE.REPLY) {
-            title = new HyperLink(String.format("%s在%s回復了%s的推文", post.getName(), post.getPlatform().toString(), ((TwitterPost) post).getUser()), post
+            title = new HyperLink(String.format("%s在%s回覆了%s的推文", post.getName(), post.getPlatform().toString(), ((TwitterPost) post).getUser()), post
                     .getUrl());
         } else if (post.getType() == TYPE.QUOTED) {
             title = new HyperLink(String.format("%s在%s引用了%s的推文", post.getName(), post.getPlatform().toString(), ((TwitterPost) post).getUser()), post

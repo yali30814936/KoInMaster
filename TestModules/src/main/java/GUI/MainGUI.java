@@ -22,12 +22,13 @@ public class MainGUI extends JFrame {
 	private final FilterGUI filterGUI;
 	private final SettingGUI settingGUI;
 	private final TypeRefreshGUI typeRefreshGUI;
+	private final JScrollPane scrollPane;
 	private final BlockGUI blockGUI;
 	private Data data;
 
 	public MainGUI() {
 		super("KoInMaster");
-		setUIFont(new FontUIResource(Font.SERIF, Font.PLAIN, 20));
+		setUIFont(new FontUIResource(Font.MONOSPACED, Font.PLAIN, 20));
 		SpringLayout springLayout = new SpringLayout();
 		Container contentPane = getContentPane();
 		contentPane.setLayout(springLayout);
@@ -77,12 +78,16 @@ public class MainGUI extends JFrame {
 		springLayout.putConstraint(WEST, typeRefreshGUI, 10, EAST, filterPanel);
 
 		// Block GUI
-		blockGUI = new BlockGUI();
-		contentPane.add(blockGUI);
-		springLayout.putConstraint(NORTH, blockGUI, 3, SOUTH, typeRefreshGUI);
-		springLayout.putConstraint(EAST, blockGUI, -10, EAST, contentPane);
-		springLayout.putConstraint(SOUTH, blockGUI, 0, SOUTH, contentPane);
-		springLayout.putConstraint(WEST, blockGUI, 10, EAST, filterPanel);
+		scrollPane = new JScrollPane();
+		blockGUI = new BlockGUI(scrollPane);
+		scrollPane.setViewportView(blockGUI);
+		scrollPane.getVerticalScrollBar().setUnitIncrement(100);
+		scrollPane.getHorizontalScrollBar().setUnitIncrement(40);
+		contentPane.add(scrollPane);
+		springLayout.putConstraint(NORTH, scrollPane, 3, SOUTH, typeRefreshGUI);
+		springLayout.putConstraint(EAST, scrollPane, -10, EAST, contentPane);
+		springLayout.putConstraint(SOUTH, scrollPane, 0, SOUTH, contentPane);
+		springLayout.putConstraint(WEST, scrollPane, 10, EAST, filterPanel);
 	}
 
 	/**
@@ -128,11 +133,11 @@ public class MainGUI extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			if (settingGUI.isVisible()) {
 				settingGUI.setVisible(false);
-				blockGUI.setVisible(true);
+				scrollPane.setVisible(true);
 				toggleSettingButton.setText("模組設定");
 			} else {
 				settingGUI.setVisible(true);
-				blockGUI.setVisible(false);
+				scrollPane.setVisible(false);
 				toggleSettingButton.setText("關閉面板");
 			}
 		}

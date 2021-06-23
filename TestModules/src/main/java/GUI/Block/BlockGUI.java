@@ -7,17 +7,19 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 
-public class BlockGUI extends JScrollPane {
+public class BlockGUI extends JPanel {
 	private Data data;
-	private final JPanel panel;
 	private BlockWorker worker;
+	private final Box vBox;
+	private final JScrollPane scrollPane;
 
-	public BlockGUI() {
+	public BlockGUI(JScrollPane scrollPane) {
 		super();
-		getVerticalScrollBar().setUnitIncrement(100);
-		getHorizontalScrollBar().setUnitIncrement(40);
-		panel = new JPanel();
-		setViewportView(panel);
+		this.scrollPane = scrollPane;
+		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+		vBox = Box.createVerticalBox();
+		vBox.setMaximumSize(new Dimension(1550, Integer.MAX_VALUE));
+		add(vBox);
 	}
 
 	public void setData(Data data) {
@@ -27,19 +29,24 @@ public class BlockGUI extends JScrollPane {
 	public void refresh() {
 		PostList list = data.getContainer().getFilteredList();
 
-		panel.removeAll();
+		vBox.removeAll();
 
 		try {
 			if (worker != null)
 				worker.terminate();
-			worker = new BlockWorker(list, panel);
+			worker = new BlockWorker(list, vBox);
 			worker.execute();
 			RestPos reset;
-			reset = new RestPos(this);
+			reset = new RestPos(scrollPane);
 			reset.execute();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public Dimension getPreferredSize() {
+		return vBox.getMinimumSize();
 	}
 
 	private static class RestPos extends SwingWorker<Object,Object> {
@@ -59,10 +66,10 @@ public class BlockGUI extends JScrollPane {
 		@Override
 		protected void done() {
 			scrollPane.getVerticalScrollBar().setValue(0);
-			if (container != null) {
-				int left = (scrollPane.getHorizontalScrollBar().getMaximum() - (int) scrollPane.getSize().getWidth()) / 2 - 10;
-				scrollPane.getHorizontalScrollBar().setValue(left);
-			}
+//			if (container != null) {
+//				int left = (scrollPane.getHorizontalScrollBar().getMaximum() - (int) scrollPane.getSize().getWidth()) / 2 - 10;
+//				scrollPane.getHorizontalScrollBar().setValue(left);
+//			}
 		}
 	}
 }
