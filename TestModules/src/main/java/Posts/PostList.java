@@ -2,6 +2,7 @@ package Posts;
 
 
 import twitter4j.JSONArray;
+import twitter4j.JSONException;
 import twitter4j.JSONObject;
 
 import java.io.IOException;
@@ -32,11 +33,15 @@ public class PostList extends ArrayList<Post>{
             param.add(object.getString("type"));
             param.add(object.getString("url"));
             param.add(object.getString("publishedTime"));
-            if(object.getString("platform").equals("YouTube")){
+            if(object.getString("platform").equals(PLATFORM.YOUTUBE.toString())){
                 param.add(object.getString("description"));
-                param.add(object.getString("fullDescription"));
+                try {
+                    param.add(object.getString("fullDescription"));
+                } catch (JSONException e) {
+                    param.add("");
+                }
             }
-            else if(object.getString("platform").equals("Twitter")) {
+            else if(object.getString("platform").equals(PLATFORM.TWITTER.toString())) {
                 param.add(object.getString("user"));
             }
             for (String key:object.getJSONObject("media").keySet()) {

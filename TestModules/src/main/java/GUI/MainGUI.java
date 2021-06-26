@@ -115,10 +115,6 @@ public class MainGUI extends JFrame {
 		blockGUI.refresh();
 	}
 
-	public void savePosts() {
-		data.writePosts();
-	}
-
 	public void setData(Data data) {
 		this.data = data;
 		filterGUI.setData(data);

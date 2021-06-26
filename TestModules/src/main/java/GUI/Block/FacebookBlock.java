@@ -9,7 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.MalformedURLException;
+import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -17,7 +17,6 @@ import java.util.List;
 public class FacebookBlock extends JPanel {
     private JButton Detail;
     private FbPost fp;
-    private PutImageIcon put;
     public FacebookBlock(Post post) {
 
         this.fp=(FbPost)post;
@@ -58,13 +57,27 @@ public class FacebookBlock extends JPanel {
 
         add(vBox);
         if (post.getMedia().size() != 0) {
-            put = new PutImageIcon(vBox, fp.getMedia().get(0));
-            put.execute();
-        }
-    }
+            URL u;
+            try {
+                u = new URL(fp.getMedia().get(0));
+                Image image = ImageIO.read(u);
 
-    public SwingWorker<Object, Object> getWorker() {
-        return put;
+                int x = image.getWidth(null);
+                int y = image.getHeight(null);
+
+                if (y > 700) {
+                    float scale = 700f / y;
+                    image = image.getScaledInstance(Math.round(x * scale), Math.round(y * scale), Image.SCALE_SMOOTH);
+                }
+
+                JLabel label = new JLabel(new ImageIcon(image));
+                Box box = Box.createHorizontalBox();
+                box.add(label);
+                vBox.add(box);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private class OpenDetail implements ActionListener {
@@ -95,14 +108,24 @@ public class FacebookBlock extends JPanel {
             hBox2.add(new BlockTextField(ft.format(fp.getPublishedTime())));
             hBox2.add(Box.createHorizontalGlue());
             vBox.add(hBox2);
-            JLabel text = new JLabel(fp.getText(), 2);
+            BlockTextArea text = new BlockTextArea(fp.getText());
             hBox3.add(text);
             hBox3.add(Box.createHorizontalGlue());
             vBox.add(hBox3);
             List<String> mediaList = fp.getMedia();
             for(String url:mediaList){
-                PutImageIcon put = new PutImageIcon(hBox4, url);
-                put.execute();
+                URL u;
+                try {
+                    u = new URL(url);
+                    Image image = ImageIO.read(u);
+
+                    JLabel label = new JLabel(new ImageIcon(image));
+                    Box box = Box.createHorizontalBox();
+                    box.add(label);
+                    vBox.add(box);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
             }
             vBox.add(hBox4);
             panel.add(vBox);
@@ -111,45 +134,6 @@ public class FacebookBlock extends JPanel {
             scrollPane.getHorizontalScrollBar().setUnitIncrement(20);
             moreFrame.add(scrollPane);
 
-        }
-    }
-
-
-    private static class PutImageIcon extends SwingWorker<Object, Object> {
-        private final Box parent;
-        private final String url;
-
-        public PutImageIcon(Box parent, String url) {
-            this.parent = parent;
-            this.url = url;
-        }
-
-        @Override
-        protected Object doInBackground() throws Exception {
-            URL u;
-            try {
-                u = new URL(url);
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-                return null;
-            }
-            Image image = ImageIO.read(u);
-
-            int x = image.getWidth(null);
-            int y = image.getHeight(null);
-
-            if (y > 700) {
-                float scale = 700f / y;
-                image = image.getScaledInstance(Math.round(x * scale), Math.round(y * scale), Image.SCALE_SMOOTH);
-            }
-
-            JLabel label = new JLabel(new ImageIcon(image));
-            Box box = Box.createHorizontalBox();
-            box.add(label);
-            parent.add(box);
-//            parent.repaint();
-//            parent.revalidate();
-            return null;
         }
     }
 }

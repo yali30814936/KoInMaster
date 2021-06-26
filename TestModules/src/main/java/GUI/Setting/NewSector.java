@@ -9,6 +9,7 @@ import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -55,7 +56,13 @@ public class NewSector extends JPanel {
 			else {
 				DefaultMutableTreeNode parent = data.getSelected().getNode();
 				DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(new FilterNode(newDir));
-				((DefaultTreeModel) data.getJTree().getModel()).insertNodeInto(newNode, parent, parent.getChildCount());
+				Enumeration<TreeNode> iter = parent.children();
+				int count = 0;
+				while (iter.hasMoreElements())
+					if (!((FilterNode) ((DefaultMutableTreeNode) iter.nextElement()).getUserObject()).isCelebrity())
+						count++;
+				((DefaultTreeModel) data.getJTree().getModel()).insertNodeInto(newNode, parent, count);
+				data.getJTree().expandPath(new TreePath(parent.getPath()));
 
 				// save
 				TreeNode[] path = newNode.getPath();
@@ -85,8 +92,10 @@ public class NewSector extends JPanel {
 								break;
 							}
 						}
-						if (i == directories.size() - 1)
+						if (i == directories.size() - 1) {
 							directories.add(newPath);
+							break;
+						}
 					}
 				} else
 					directories.add(newDir);
@@ -126,6 +135,7 @@ public class NewSector extends JPanel {
 				Celebrity celebrity = new Celebrity(newName);
 				DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(new FilterNode(celebrity));
 				((DefaultTreeModel) data.getJTree().getModel()).insertNodeInto(newNode, parent, parent.getChildCount());
+				data.getJTree().expandPath(new TreePath(parent.getPath()));
 
 				// save
 				TreeNode[] path = parent.getPath();

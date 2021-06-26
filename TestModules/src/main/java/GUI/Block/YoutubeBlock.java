@@ -8,18 +8,17 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.MalformedURLException;
+import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 
 public class YoutubeBlock extends JPanel {
 	private final BlockTextArea description;
-	private JButton button;
+	private final JButton button;
 	private final YoutubePost yp;
 	private boolean expanded = false;
 	private final String normalHint = "展開內容";
 	private final String expandedHint = "收起內容";
-	PutImageIcon put;
 
 	public YoutubeBlock(Post post) {
 		YoutubePost yp = (YoutubePost) post;
@@ -67,7 +66,6 @@ public class YoutubeBlock extends JPanel {
 		hBox = Box.createHorizontalBox();
 		description = new BlockTextArea(yp.getDescription());
 		description.setForeground(Color.gray);
-		description.setMaximumSize(new Dimension(1550, Integer.MAX_VALUE));
 		hBox.add(description);
 		vBox.add(hBox);
 
@@ -81,13 +79,25 @@ public class YoutubeBlock extends JPanel {
 		hBox.add(button);
 		vBox.add(hBox);
 
-		add(vBox);
-		put = new PutImageIcon(vBox, yp.getMedia().get(0));
-		put.execute();
-	}
+		URL u;
+		try {
+			u = new URL(yp.getMedia().get(0));
+			Image image = ImageIO.read(u);
+			int width = image.getWidth(null);
+			int height = image.getHeight(null);
+			float scale = 1200f / width;
 
-	public SwingWorker<Object, Object> getWorker() {
-		return put;
+			JLabel label = new JLabel(new ImageIcon(image.getScaledInstance(Math.round(width * scale),
+			                                                                Math.round(height * scale),
+			                                                                Image.SCALE_SMOOTH)));
+			Box mediaBox = Box.createHorizontalBox();
+			mediaBox.add(label);
+			vBox.add(mediaBox);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		add(vBox);
 	}
 
 	private class ExpandDescription implements ActionListener {
@@ -103,40 +113,6 @@ public class YoutubeBlock extends JPanel {
 			}
 
 			expanded = !expanded;
-		}
-	}
-
-	private static class PutImageIcon extends SwingWorker<Object, Object> {
-		private final Box parent;
-		private final String url;
-
-		public PutImageIcon(Box parent, String url) {
-			this.parent = parent;
-			this.url = url;
-		}
-
-		@Override
-		protected Object doInBackground() throws Exception {
-			URL u;
-			try {
-				u = new URL(url);
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-				return null;
-			}
-			Image image = ImageIO.read(u);
-			int width = image.getWidth(null);
-			int height = image.getHeight(null);
-			float scale = 1200f / width;
-
-			JLabel label = new JLabel(new ImageIcon(image.getScaledInstance(Math.round(width * scale),
-			                                                                Math.round(height * scale),
-			                                                                Image.SCALE_SMOOTH)));
-			Box box = Box.createHorizontalBox();
-			box.add(label);
-			parent.add(box);
-			parent.revalidate();
-			return null;
 		}
 	}
 }

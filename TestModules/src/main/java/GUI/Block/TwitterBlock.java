@@ -21,7 +21,6 @@ public class TwitterBlock extends JPanel{
     private final BlockTextArea text;
     private final int mediaSize;
     private final List<String> mediaList;
-    private PutImageIcon put;
 
     public TwitterBlock(Post post) {
         this.setBackground(Color.white);
@@ -39,6 +38,7 @@ public class TwitterBlock extends JPanel{
                     .getUrl());
         }
 
+        Box vBox = Box.createVerticalBox();
         Box hBox1 = Box.createHorizontalBox();
         JButton detail = new JButton("更多資訊");
         detail.setEnabled(post.getMedia().size() > 1);
@@ -46,35 +46,47 @@ public class TwitterBlock extends JPanel{
         hBox1.add(title);
         hBox1.add(Box.createHorizontalGlue());
         hBox1.add(detail);
-        add(hBox1);
+        vBox.add(hBox1);
+
         detail.addActionListener(new OpenDetail());
         SimpleDateFormat ft = new SimpleDateFormat("MM月dd日 HH:mm");
         date = new BlockTextField(ft.format(post.getPublishedTime()));
-        //Date.setBorder(new LineBorder(Color.red));
         Box hBox2 = Box.createHorizontalBox();
         hBox2.add(date);
         hBox2.add(Box.createHorizontalGlue());
-        add(hBox2);
+        vBox.add(hBox2);
 
 
         text = new BlockTextArea(post.getText());
-        //Text.setBorder(new LineBorder(Color.red));
         Box hBox3 = Box.createHorizontalBox();
         hBox3.add(text);
         hBox3.add(Box.createHorizontalGlue());
-        add(hBox3);
+        vBox.add(hBox3);
+
         Box hBox4 = Box.createHorizontalBox();
         mediaSize = post.getMedia().size();
         mediaList = post.getMedia();
         if (post.getMedia().size() != 0) {
-            add(hBox4);
-            put = new PutImageIcon(hBox4, post.getMedia().get(0));
-            put.execute();
-        }
-    }
+            URL u;
+            try {
+                u = new URL(post.getMedia().get(0));
+                Image image = ImageIO.read(u);
+                int x = image.getWidth(null);
+                int y = image.getHeight(null);
 
-    public SwingWorker<Object, Object> getWorker() {
-        return put;
+                if (y > 700) {
+                    float scale = 700f / y;
+                    image = image.getScaledInstance(Math.round(x * scale), Math.round(y * scale), Image.SCALE_SMOOTH);
+                }
+
+                JLabel label = new JLabel(new ImageIcon(image));
+                hBox4.add(label);
+                vBox.add(hBox4);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        add(vBox);
     }
 
     private class OpenDetail implements ActionListener {
@@ -128,39 +140,6 @@ public class TwitterBlock extends JPanel{
             scrollPane.getHorizontalScrollBar().setUnitIncrement(20);
             moreFrame.add(scrollPane);
 
-        }
-    }
-    private static class PutImageIcon extends SwingWorker<Object, Object> {
-        private final Box parent;
-        private final String url;
-
-        public PutImageIcon(Box parent, String url) {
-            this.parent = parent;
-            this.url = url;
-        }
-
-        @Override
-        protected Object doInBackground() throws Exception {
-            URL u;
-            try {
-                u = new URL(url);
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-                return null;
-            }
-            Image image = ImageIO.read(u);
-            int x = image.getWidth(null);
-            int y = image.getHeight(null);
-
-            if (y > 700) {
-                float scale = 700f / y;
-                image = image.getScaledInstance(Math.round(x * scale), Math.round(y * scale), Image.SCALE_SMOOTH);
-            }
-
-            JLabel label = new JLabel(new ImageIcon(image));
-            parent.add(label);
-            parent.revalidate();
-            return null;
         }
     }
 }

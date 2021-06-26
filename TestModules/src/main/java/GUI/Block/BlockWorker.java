@@ -14,6 +14,8 @@ public class BlockWorker extends SwingWorker<Object, Object> {
     private final PostList postsList;
     private final Box parent;
     private final List<BlockGenerator> generators;
+    private final int unit = 20;
+    private int cursor = 0;
 
     public BlockWorker(PostList postList, Box parent) throws IOException {
         this.postsList = postList;
@@ -24,23 +26,30 @@ public class BlockWorker extends SwingWorker<Object, Object> {
     @Override
     protected Object doInBackground() {
         Box hBox;
+        Component struct;
         for(Post post:postsList){
             hBox = Box.createHorizontalBox();
-            hBox.setMaximumSize(new Dimension(1550, Integer.MAX_VALUE));
-            BlockGenerator generator = new BlockGenerator(hBox, post);
+            struct = Box.createVerticalStrut(20);
+            BlockGenerator generator = new BlockGenerator(hBox, struct, post);
             parent.add(hBox);
-            parent.add(Box.createVerticalStrut(20));
+            struct.setVisible(false);
+            parent.add(struct);
             generators.add(generator);
-            generator.execute();
         }
-        parent.setMaximumSize(new Dimension(1550, Integer.MAX_VALUE));
-        parent.revalidate();
+        loadMore();
         return null;
+    }
+
+    public void loadMore() {
+        for (int i = 0; i < unit; i++)
+            if (cursor+i < generators.size())
+                generators.get(cursor+i).execute();
+        cursor += unit;
     }
 
     public void terminate() {
         for (BlockGenerator g:generators)
-            g.terminate();
+            g.cancel(true);
         cancel(true);
     }
 }

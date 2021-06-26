@@ -4,6 +4,7 @@ import Posts.PLATFORM;
 import Posts.PostList;
 import Posts.YoutubePost;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
+import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
@@ -12,6 +13,7 @@ import com.google.api.services.youtube.model.*;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
@@ -80,16 +82,22 @@ public class YoutubeCrawler extends Crawler{
 		YouTube youTube = new YouTube.Builder(httpTransport, JSON_FACTORY, null)
 				.setApplicationName("KoInMaster").build();
 		YouTube.Channels.List request = youTube.channels().list(Collections.singletonList("contentDetails"));
-		ChannelListResponse response = request.setKey(props.getProperty("youtube"))
-		                                      .setForUsername(param)
-		                                      .execute();
-		if (response.getItems() != null) {
-			if (response.getItems().size() > 0)
-				return response.getItems().get(0).getId();
-			else
-				throw new IOException();
-		} else
-			return param;
+		try {
+			ChannelListResponse response = request.setKey(props.getProperty("youtube"))
+			                                      .setForUsername(param)
+			                                      .execute();
+			if (response.getItems() != null) {
+				if (response.getItems().size() > 0)
+					return response.getItems().get(0).getId();
+				else
+					throw new IOException();
+			} else
+				return param;
+		} catch (GoogleJsonResponseException ex) {
+			JOptionPane.showMessageDialog(null, "YouTube api 用量超標，請隔日再試", "錯誤", JOptionPane.WARNING_MESSAGE);
+			ex.printStackTrace();
+			throw new IOException();
+		}
 	}
 
 	public PostList searchChannel(String channelId){
@@ -109,34 +117,33 @@ public class YoutubeCrawler extends Crawler{
 				ids.add(s.getId().getVideoId());
 				postList.add(new YoutubePost(name, s));
 			}
+
+			List<Pair<String, String>> details = getDetailList(ids);
+			for (int i = 0; i < details.size(); i++) {
+				postList.get(i).getMedia().add(details.get(i).getLeft());
+				((YoutubePost) postList.get(i)).setFullDescription(details.get(i).getRight());
+			}
+		} catch (GoogleJsonResponseException e) {
+			JOptionPane.showMessageDialog(null, "YouTube api 用量超標，請隔日再試", "錯誤", JOptionPane.WARNING_MESSAGE);
+			return postList;
 		} catch (IOException e) {
 			System.err.println("搜尋 '" + name + "' 的YT頻道 id='" + channelId +"' 時發生錯誤：\n" + e);
-		}
-
-		List<Pair<String, String>> details = getDetailList(ids);
-		for (int i = 0; i < details.size(); i++) {
-			postList.get(i).getMedia().add(details.get(i).getLeft());
-			((YoutubePost) postList.get(i)).setFullDescription(details.get(i).getRight());
 		}
 
 		return postList;
 	}
 
-	private List<Pair<String, String>> getDetailList(List<String> ids) {
+	private List<Pair<String, String>> getDetailList(List<String> ids) throws GoogleJsonResponseException, IOException{
 		List<Pair<String, String>> detailList = new ArrayList<>();
-		try {
-			VideoListResponse response = details.setKey(apiKey).setId(ids).execute();
-			for (Video s:response.getItems()) {
-				String left;
-				if (s.getSnippet().getThumbnails().getMaxres() == null)
-					left = s.getSnippet().getThumbnails().getHigh().getUrl();
-				else
-					left = s.getSnippet().getThumbnails().getMaxres().getUrl();
-				detailList.add(new ImmutablePair<>(left,
-				                                   s.getSnippet().getDescription()));
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
+		VideoListResponse response = details.setKey(apiKey).setId(ids).execute();
+		for (Video s:response.getItems()) {
+			String left;
+			if (s.getSnippet().getThumbnails().getMaxres() == null)
+				left = s.getSnippet().getThumbnails().getHigh().getUrl();
+			else
+				left = s.getSnippet().getThumbnails().getMaxres().getUrl();
+			detailList.add(new ImmutablePair<>(left,
+			                                   s.getSnippet().getDescription()));
 		}
 		return detailList;
 	}
