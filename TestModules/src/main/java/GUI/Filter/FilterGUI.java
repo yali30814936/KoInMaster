@@ -12,7 +12,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
 import java.util.Enumeration;
 
 /**
@@ -145,11 +144,7 @@ public class FilterGUI extends JScrollPane {
 			revalidate();
 
 			// save changes
-			try {
-				CelebritiesReadWrite.write(data.getCelebrities());
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			CelebritiesReadWrite.write(data.getCelebrities());
 		}
 	}
 

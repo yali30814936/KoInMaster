@@ -9,14 +9,23 @@ import java.util.List;
 public class TypeReadWrite {
 	private static final String filename = "/Data/Types.json";
 
-	public static void write(List<TYPE> types) throws IOException {
+	public static void write(List<TYPE> types) {
 		JSONArray array = new JSONArray();
 		for (TYPE type:types)
 			array.put(type.toString());
-		FileWriter fw = new FileWriter(System.getProperty("user.dir") + filename);
-		fw.write(array.toString());
-		fw.flush();
-		fw.close();
+		FileWriter fw = null;
+		try {
+			fw = new FileWriter(System.getProperty("user.dir") + filename);
+			fw.write(array.toString());
+			fw.flush();
+			fw.close();
+		} catch (FileNotFoundException ex) {
+			File nFile = new File(System.getProperty("user.dir") + "/Data/");
+			nFile.mkdirs();
+			write(types);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static List<TYPE> read() throws IOException{

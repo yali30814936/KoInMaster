@@ -7,7 +7,7 @@ public class BlockTextArea extends JTextArea {
 
 	public BlockTextArea(String text) {
 		super(text);
-//		setMaximumSize(new Dimension(1500, Integer.MAX_VALUE));
+		setMaximumSize(new Dimension(1500, Integer.MAX_VALUE));
 		setEditable(false);
 		setWrapStyleWord(true);
 		setLineWrap(true);

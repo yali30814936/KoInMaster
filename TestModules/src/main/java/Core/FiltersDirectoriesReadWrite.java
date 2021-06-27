@@ -9,12 +9,21 @@ import java.util.List;
 public class FiltersDirectoriesReadWrite {
 	private static final String filename = "/Data/Directories.json";
 
-	public static void write(List<String> folders) throws IOException {
+	public static void write(List<String> folders) {
 		JSONArray array = new JSONArray(folders);
-		FileWriter fw = new FileWriter(System.getProperty("user.dir") + filename);
-		fw.write(array.toString());
-		fw.flush();
-		fw.close();
+		FileWriter fw = null;
+		try {
+			fw = new FileWriter(System.getProperty("user.dir") + filename);
+			fw.write(array.toString());
+			fw.flush();
+			fw.close();
+		} catch (FileNotFoundException ex) {
+			File nFile = new File(System.getProperty("user.dir") + "/Data/");
+			nFile.mkdirs();
+			write(folders);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static List<String> read() throws IOException{

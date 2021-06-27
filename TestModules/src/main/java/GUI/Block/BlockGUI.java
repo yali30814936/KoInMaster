@@ -21,7 +21,6 @@ public class BlockGUI extends JPanel {
 		scrollPane.getVerticalScrollBar().addAdjustmentListener(new AdjustBlock());
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		vBox = Box.createVerticalBox();
-//		vBox.setMaximumSize(new Dimension(1550, Integer.MAX_VALUE));
 		add(vBox);
 	}
 
@@ -33,6 +32,7 @@ public class BlockGUI extends JPanel {
 		PostList list = data.getContainer().getFilteredList();
 
 		vBox.removeAll();
+		vBox.revalidate();
 
 		try {
 			if (worker != null)
@@ -47,11 +47,6 @@ public class BlockGUI extends JPanel {
 		}
 	}
 
-	//	@Override
-//	public Dimension getPreferredSize() {
-//		return vBox.getMinimumSize();
-//	}
-
 	private static class RestPos extends SwingWorker<Object,Object> {
 		private final JScrollPane scrollPane;
 
@@ -61,19 +56,9 @@ public class BlockGUI extends JPanel {
 
 		@Override
 		protected Object doInBackground() throws Exception {
-//			Thread.sleep(100);
-//			scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum());
 			Thread.sleep(100);
 			scrollPane.getVerticalScrollBar().setValue(0);
 			return null;
-		}
-
-		@Override
-		protected void done() {
-//			if (container != null) {
-//				int left = (scrollPane.getHorizontalScrollBar().getMaximum() - (int) scrollPane.getSize().getWidth()) / 2 - 10;
-//				scrollPane.getHorizontalScrollBar().setValue(left);
-//			}
 		}
 	}
 

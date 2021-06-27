@@ -60,7 +60,7 @@ public class TwitterBlock extends JPanel{
         text = new BlockTextArea(post.getText());
         Box hBox3 = Box.createHorizontalBox();
         hBox3.add(text);
-        hBox3.add(Box.createHorizontalGlue());
+//        hBox3.add(Box.createHorizontalGlue());
         vBox.add(hBox3);
 
         Box hBox4 = Box.createHorizontalBox();

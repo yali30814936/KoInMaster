@@ -13,11 +13,20 @@ import java.security.GeneralSecurityException;
 public class CelebritiesReadWrite {
 	private static final String filename = "/Data/Celebrities.json";
 
-	public static synchronized void write(Celebrities celebrities) throws IOException {
-		FileWriter fw = new FileWriter(System.getProperty("user.dir") + filename);
-		fw.write(celebrities.toJSONArray().toString());
-		fw.flush();
-		fw.close();
+	public static synchronized void write(Celebrities celebrities) {
+		FileWriter fw = null;
+		try {
+			fw = new FileWriter(System.getProperty("user.dir") + filename);
+			fw.write(celebrities.toJSONArray().toString());
+			fw.flush();
+			fw.close();
+		} catch (FileNotFoundException e){
+			File nFile = new File(System.getProperty("user.dir") + "/Data/");
+			nFile.mkdirs();
+			write(celebrities);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static Celebrities read() throws IOException, GeneralSecurityException, URISyntaxException {

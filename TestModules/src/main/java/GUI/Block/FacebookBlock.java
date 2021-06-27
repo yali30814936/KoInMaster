@@ -52,7 +52,7 @@ public class FacebookBlock extends JPanel {
         BlockTextArea text = new BlockTextArea(post.getText());
         hBox = Box.createHorizontalBox();
         hBox.add(text);
-        hBox.add(Box.createHorizontalGlue());
+//        hBox.add(Box.createHorizontalGlue());
         vBox.add(hBox);
 
         add(vBox);

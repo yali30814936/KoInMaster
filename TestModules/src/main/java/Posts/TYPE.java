@@ -22,7 +22,7 @@ public enum TYPE {
 			if (p.displayName.equals(type))
 				return p;
 		}
-		throw new IllegalArgumentException("type text analyze failed with" + type + ".");
+		throw new IllegalArgumentException("type text analyze failed with '" + type + "'");
 	}
 
 	public static String[] getValues() {

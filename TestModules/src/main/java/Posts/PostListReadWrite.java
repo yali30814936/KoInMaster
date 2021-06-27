@@ -15,13 +15,22 @@ import java.util.NoSuchElementException;
 public class PostListReadWrite {
 	private static final String filename = "/Data/PostList.json";
 
-	public static void write(PostList posts) throws IOException {
-		FileWriter fw = new FileWriter(System.getProperty("user.dir") + filename);
-		for(Post p:posts){
-			fw.write(p.toJSONObject().toString()+"\n");
+	public static void write(PostList posts) {
+		FileWriter fw = null;
+		try {
+			fw = new FileWriter(System.getProperty("user.dir") + filename);
+			for(Post p:posts){
+				fw.write(p.toJSONObject().toString()+"\n");
+			}
+			fw.flush();
+			fw.close();
+		} catch (FileNotFoundException ex) {
+			File nFile = new File(System.getProperty("user.dir") + "/Data/");
+			nFile.mkdirs();
+			write(posts);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		fw.flush();
-		fw.close();
 	}
 
 	public static PostList read() throws IOException, GeneralSecurityException, URISyntaxException, ParseException {

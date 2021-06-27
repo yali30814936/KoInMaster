@@ -69,12 +69,8 @@ public class Data {
 	}
 
 	public void writeData() {
-		try {
-			CelebritiesReadWrite.write(celebrities);
-			FiltersDirectoriesReadWrite.write(directories);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		CelebritiesReadWrite.write(celebrities);
+		FiltersDirectoriesReadWrite.write(directories);
 	}
 
 	public JTree getJTree() {
@@ -102,11 +98,7 @@ public class Data {
 	}
 
 	public void writePosts() {
-		try {
-			PostListReadWrite.write(container.getOriginalList());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		PostListReadWrite.write(container.getOriginalList());
 	}
 
 	public List<String> getEnabledNames() {
@@ -125,11 +117,7 @@ public class Data {
 	}
 
 	public void writeTypes() {
-		try {
-			TypeReadWrite.write(types);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		TypeReadWrite.write(types);
 	}
 
 	public void readTypes() {
