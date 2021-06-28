@@ -3,6 +3,7 @@ package Posts;
 import twitter4j.JSONArray;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,9 +14,8 @@ public class TypeReadWrite {
 		JSONArray array = new JSONArray();
 		for (TYPE type:types)
 			array.put(type.toString());
-		FileWriter fw = null;
 		try {
-			fw = new FileWriter(System.getProperty("user.dir") + filename);
+			OutputStreamWriter fw = new OutputStreamWriter(new FileOutputStream(System.getProperty("user.dir") + filename), StandardCharsets.UTF_8);
 			fw.write(array.toString());
 			fw.flush();
 			fw.close();
@@ -30,8 +30,9 @@ public class TypeReadWrite {
 
 	public static List<TYPE> read() throws IOException{
 		try {
-			FileReader fr = new FileReader(System.getProperty("user.dir") + filename);
-			BufferedReader br = new BufferedReader(fr);
+			FileInputStream fis = new FileInputStream(System.getProperty("user.dir") + filename);
+			InputStreamReader isr = new InputStreamReader(fis, StandardCharsets.UTF_8);
+			BufferedReader br = new BufferedReader(isr);
 			JSONArray obj = new JSONArray(br.readLine());
 			List<TYPE> list = new ArrayList<>();
 			for (int i = 0; i < obj.length(); i++)

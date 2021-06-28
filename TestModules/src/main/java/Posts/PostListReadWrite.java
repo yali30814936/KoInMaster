@@ -5,6 +5,7 @@ import twitter4j.JSONObject;
 
 import java.io.*;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.text.ParseException;
 import java.util.NoSuchElementException;
@@ -16,9 +17,8 @@ public class PostListReadWrite {
 	private static final String filename = "/Data/PostList.json";
 
 	public static void write(PostList posts) {
-		FileWriter fw = null;
 		try {
-			fw = new FileWriter(System.getProperty("user.dir") + filename);
+			OutputStreamWriter fw = new OutputStreamWriter(new FileOutputStream(System.getProperty("user.dir") + filename), StandardCharsets.UTF_8);
 			for(Post p:posts){
 				fw.write(p.toJSONObject().toString()+"\n");
 			}
@@ -35,11 +35,12 @@ public class PostListReadWrite {
 
 	public static PostList read() throws IOException, GeneralSecurityException, URISyntaxException, ParseException {
 		try {
-			FileReader input = new FileReader(System.getProperty("user.dir") + filename);
-			BufferedReader bufferedReader = new BufferedReader(input);
+			FileInputStream fis = new FileInputStream(System.getProperty("user.dir") + filename);
+			InputStreamReader isr = new InputStreamReader(fis, StandardCharsets.UTF_8);
+			BufferedReader br = new BufferedReader(isr);
 			JSONArray objs = new JSONArray();
-			bufferedReader.lines().forEach(s -> objs.put(new JSONObject(s)));
-			bufferedReader.close();
+			br.lines().forEach(s -> objs.put(new JSONObject(s)));
+			br.close();
 			return new PostList(objs);
 		}
 		catch (NoSuchElementException | FileNotFoundException ex){

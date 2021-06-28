@@ -82,22 +82,17 @@ public class YoutubeCrawler extends Crawler{
 		YouTube youTube = new YouTube.Builder(httpTransport, JSON_FACTORY, null)
 				.setApplicationName("KoInMaster").build();
 		YouTube.Channels.List request = youTube.channels().list(Collections.singletonList("contentDetails"));
-		try {
-			ChannelListResponse response = request.setKey(props.getProperty("youtube"))
-			                                      .setForUsername(param)
-			                                      .execute();
-			if (response.getItems() != null) {
-				if (response.getItems().size() > 0)
-					return response.getItems().get(0).getId();
-				else
-					throw new IOException();
-			} else
-				return param;
-		} catch (GoogleJsonResponseException ex) {
-			JOptionPane.showMessageDialog(null, "YouTube api 用量超標，請隔日再試", "錯誤", JOptionPane.WARNING_MESSAGE);
-			ex.printStackTrace();
-			throw new IOException();
-		}
+
+		ChannelListResponse response = request.setKey(props.getProperty("youtube"))
+		                                      .setForUsername(param)
+		                                      .execute();
+		if (response.getItems() != null) {
+			if (response.getItems().size() > 0)
+				return response.getItems().get(0).getId();
+			else
+				throw new IOException();
+		} else
+			return param;
 	}
 
 	public PostList searchChannel(String channelId){
@@ -125,7 +120,6 @@ public class YoutubeCrawler extends Crawler{
 			}
 		} catch (GoogleJsonResponseException e) {
 			JOptionPane.showMessageDialog(null, "YouTube api 用量超標，請隔日再試", "錯誤", JOptionPane.WARNING_MESSAGE);
-			return postList;
 		} catch (IOException e) {
 			System.err.println("搜尋 '" + name + "' 的YT頻道 id='" + channelId +"' 時發生錯誤：\n" + e);
 		}
@@ -133,7 +127,7 @@ public class YoutubeCrawler extends Crawler{
 		return postList;
 	}
 
-	private List<Pair<String, String>> getDetailList(List<String> ids) throws GoogleJsonResponseException, IOException{
+	private List<Pair<String, String>> getDetailList(List<String> ids) throws IOException{
 		List<Pair<String, String>> detailList = new ArrayList<>();
 		VideoListResponse response = details.setKey(apiKey).setId(ids).execute();
 		for (Video s:response.getItems()) {

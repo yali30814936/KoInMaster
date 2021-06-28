@@ -5,6 +5,7 @@ import twitter4j.JSONArray;
 
 import java.io.*;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 
 /**
@@ -14,9 +15,8 @@ public class CelebritiesReadWrite {
 	private static final String filename = "/Data/Celebrities.json";
 
 	public static synchronized void write(Celebrities celebrities) {
-		FileWriter fw = null;
 		try {
-			fw = new FileWriter(System.getProperty("user.dir") + filename);
+			OutputStreamWriter fw = new OutputStreamWriter(new FileOutputStream(System.getProperty("user.dir") + filename), StandardCharsets.UTF_8);
 			fw.write(celebrities.toJSONArray().toString());
 			fw.flush();
 			fw.close();
@@ -31,8 +31,9 @@ public class CelebritiesReadWrite {
 
 	public static Celebrities read() throws IOException, GeneralSecurityException, URISyntaxException {
 		try {
-			FileReader fr = new FileReader(System.getProperty("user.dir") + filename);
-			BufferedReader br = new BufferedReader(fr);
+			FileInputStream fis = new FileInputStream(System.getProperty("user.dir") + filename);
+			InputStreamReader isr = new InputStreamReader(fis, StandardCharsets.UTF_8);
+			BufferedReader br = new BufferedReader(isr);
 			JSONArray obj = new JSONArray(br.readLine());
 			return new Celebrities(obj);
 		} catch (FileNotFoundException ex) {

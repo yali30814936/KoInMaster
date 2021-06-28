@@ -4,6 +4,7 @@ import Celebrities.Celebrity;
 import Celebrities.Crawlers.Crawler;
 import Core.Data;
 import Posts.PLATFORM;
+import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 
 import javax.swing.*;
 import java.awt.*;
@@ -148,6 +149,9 @@ public class CrawlerSector extends Box {
 					celebrity.getCrawlers().put(newName, Crawler.rawBuild(PLATFORM.values()[platform.getSelectedIndex()],
 					                                                      celebrity.getName(),
 					                                                      crawlerParam.getText()));
+				} catch (GoogleJsonResponseException ex) {
+					JOptionPane.showMessageDialog(null, "YouTube api 用量超標，請隔日再試", "錯誤", JOptionPane.WARNING_MESSAGE);
+					ex.printStackTrace();
 				} catch (GeneralSecurityException | IOException | URISyntaxException generalSecurityException) {
 					JOptionPane.showMessageDialog(getRootPane(), "新增抓取器失敗！請確認參數格式是否正確");
 					generalSecurityException.printStackTrace();
